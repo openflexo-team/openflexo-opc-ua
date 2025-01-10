@@ -1,0 +1,13 @@
+dependencies {
+  implementation project(":opc-ua-ta")
+
+  // openflexo dep
+  implementation group: 'junit', name: 'junit', version: '4.13.2'
+
+  // testing dep
+  testImplementation flexoFoundation()
+  testImplementation flexoFoundationTest()
+
+  // Test resource center
+  testRuntimeOnly project(':opc-ua-ta-test-rc')
+}

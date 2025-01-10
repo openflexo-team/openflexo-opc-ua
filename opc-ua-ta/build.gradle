@@ -1,0 +1,14 @@
+dependencies {
+  // openflexo dep
+  implementation flexoFoundation()
+
+  // external dep
+  api 'org.eclipse.milo:sdk-client:0.6.15'
+  api 'org.eclipse.milo:sdk-server:0.6.15'
+  api 'org.eclipse.milo:dictionary-manager:0.6.15'
+  api 'org.eclipse.milo:dictionary-reader:0.6.15'
+  api 'org.slf4j:jcl-over-slf4j:1.7.21'
+  api 'org.slf4j:slf4j-jdk14:1.7.21'
+  api 'org.jetbrains:annotations:22.0.0'
+
+}
