@@ -68,7 +68,7 @@ public class OPCUAIconLibrary {
 		else if (UANode.class.isAssignableFrom(objectClass)) {
 			return UA_NODE_ICON;
 		}
-		logger.warning("No icon for " + objectClass);
+		logger.warning("No icon for this class " + objectClass);
 		return null;
 	}
 }

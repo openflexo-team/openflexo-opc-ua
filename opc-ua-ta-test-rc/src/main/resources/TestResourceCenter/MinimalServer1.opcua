@@ -1,0 +1,4 @@
+hostName=localhost
+bindPort=4880
+path=/minimal
+bindAddress=0.0.0.0

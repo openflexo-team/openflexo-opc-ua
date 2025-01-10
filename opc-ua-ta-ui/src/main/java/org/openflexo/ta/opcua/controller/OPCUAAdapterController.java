@@ -69,7 +69,7 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 
 	static final Logger logger = Logger.getLogger(OPCUAAdapterController.class.getPackage().getName());
 
-	private InspectorGroup xxInspectorGroup;
+	private InspectorGroup opcuaInspectorGroup;
 
 	@Override
 	public Class<OPCUATechnologyAdapter> getTechnologyAdapterClass() {
@@ -84,7 +84,7 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		xxInspectorGroup = controller.loadInspectorGroup("OPCUA", getTechnologyAdapter().getLocales(),
+		opcuaInspectorGroup = controller.loadInspectorGroup("OPCUA", getTechnologyAdapter().getLocales(),
 				getFMLTechnologyAdapterInspectorGroup());
 	}
 
@@ -95,7 +95,7 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	 */
 	@Override
 	public InspectorGroup getTechnologyAdapterInspectorGroup() {
-		return xxInspectorGroup;
+		return opcuaInspectorGroup;
 	}
 
 	@Override
@@ -121,6 +121,8 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	 */
 	@Override
 	public ImageIcon getTechnologyIcon() {
+		System.out.println("On me demande l'icone OPC-UA");
+		System.out.println("Je retourne " + OPCUAIconLibrary.OPC_UA_TA_ICON);
 		return OPCUAIconLibrary.OPC_UA_TA_ICON;
 	}
 
