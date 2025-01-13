@@ -76,14 +76,13 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return resource;
 	}
 
-	public OPCServer makeXXText() {
+	public OPCServer makeOPCServer() {
 		return newInstance(OPCServer.class);
 	}
 
-	public UANode makeXXLine(String value, int index) {
+	public UANode makeUANode(String value) {
 		UANode returned = newInstance(UANode.class);
 		returned.setValue(value);
-		returned.setIndex(index);
 		return returned;
 	}
 

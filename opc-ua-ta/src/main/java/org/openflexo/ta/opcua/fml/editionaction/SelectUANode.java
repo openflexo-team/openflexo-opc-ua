@@ -56,7 +56,7 @@ import org.openflexo.ta.opcua.model.OPCServer;
  * 
  */
 @ModelEntity
-@ImplementationClass(SelectUANode.AbstractSelectXXLineImpl.class)
+@ImplementationClass(SelectUANode.AbstractSelectUANodeImpl.class)
 @XMLElement
 @FML("SelectUANode")
 public interface SelectUANode extends AbstractSelectUANode<List<UANode>>, FetchRequest<OPCServerModelSlot, OPCServer, UANode> {

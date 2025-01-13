@@ -69,7 +69,7 @@ public class OPCServerResourceFactory
 
 	@Override
 	public OPCServer makeEmptyResourceData(OPCServerResource resource) {
-		return resource.getFactory().makeXXText();
+		return resource.getFactory().makeOPCServer();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class OPCServerResourceFactory
 
 		// Register the resource in the repository of supplied resource center
 		registerResourceInResourceRepository(resource,
-				getTechnologyAdapter(resourceCenter.getServiceManager()).getXXResourceRepository(resourceCenter));
+				getTechnologyAdapter(resourceCenter.getServiceManager()).getOPCServerResourceRepository(resourceCenter));
 
 		return resource;
 	}

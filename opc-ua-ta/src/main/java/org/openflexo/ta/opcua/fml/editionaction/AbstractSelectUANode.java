@@ -59,10 +59,10 @@ import org.openflexo.ta.opcua.model.OPCServer;
  * @param <AT>
  */
 @ModelEntity(isAbstract = true)
-@ImplementationClass(AbstractSelectUANode.AbstractSelectXXLineImpl.class)
+@ImplementationClass(AbstractSelectUANode.AbstractSelectUANodeImpl.class)
 public interface AbstractSelectUANode<AT> extends AbstractFetchRequest<OPCServerModelSlot, OPCServer, UANode, AT> {
 
-	public static abstract class AbstractSelectXXLineImpl<AT> extends AbstractFetchRequestImpl<OPCServerModelSlot, OPCServer, UANode, AT>
+	public static abstract class AbstractSelectUANodeImpl<AT> extends AbstractFetchRequestImpl<OPCServerModelSlot, OPCServer, UANode, AT>
 			implements AbstractSelectUANode<AT> {
 
 		@SuppressWarnings("unused")

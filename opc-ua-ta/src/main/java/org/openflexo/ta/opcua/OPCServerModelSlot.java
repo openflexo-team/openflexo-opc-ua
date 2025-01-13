@@ -54,8 +54,8 @@ import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.fml.UANodeActorReference;
 import org.openflexo.ta.opcua.fml.UANodeRole;
 import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
-import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueUANode;
 import org.openflexo.ta.opcua.fml.editionaction.SelectUANode;
+import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueUANode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
@@ -87,7 +87,7 @@ public interface OPCServerModelSlot extends FreeModelSlot<OPCServer> {
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (UANodeRole.class.isAssignableFrom(patternRoleClass)) {
-				return "line";
+				return "node";
 			}
 			return null;
 		}

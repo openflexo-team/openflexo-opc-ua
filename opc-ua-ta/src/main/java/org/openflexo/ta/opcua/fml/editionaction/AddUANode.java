@@ -55,31 +55,31 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.UANode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.UANode;
 
 @ModelEntity
-@ImplementationClass(AddUANode.AddXXLineImpl.class)
+@ImplementationClass(AddUANode.AddUANodeImpl.class)
 @XMLElement
 @FML("AddUANode")
 public interface AddUANode extends OPCUAAction<UANode> {
 
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String LINE_NUMBER_KEY = "lineNumber";
+	public static final String RELATIVE_PATH_KEY = "relativePath";
 
-	@Getter(value = LINE_NUMBER_KEY)
+	@Getter(value = RELATIVE_PATH_KEY)
 	@XMLAttribute
-	public DataBinding<Integer> getLineNumber();
+	public DataBinding<String> getRelativePath();
 
-	@Setter(LINE_NUMBER_KEY)
-	public void setLineNumber(DataBinding<Integer> lineNumber);
+	@Setter(RELATIVE_PATH_KEY)
+	public void setRelativePath(DataBinding<String> relativePath);
 
-	public static abstract class AddXXLineImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, UANode>
+	public static abstract class AddUANodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, UANode>
 			implements AddUANode {
 
 		private static final Logger logger = Logger.getLogger(AddUANode.class.getPackage().getName());
 
-		private DataBinding<Integer> lineNumber;
+		private DataBinding<String> relativePath;
 
 		@Override
 		public Type getAssignableType() {
@@ -95,9 +95,9 @@ public interface AddUANode extends OPCUAAction<UANode> {
 
 			try {
 				if (resourceData != null) {
-					Integer lineNumber = getLineNumber().getBindingValue(evaluationContext);
-					if (lineNumber != null) {
-						System.out.println("TODO: addLine not implemented");
+					String relativePath = getRelativePath().getBindingValue(evaluationContext);
+					if (relativePath != null) {
+						System.out.println("TODO: addUANode not implemented");
 						resourceData.setIsModified();
 						resourceData.setModified(true);
 
@@ -123,23 +123,23 @@ public interface AddUANode extends OPCUAAction<UANode> {
 		}
 
 		@Override
-		public DataBinding<Integer> getLineNumber() {
-			if (lineNumber == null) {
-				lineNumber = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
-				lineNumber.setBindingName("lineNumber");
+		public DataBinding<String> getRelativePath() {
+			if (relativePath == null) {
+				relativePath = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				relativePath.setBindingName("relativePath");
 			}
-			return lineNumber;
+			return relativePath;
 		}
 
 		@Override
-		public void setLineNumber(DataBinding<Integer> lineNumber) {
-			if (lineNumber != null) {
-				lineNumber.setOwner(this);
-				lineNumber.setDeclaredType(Integer.class);
-				lineNumber.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				lineNumber.setBindingName("lineNumber");
+		public void setRelativePath(DataBinding<String> relativePath) {
+			if (relativePath != null) {
+				relativePath.setOwner(this);
+				relativePath.setDeclaredType(String.class);
+				relativePath.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				relativePath.setBindingName("relativePath");
 			}
-			this.lineNumber = lineNumber;
+			this.relativePath = relativePath;
 		}
 
 	}
@@ -147,12 +147,12 @@ public interface AddUANode extends OPCUAAction<UANode> {
 	@DefineValidationRule
 	public static class LineNumberBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddUANode> {
 		public LineNumberBindingIsRequiredAndMustBeValid() {
-			super("'lineNumber'_binding_is_required_and_must_be_valid", AddUANode.class);
+			super("'relativePath'_binding_is_required_and_must_be_valid", AddUANode.class);
 		}
 
 		@Override
-		public DataBinding<Integer> getBinding(AddUANode object) {
-			return object.getLineNumber();
+		public DataBinding<String> getBinding(AddUANode object) {
+			return object.getRelativePath();
 		}
 
 	}

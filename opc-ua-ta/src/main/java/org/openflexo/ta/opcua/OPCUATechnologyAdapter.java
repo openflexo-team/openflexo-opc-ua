@@ -78,7 +78,7 @@ public class OPCUATechnologyAdapter extends TechnologyAdapter<OPCUATechnologyAda
 	@Override
 	public void ensureAllRepositoriesAreCreated(FlexoResourceCenter<?> rc) {
 		super.ensureAllRepositoriesAreCreated(rc);
-		getXXResourceRepository(rc);
+		getOPCServerResourceRepository(rc);
 
 	}
 
@@ -97,12 +97,12 @@ public class OPCUATechnologyAdapter extends TechnologyAdapter<OPCUATechnologyAda
 		return "OPCUA";
 	}
 
-	public OPCServerResourceFactory getXXResourceFactory() {
+	public OPCServerResourceFactory getOPCServerResourceFactory() {
 		return getResourceFactory(OPCServerResourceFactory.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <I> OPCServerResourceRepository<I> getXXResourceRepository(FlexoResourceCenter<I> resourceCenter) {
+	public <I> OPCServerResourceRepository<I> getOPCServerResourceRepository(FlexoResourceCenter<I> resourceCenter) {
 		OPCServerResourceRepository<I> returned = resourceCenter.retrieveRepository(OPCServerResourceRepository.class, this);
 		if (returned == null) {
 			returned = OPCServerResourceRepository.instanciateNewRepository(this, resourceCenter);

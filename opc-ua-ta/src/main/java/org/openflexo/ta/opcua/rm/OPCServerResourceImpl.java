@@ -59,9 +59,9 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
-import org.openflexo.ta.opcua.model.UANode;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.UANode;
 import org.openflexo.toolbox.FileUtils;
 
 /**
@@ -195,17 +195,17 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	 */
 	private <I> OPCServer load(StreamIODelegate<I> ioDelegate) throws IOException {
 
-		OPCServer returned = getFactory().makeXXText();
+		OPCServer returned = getFactory().makeOPCServer();
+
+		// ICI : on va faire le discovery
+
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {
-			int index = 0;
 			String nextLine = null;
 			do {
 				nextLine = br.readLine();
 				if (nextLine != null) {
-					System.out.println("Ligne lue : " + nextLine);
-					UANode newLine = getFactory().makeXXLine(nextLine, index);
+					UANode newLine = getFactory().makeUANode(nextLine);
 					returned.addToNodes(newLine);
-					index++;
 				}
 			} while (nextLine != null);
 		}
