@@ -58,7 +58,7 @@ public final class OPCUABindingFactory extends TechnologyAdapterBindingFactory {
 	static final Logger logger = Logger.getLogger(OPCUABindingFactory.class.getPackage().getName());
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		logger.warning("Unexpected " + object);
 		return null;
 	}
