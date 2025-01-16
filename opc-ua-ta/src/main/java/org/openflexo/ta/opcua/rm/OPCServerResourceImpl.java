@@ -60,9 +60,7 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
-import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.toolbox.FileUtils;
 
 /**
@@ -200,15 +198,26 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 			String nextLine = br.readLine();
 			while (nextLine != null) {
 				String[] tokens = nextLine.split("=");
-				if (tokens.length != 2) continue;
+				if (tokens.length != 2)
+					continue;
 				String key = tokens[0].trim().toLowerCase();
-				String value = tokens[0].trim();
+				String value = tokens[1].trim();
+				System.out.println("key=" + key + " value=" + value);
 				switch (key) {
-					case "hostname" : returned.setHostname(value); break;
-					case "bindport" : returned.setBindPort(Integer.valueOf(value)); break;
-					case "applicationname" : returned.setApplicationName(value); break;
-					case "bindaddress" : returned.setBindAddress(value); break;
-					default: continue;
+					case "hostname":
+						returned.setHostname(value);
+						break;
+					case "bindport":
+						returned.setBindPort(Integer.valueOf(value));
+						break;
+					case "applicationname":
+						returned.setApplicationName(value);
+						break;
+					case "bindaddress":
+						returned.setBindAddress(value);
+						break;
+					default:
+						continue;
 				}
 				nextLine = br.readLine();
 			}
@@ -228,9 +237,9 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	private void write(OutputStream out) throws SaveResourceException {
 		logger.info("Writing " + getIODelegate().getSerializationArtefact());
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out))) {
-			bw.write("opc.tcp://"+getOPCServer().getHostname());
-			bw.write(":"+getOPCServer().getBindPort());
-			bw.write("/"+getOPCServer().getApplicationName());
+			bw.write("opc.tcp://" + getOPCServer().getHostname());
+			bw.write(":" + getOPCServer().getBindPort());
+			bw.write("/" + getOPCServer().getApplicationName());
 			bw.newLine();
 			bw.close();
 		} catch (IOException e) {
