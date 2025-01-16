@@ -49,7 +49,7 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 
 /**
  * A role which allow to reference a UANode in a OPC-UA server
@@ -61,13 +61,13 @@ import org.openflexo.ta.opcua.model.UANode;
 @ImplementationClass(UANodeRole.UANodeRoleRoleImpl.class)
 @XMLElement
 @FML("UANodeRole")
-public interface UANodeRole extends FlexoRole<UANode> {
+public interface UANodeRole extends FlexoRole<OPCNode> {
 
-	public static abstract class UANodeRoleRoleImpl extends FlexoRoleImpl<UANode> implements UANodeRole {
+	public static abstract class UANodeRoleRoleImpl extends FlexoRoleImpl<OPCNode> implements UANodeRole {
 
 		@Override
 		public Type getType() {
-			return UANode.class;
+			return OPCNode.class;
 		}
 
 		@Override
@@ -81,7 +81,7 @@ public interface UANodeRole extends FlexoRole<UANode> {
 		}
 
 		@Override
-		public ActorReference<UANode> makeActorReference(UANode object, FlexoConceptInstance fci) {
+		public ActorReference<OPCNode> makeActorReference(OPCNode object, FlexoConceptInstance fci) {
 			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			UANodeActorReference returned = factory.newInstance(UANodeActorReference.class);
 			returned.setFlexoRole(this);

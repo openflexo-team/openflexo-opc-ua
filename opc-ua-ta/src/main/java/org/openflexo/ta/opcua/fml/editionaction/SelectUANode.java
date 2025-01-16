@@ -46,19 +46,19 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a selection of some {@link UANode} matching some conditions
+ * A {@link FetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions
  * 
  * @author sylvain
  * 
  */
 @ModelEntity
-@ImplementationClass(SelectUANode.AbstractSelectUANodeImpl.class)
+@ImplementationClass(AbstractSelectUANode.AbstractSelectOPCNodeImpl.class)
 @XMLElement
 @FML("SelectUANode")
-public interface SelectUANode extends AbstractSelectUANode<List<UANode>>, FetchRequest<OPCServerModelSlot, OPCServer, UANode> {
+public interface SelectUANode extends AbstractSelectUANode<List<OPCNode>>, FetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
 
 }

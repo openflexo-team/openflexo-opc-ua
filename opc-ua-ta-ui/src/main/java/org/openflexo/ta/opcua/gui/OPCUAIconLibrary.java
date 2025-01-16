@@ -46,7 +46,7 @@ import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 
 public class OPCUAIconLibrary {
 
@@ -65,7 +65,7 @@ public class OPCUAIconLibrary {
 		if (OPCServer.class.isAssignableFrom(objectClass)) {
 			return OPC_SERVER_ICON;
 		}
-		else if (UANode.class.isAssignableFrom(objectClass)) {
+		else if (OPCNode.class.isAssignableFrom(objectClass)) {
 			return UA_NODE_ICON;
 		}
 		logger.warning("No icon for this class " + objectClass);

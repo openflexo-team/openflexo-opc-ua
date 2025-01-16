@@ -47,11 +47,11 @@ import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
- * XX resource repository<br>
+ * OPC UA resource repository<br>
  * 
  * A repository which references some {@link OPCServerResource}
  * 
- * @author sylvain
+ * @author sylvain, luka
  * 
  */
 @ModelEntity

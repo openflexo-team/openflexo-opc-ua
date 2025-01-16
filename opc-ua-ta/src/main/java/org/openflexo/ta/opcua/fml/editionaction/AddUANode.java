@@ -56,13 +56,13 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 
 @ModelEntity
 @ImplementationClass(AddUANode.AddUANodeImpl.class)
 @XMLElement
 @FML("AddUANode")
-public interface AddUANode extends OPCUAAction<UANode> {
+public interface AddUANode extends OPCUAAction<OPCNode> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String RELATIVE_PATH_KEY = "relativePath";
@@ -74,7 +74,7 @@ public interface AddUANode extends OPCUAAction<UANode> {
 	@Setter(RELATIVE_PATH_KEY)
 	public void setRelativePath(DataBinding<String> relativePath);
 
-	public static abstract class AddUANodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, UANode>
+	public static abstract class AddUANodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, OPCNode>
 			implements AddUANode {
 
 		private static final Logger logger = Logger.getLogger(AddUANode.class.getPackage().getName());
@@ -83,13 +83,13 @@ public interface AddUANode extends OPCUAAction<UANode> {
 
 		@Override
 		public Type getAssignableType() {
-			return UANode.class;
+			return OPCNode.class;
 		}
 
 		@Override
-		public UANode execute(RunTimeEvaluationContext evaluationContext) {
+		public OPCNode execute(RunTimeEvaluationContext evaluationContext) {
 
-			UANode line = null;
+			OPCNode line = null;
 
 			OPCServer resourceData = getReceiver(evaluationContext);
 

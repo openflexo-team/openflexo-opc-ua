@@ -54,12 +54,13 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNamespace;
+import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
- * Implements {@link ActorReference} for {@link UANode} object
+ * Implements {@link ActorReference} for {@link OPCNode} object
  * 
  * @author sylvain
  * 
@@ -68,7 +69,7 @@ import org.openflexo.ta.opcua.rm.OPCServerResource;
 @ImplementationClass(UANodeActorReference.XXLineActorReferenceImpl.class)
 @XMLElement
 @FML("UANodeActorReference")
-public interface UANodeActorReference extends ActorReference<UANode> {
+public interface UANodeActorReference extends ActorReference<OPCNode> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String OBJECT_URI_KEY = "objectURI";
@@ -80,11 +81,11 @@ public interface UANodeActorReference extends ActorReference<UANode> {
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public abstract static class XXLineActorReferenceImpl extends ActorReferenceImpl<UANode> implements UANodeActorReference {
+	public abstract static class XXLineActorReferenceImpl extends ActorReferenceImpl<OPCNode> implements UANodeActorReference {
 
 		private static final Logger logger = FlexoLogger.getLogger(UANodeActorReference.class.getPackage().toString());
 
-		private UANode object;
+		private OPCNode object;
 		private String objectURI;
 
 		public OPCServer getXXText() {
@@ -111,10 +112,14 @@ public interface UANodeActorReference extends ActorReference<UANode> {
 		}
 
 		@Override
-		public UANode getModellingElement(boolean forceLoading) {
+		public OPCNode getModellingElement(boolean forceLoading) {
 			if (object == null && objectURI != null) {
-				int index = Integer.parseInt(objectURI);
-				return getXXText().getNodes().get(index);
+				// TODO : make sure it's reasonable to search all nodes here
+				for (OPCNamespace namespace : getXXText().getNamespaces()) {
+					for (OPCNode node : namespace.getAllNodes()) {
+						if (node.getName().equals(objectURI)) return node;
+					}
+				}
 			}
 			if (object == null) {
 				logger.warning("Could not retrieve object " + objectURI);
@@ -124,17 +129,18 @@ public interface UANodeActorReference extends ActorReference<UANode> {
 		}
 
 		@Override
-		public void setModellingElement(UANode object) {
+		public void setModellingElement(OPCNode object) {
 			this.object = object;
+			// TODO : build a correct URI
 			if (object != null) {
-				objectURI = "" + object.getIndex();
+				objectURI = object.getName();
 			}
 		}
 
 		@Override
 		public String getObjectURI() {
 			if (object != null) {
-				return "" + object.getIndex();
+				return "" + object.getName();
 			}
 			return objectURI;
 		}

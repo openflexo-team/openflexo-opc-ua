@@ -60,8 +60,9 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.StreamIODelegate;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
+import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.toolbox.FileUtils;
 
 /**
@@ -194,21 +195,27 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	 * @throws IOException
 	 */
 	private <I> OPCServer load(StreamIODelegate<I> ioDelegate) throws IOException {
-
 		OPCServer returned = getFactory().makeOPCServer();
-
-		// ICI : on va faire le discovery
-
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {
-			String nextLine = null;
-			do {
-				nextLine = br.readLine();
-				if (nextLine != null) {
-					UANode newLine = getFactory().makeUANode(nextLine);
-					returned.addToNodes(newLine);
+			String nextLine = br.readLine();
+			while (nextLine != null) {
+				String[] tokens = nextLine.split("=");
+				if (tokens.length != 2) continue;
+				String key = tokens[0].trim().toLowerCase();
+				String value = tokens[0].trim();
+				switch (key) {
+					case "hostname" : returned.setHostname(value); break;
+					case "bindport" : returned.setBindPort(Integer.valueOf(value)); break;
+					case "applicationname" : returned.setApplicationName(value); break;
+					case "bindaddress" : returned.setBindAddress(value); break;
+					default: continue;
 				}
-			} while (nextLine != null);
+				nextLine = br.readLine();
+			}
 		}
+
+		// TODO : Discovery & populate OPCServer with its nodes. Here? Really?
+
 		return returned;
 	}
 
@@ -221,10 +228,10 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	private void write(OutputStream out) throws SaveResourceException {
 		logger.info("Writing " + getIODelegate().getSerializationArtefact());
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out))) {
-			for (UANode line : getOPCServer().getNodes()) {
-				bw.write(line.getValue());
-				bw.newLine();
-			}
+			bw.write("opc.tcp://"+getOPCServer().getHostname());
+			bw.write(":"+getOPCServer().getBindPort());
+			bw.write("/"+getOPCServer().getApplicationName());
+			bw.newLine();
 			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

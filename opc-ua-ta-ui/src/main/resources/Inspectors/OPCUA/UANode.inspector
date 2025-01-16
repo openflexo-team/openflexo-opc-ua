@@ -16,7 +16,7 @@
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"
-		type="org.openflexo.ta.opcua.model.UANode" />
+		type="org.openflexo.ta.opcua.modelExample.UANode" />
 	<LocalizedDictionary id="14">
 		<Localized id="15" value="Avancé" lang="French" key="Advanced" />
 		<Localized id="16" value="Basique" lang="French" key="Basic" />

@@ -48,21 +48,22 @@ import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.UANode;
+import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.OPCNamespace;
 
 /**
- * Generic {@link AbstractFetchRequest} allowing to retrieve a selection of some {@link UANode} matching some conditions
+ * Generic {@link AbstractFetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions
  * 
  * @author sylvain
  *
  * @param <AT>
  */
 @ModelEntity(isAbstract = true)
-@ImplementationClass(AbstractSelectUANode.AbstractSelectUANodeImpl.class)
-public interface AbstractSelectUANode<AT> extends AbstractFetchRequest<OPCServerModelSlot, OPCServer, UANode, AT> {
+@ImplementationClass(AbstractSelectUANode.AbstractSelectOPCNodeImpl.class)
+public interface AbstractSelectUANode<AT> extends AbstractFetchRequest<OPCServerModelSlot, OPCServer, OPCNode, AT> {
 
-	public static abstract class AbstractSelectUANodeImpl<AT> extends AbstractFetchRequestImpl<OPCServerModelSlot, OPCServer, UANode, AT>
+	public static abstract class AbstractSelectOPCNodeImpl<AT> extends AbstractFetchRequestImpl<OPCServerModelSlot, OPCServer, OPCNode, AT>
 			implements AbstractSelectUANode<AT> {
 
 		@SuppressWarnings("unused")
@@ -70,20 +71,23 @@ public interface AbstractSelectUANode<AT> extends AbstractFetchRequest<OPCServer
 
 		@Override
 		public Type getFetchedType() {
-			return UANode.class;
+			return OPCNode.class;
 		}
 
 		@Override
-		public List<UANode> performExecute(RunTimeEvaluationContext evaluationContext) {
+		public List<OPCNode> performExecute(RunTimeEvaluationContext evaluationContext) {
 
-			List<UANode> selectedLines = new ArrayList<>();
+			List<OPCNode> selectedLines = new ArrayList<>();
 			OPCServer resourceData = getReceiver(evaluationContext);
 
 			if (resourceData != null) {
-				selectedLines.addAll(resourceData.getNodes());
+				List<OPCNamespace> namespaces = resourceData.getNamespaces();
+				for (OPCNamespace namespace : resourceData.getNamespaces()) {
+					selectedLines.addAll(namespace.getAllNodes());
+				}
 			}
 
-			List<UANode> returned = filterWithConditions(selectedLines, evaluationContext);
+			List<OPCNode> returned = filterWithConditions(selectedLines, evaluationContext);
 
 			return returned;
 

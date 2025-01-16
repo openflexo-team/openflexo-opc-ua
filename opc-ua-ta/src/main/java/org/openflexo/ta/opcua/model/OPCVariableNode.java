@@ -1,2 +1,4 @@
-package org.openflexo.ta.opcua.model2;public class OPCVariableNode {
+package org.openflexo.ta.opcua.model;
+
+public interface OPCVariableNode {
 }
