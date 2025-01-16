@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
 	p:modelEntity="org.openflexo.gina.utils.FIBInspector" borderLeft="0"
-	sizeAdjustment="OriginalSize" controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
-	borderRight="0" border="empty" trackViewPortWidth="true" font="SansSerif,0,12"
+	sizeAdjustment="OriginalSize"
+	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	borderRight="0" border="empty" trackViewPortWidth="true"
+	font="SansSerif,0,12"
 	align="left" borderBottom="0" titleFont="SansSerif,0,12" borderTop="0"
 	trackViewPortHeight="true" layout="border" name="Inspector">
 	<Parameter id="1" name="title" value="XXText" />
 	<TabPanel id="2" name="Tab" constraints="border(location=center)">
 		<Tab id="3" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 			borderLeft="0" sizeAdjustment="OriginalSize" border="empty"
-			borderRight="0" trackViewPortWidth="true" index="0" font="SansSerif,0,11"
-			align="left" borderBottom="0" titleFont="SansSerif,0,11" borderTop="0"
-			trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			borderRight="0" trackViewPortWidth="true" index="0"
+			font="SansSerif,0,11"
+			align="left" borderBottom="0" titleFont="SansSerif,0,11"
+			borderTop="0"
+			trackViewPortHeight="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			useScrollBar="true" title="Basic" layout="twocols" name="BasicTab">
+
+			<Label label="hostname" index="0"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)"
+				name="hostNameLabel" localize="true" />
+			<TextField index="1" data="data.hostname"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
+				name="hostNameTF" readOnly="true" localize="true" columns="10" />
+
+
 			<Label id="7" name="NodesLabel" index="7" align="left"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="nodes" />
 			<Table id="8" showFooter="true" manageDynamicModel="true"
-				selectionMode="MultipleIntervalSelection" opaque="false" data="data.nodes"
+				selectionMode="MultipleIntervalSelection" opaque="false"
+				data="data.nodes"
 				index="8" localize="true"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visibleRowCount="4" rowHeight="18" textSelectionColor="255,255,255"
-				iteratorClassName="org.openflexo.ta.opcua.modelExample.UANode"
-				backgroundSelectionColor="26,96,206" backgroundNonSelectionColor="255,255,255"
+				visibleRowCount="4" rowHeight="18"
+				textSelectionColor="255,255,255"
+				iteratorClassName="org.openflexo.ta.opcua.model.OPCNode"
+				backgroundSelectionColor="26,96,206"
+				backgroundNonSelectionColor="255,255,255"
 				name="LinesTable" textNonSelectionColor="0,0,0"
 				backgroundSecondarySelectionColor="173,215,255">
 				<IconColumn data="controller.iconForObject(iterator)"
-					title="" columnWidth="30" resizable="false" displayTitle="true" />
-				<LabelColumn data="iterator.value" title="value"
+					title="" columnWidth="30" resizable="false"
+					displayTitle="true" />
+				<LabelColumn data="iterator.name" title="value"
 					columnWidth="100" resizable="true" displayTitle="true" />
 			</Table>
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"
-		type="org.openflexo.ta.opcua.modelExample.OPCServer" />
+		type="org.openflexo.ta.opcua.model.OPCServer" />
 	<LocalizedDictionary id="14">
 		<Localized id="15" value="Avancé" lang="French" key="Advanced" />
 		<Localized id="16" value="Basique" lang="French" key="Basic" />
