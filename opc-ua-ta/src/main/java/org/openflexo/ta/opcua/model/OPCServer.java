@@ -78,6 +78,8 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 	@Remover(NAMESPACES_KEY)
 	public void removeFromNamespaces(OPCNamespace aNamespace);
 
+	public String getUrl();
+
 	@Override
 	public OPCServerResource getResource();
 
@@ -106,6 +108,12 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 			// TODO : illustration purpose
 			String returned = (String) performSuperGetter(BIND_ADDRESS_KEY);
 			return returned;
+		}
+
+		@Override
+		public String getUrl() {
+			// TODO : handle cases where bindAddress has to be used instead
+			return "opc.tcp://"+getHostname()+":"+getBindPort()+"/"+getApplicationName();
 		}
 
 	}
