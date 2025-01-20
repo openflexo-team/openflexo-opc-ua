@@ -57,7 +57,7 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public int getIndex() {
-			// TODO : is this reasonable?
+			// TODO : is this reasonable? is this coherent with OPC side of things? (go have a look at the doc)
 			return getServer().getNamespaces().indexOf(this);
 		}
 
