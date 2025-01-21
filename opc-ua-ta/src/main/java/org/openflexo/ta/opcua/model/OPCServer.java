@@ -78,6 +78,8 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 	@Remover(NAMESPACES_KEY)
 	public void removeFromNamespaces(OPCNamespace aNamespace);
 
+	public OPCNamespace getNamespace(Integer anIndex);
+
 	public String getUrl();
 
 	@Override
@@ -116,6 +118,14 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 			return "opc.tcp://"+getHostname()+":"+getBindPort()+"/"+getApplicationName();
 		}
 
+		@Override
+		public OPCNamespace getNamespace(Integer anIndex) {
+			// TODO : Reasonable?
+			for (OPCNamespace namespace : getNamespaces()) {
+				if (namespace.getIndex().equals(anIndex)) return namespace;
+			}
+			return null;
+		}
 	}
 
 }

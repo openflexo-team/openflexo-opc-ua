@@ -51,15 +51,16 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 	@Remover(OPC_NODES_KEY)
 	public void removeFromNamespace(OPCNode aNode);
 
-	public int getIndex();
+	@PropertyIdentifier(type = Integer.class)
+	public static final String OPC_INDEX = "index";
+
+	@Getter(OPC_INDEX)
+	public Integer getIndex();
+
+	@Setter(OPC_INDEX)
+	public void setIndex(Integer anIndex);
 
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
-
-		@Override
-		public int getIndex() {
-			// TODO : is this reasonable? is this coherent with OPC side of things? (go have a look at the doc)
-			return getServer().getNamespaces().indexOf(this);
-		}
 
 	}
 

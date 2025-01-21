@@ -47,13 +47,14 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     @Getter(value = OPC_NAME)
     public String getName();
 
-    /**
-     * Sets this {@link OPCNode} name
-     *
-     * @param aName
-     */
-    @Setter(OPC_NAME)
-    public void setServer(String aName);
+    @PropertyIdentifier(type = String.class)
+    public static final String OPC_IDENTIFIER = "identifier";
+
+    @Getter(OPC_IDENTIFIER)
+    public String getIdentifier();
+
+    @Setter(OPC_IDENTIFIER)
+    public void setIdentifier(String anIdentifier);
 
     public String getQualifiedName();
 
@@ -62,6 +63,7 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
         @Override
         public String getQualifiedName() {
             // TODO : check if format is okay
+            // TODO : check if we have to use identifier instead
             OPCFolderNode parent = getParent();
             if (parent != null) return parent.getQualifiedName() + "." + getName();
             return "[" + getNamespace().getIndex() + "] " + getName();
