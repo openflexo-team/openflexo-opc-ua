@@ -54,9 +54,9 @@ import org.openflexo.ta.opcua.fml.UANodeRole;
 import org.openflexo.ta.opcua.fml.editionaction.AbstractSelectUANode;
 import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
 import org.openflexo.ta.opcua.gui.OPCUAIconLibrary;
+import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.OPCNode;
 import org.openflexo.ta.opcua.view.OPCServerView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -121,8 +121,8 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	 */
 	@Override
 	public ImageIcon getTechnologyIcon() {
-		System.out.println("On me demande l'icone OPC-UA");
-		System.out.println("Je retourne " + OPCUAIconLibrary.OPC_UA_TA_ICON);
+		// System.out.println("On me demande l'icone OPC-UA");
+		// System.out.println("Je retourne " + OPCUAIconLibrary.OPC_UA_TA_ICON);
 		return OPCUAIconLibrary.OPC_UA_TA_ICON;
 	}
 
