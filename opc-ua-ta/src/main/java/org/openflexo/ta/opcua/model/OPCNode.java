@@ -49,6 +49,9 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     @Getter(value = OPC_NAME)
     public String getName();
 
+    @Setter(value = OPC_NAME)
+    public void setName(String aName);
+
     @PropertyIdentifier(type = String.class)
     public static final String OPC_IDENTIFIER = "identifier";
 

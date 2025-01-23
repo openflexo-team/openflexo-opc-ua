@@ -82,25 +82,31 @@ public class OPCDiscovery {
             List<ReferenceDescription> references = toList(browseResult.getReferences());
             for (ReferenceDescription ref : references) {
                 final String identifier = ref.getNodeId().getIdentifier().toString();
+                final String name = ref.getDisplayName().getText();
                 switch (ref.getNodeClass().getValue()) {
                     case 1: {
                         // Node is a folder
                         OPCFolderNode folderNode;
                         if (isRoot()) {
                             OPCNamespace namespace = getNamespace(ref.getNodeId().getNamespaceIndex().intValue());
-                            folderNode = getFactory().makeOPCFolderNode(namespace, identifier);
+                            folderNode = getFactory().makeOPCFolderNode(namespace, identifier, name);
                         } else {
-                            folderNode = getFactory().makeOPCFolderNode(getCurrentFolder(), identifier);
+                            folderNode = getFactory().makeOPCFolderNode(getCurrentFolder(), identifier, name);
                         }
+                        System.out.println("Entering folder node " + folderNode.getQualifiedName());
                         enterFolder(folderNode);
                         ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
+                        System.out.println("Exiting folder node " + folderNode.getQualifiedName());
                         exitFolder();
                         break;
                     }
                     case 2: {
                         // Node is a variable
                         if (!isRoot()) {
-                            getFactory().makeOPCVariableNode(getCurrentFolder(), identifier);
+                            OPCVariableNode variableNode = getFactory().makeOPCVariableNode(getCurrentFolder(), identifier, name);
+                            System.out.println("Added variable node " + variableNode.getQualifiedName());
+                        } else {
+                            System.out.println("Ignored variable node " + name + " (does not have a namespace?)");
                         }
                         break;
                     }
