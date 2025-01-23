@@ -99,7 +99,9 @@ public class OPCDiscovery {
                     }
                     case 2: {
                         // Node is a variable
-                        getFactory().makeOPCVariableNode(getCurrentFolder(), identifier);
+                        if (!isRoot()) {
+                            getFactory().makeOPCVariableNode(getCurrentFolder(), identifier);
+                        }
                         break;
                     }
                     default: // TODO : display some warning
