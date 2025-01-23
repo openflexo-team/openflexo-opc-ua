@@ -1,11 +1,13 @@
 package org.openflexo.ta.opcua.model;
 
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCNode.OPCNodeImpl.class)
+@Imports({@Import(OPCVariableNode.class), @Import(OPCFolderNode.class)})
 public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
 
     @PropertyIdentifier(type = OPCServer.class)
@@ -66,7 +68,12 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
             // TODO : check if we have to use identifier instead
             OPCFolderNode parent = getParent();
             if (parent != null) return parent.getQualifiedName() + "." + getName();
-            return "[" + getNamespace().getIndex() + "] " + getName();
+            return getIdentifier() + " [" + getNamespace().getIndex() + "] " + getName();
+        }
+
+        @Override
+        public OPCServer getResourceData() {
+            return getNamespace().getServer();
         }
 
     }

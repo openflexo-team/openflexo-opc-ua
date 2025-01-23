@@ -2,6 +2,7 @@ package org.openflexo.ta.opcua.model;
 
 import java.util.List;
 
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 
@@ -62,6 +63,10 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
 
+		@Override
+		public OPCServer getResourceData() {
+			return getServer();
+		}
 	}
 
 }

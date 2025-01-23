@@ -49,7 +49,7 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 	}
 
 	public OPCVariableNode makeOPCVariableNode(OPCFolderNode parent, String identifier) {
-		// TODO : can a variable node not have a folder node as a parent?
+		//TODO : can a variable node not have a folder node as a parent?
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);
