@@ -32,10 +32,18 @@ public class TestOPCDiscovery {
         OPCDiscovery.browseAndPopulate(connection, model, factory);
 
         // Check result
+        // TODO : do that
 
         // Shutdown the client and server
         connection.disconnect().get();
         server.shutdown();
+
+        // Output discovered model
+        for (OPCNamespace ns : model.getNamespaces()) {
+            for (OPCNode node : ns.getAllNodes()) {
+                System.out.println(node.getQualifiedName());
+            }
+        }
     }
 
 }

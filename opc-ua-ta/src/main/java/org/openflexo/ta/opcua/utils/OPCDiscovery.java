@@ -26,14 +26,14 @@ public class OPCDiscovery {
     private final OPCServer model;
     private final OPCModelFactory factory;
     private final Map<Integer, OPCNamespace> namespaceMap;
-    private final List<OPCFolderNode> folderNodeStack;
+    private final List<OPCNode> nodeStack;
 
     private OPCDiscovery(OpcUaClient aConnection, OPCServer aModel, OPCModelFactory aFactory) {
         this.connection = aConnection;
         this.model = aModel;
         this.factory = aFactory;
         this.namespaceMap = new HashMap<>();
-        this.folderNodeStack = new ArrayList<>();
+        this.nodeStack = new ArrayList<>();
     }
 
     public static void browseAndPopulate(OpcUaClient aConnection, OPCServer aModel, OPCModelFactory aFactory) {
@@ -59,20 +59,17 @@ public class OPCDiscovery {
         );
     }
 
-    private boolean isRoot() {
-        return folderNodeStack.isEmpty();
+    private OPCNode getCurrentParent() {
+        if (nodeStack.isEmpty()) return null;
+        return nodeStack.get(nodeStack.size() - 1);
     }
 
-    private OPCFolderNode getCurrentFolder() {
-        return folderNodeStack.get(folderNodeStack.size() - 1);
+    private void enterNode(OPCNode aNode) {
+        nodeStack.add(aNode);
     }
 
-    private void enterFolder(OPCFolderNode folder) {
-        folderNodeStack.add(folder);
-    }
-
-    private void exitFolder() {
-        folderNodeStack.remove(folderNodeStack.size() - 1);
+    private void exitNode() {
+        nodeStack.remove(nodeStack.size() - 1);
     }
 
     private void browseNode(NodeId aNodeId) {
@@ -83,37 +80,32 @@ public class OPCDiscovery {
             for (ReferenceDescription ref : references) {
                 final String identifier = ref.getNodeId().getIdentifier().toString();
                 final String name = ref.getDisplayName().getText();
+                final int nodeClass = ref.getNodeClass().getValue();
+                final OPCNamespace namespace = getNamespace(ref.getNodeId().getNamespaceIndex().intValue());
+                final OPCNode parent = getCurrentParent();
+                String indent = "";
+                for (int i = 0; i < nodeStack.size(); i++) indent += "  ";
                 switch (ref.getNodeClass().getValue()) {
                     case 1: {
                         // Node is a folder
-                        OPCFolderNode folderNode;
-                        if (isRoot()) {
-                            OPCNamespace namespace = getNamespace(ref.getNodeId().getNamespaceIndex().intValue());
-                            folderNode = getFactory().makeOPCFolderNode(namespace, identifier, name);
-                        } else {
-                            folderNode = getFactory().makeOPCFolderNode(getCurrentFolder(), identifier, name);
-                        }
-                        System.out.println("Entering folder node " + folderNode.getQualifiedName());
-                        enterFolder(folderNode);
+                        OPCFolderNode folderNode = getFactory().makeOPCFolderNode(namespace, parent, identifier, name);
+                        System.out.println(indent + "Added object node " + folderNode.getQualifiedName());
+                        enterNode(folderNode);
                         ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
-                        System.out.println("Exiting folder node " + folderNode.getQualifiedName());
-                        exitFolder();
+                        exitNode();
                         break;
                     }
                     case 2: {
                         // Node is a variable
-                        if (!isRoot()) {
-                            OPCVariableNode variableNode = getFactory().makeOPCVariableNode(getCurrentFolder(), identifier, name);
-                            System.out.println("Added variable node " + variableNode.getQualifiedName());
-                        } else {
-                            System.out.println("Ignored variable node " + name + " (does not have a namespace?)");
-                        }
+                        OPCVariableNode variableNode = getFactory().makeOPCVariableNode(namespace, parent, identifier, name);
+                        System.out.println(indent + "Added variable node " + variableNode.getQualifiedName());
+                        enterNode(variableNode);
+                        ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
+                        exitNode();
                         break;
                     }
-                    default: // TODO : display some warning
+                    default: System.out.println(indent + "Unsupported node class " + nodeClass + " : " + name + " (" + identifier + ") ");
                 }
-                ref.getNodeId().toNodeId(connection.getNamespaceTable())
-                        .ifPresent(nodeId -> browseNode(nodeId));
             }
         } catch (InterruptedException | ExecutionException e) {
 

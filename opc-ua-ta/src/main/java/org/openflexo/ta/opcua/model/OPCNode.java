@@ -5,6 +5,8 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 
+import java.util.List;
+
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCNode.OPCNodeImpl.class)
 @Imports({@Import(OPCVariableNode.class), @Import(OPCFolderNode.class)})
@@ -29,14 +31,14 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     @Setter(OPC_NAMESPACE_KEY)
     public void setNamespace(OPCNamespace aNamespace);
 
-    @PropertyIdentifier(type = OPCFolderNode.class)
+    @PropertyIdentifier(type = OPCNode.class)
     public static final String OPC_PARENT = "parent";
 
     @Getter(value = OPC_PARENT)
-    public OPCFolderNode getParent();
+    public OPCNode getParent();
 
     @Setter(value = OPC_PARENT)
-    public void setParent(OPCFolderNode aParent);
+    public void setParent(OPCNode aParent);
 
     @PropertyIdentifier(type = String.class)
     public static final String OPC_NAME = "name";
@@ -63,13 +65,26 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
 
     public String getQualifiedName();
 
+    @PropertyIdentifier(type = OPCNode.class, cardinality = Getter.Cardinality.LIST)
+    public static final String OPC_CHILDREN = "children";
+
+    @Getter(value = OPC_CHILDREN, cardinality = Getter.Cardinality.LIST, inverse = OPCNode.OPC_PARENT)
+    public List<OPCNode> getChildren();
+
+    @Adder(value = OPC_CHILDREN)
+    @PastingPoint
+    public void addToChildren(OPCNode aNode);
+
+    @Remover(value = OPC_CHILDREN)
+    public void removeFromChildren(OPCNode aNode);
+
     public static abstract class OPCNodeImpl extends OPCObject.OPCObjectImpl implements OPCNode {
 
         @Override
         public String getQualifiedName() {
             // TODO : check if format is okay
             // TODO : check if we have to use identifier instead
-            OPCFolderNode parent = getParent();
+            OPCNode parent = getParent();
             if (parent != null) return parent.getQualifiedName() + "." + getName();
             return getIdentifier() + " [" + getNamespace().getIndex() + "] " + getName();
         }

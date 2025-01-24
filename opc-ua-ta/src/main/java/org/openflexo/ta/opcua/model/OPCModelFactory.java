@@ -48,27 +48,21 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(OPCFolderNode parent, String identifier, String name) {
-		//TODO : can a variable node not have a folder node as a parent?
+	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
 		returned.setParent(parent);
-		returned.setIdentifier(identifier);
-		returned.setName(name);
-		parent.getNamespace().addToNamespace(returned);
-		return returned;
-	}
-
-	public OPCFolderNode makeOPCFolderNode(OPCNamespace namespace, String identifier, String name) {
-		OPCFolderNode returned = newInstance(OPCFolderNode.class);
 		returned.setIdentifier(identifier);
 		returned.setName(name);
 		namespace.addToNamespace(returned);
 		return returned;
 	}
 
-	public OPCFolderNode makeOPCFolderNode(OPCFolderNode parent, String identifier, String name) {
-		OPCFolderNode returned = makeOPCFolderNode(parent.getNamespace(), identifier, name);
+	public OPCFolderNode makeOPCFolderNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
+		OPCFolderNode returned = newInstance(OPCFolderNode.class);
 		returned.setParent(parent);
+		returned.setIdentifier(identifier);
+		returned.setName(name);
+		namespace.addToNamespace(returned);
 		return returned;
 	}
 
