@@ -1,8 +1,11 @@
 package org.openflexo.ta.opcua.model;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
+import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
+import org.eclipse.milo.opcua.stack.core.UaException;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
@@ -16,6 +19,7 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
+import org.openflexo.ta.opcua.utils.OPCDiscovery;
 
 @ModelEntity
 @ImplementationClass(value = OPCServer.OPCServerImpl.class)
@@ -95,6 +99,8 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 	@Override
 	public OPCServerResource getResource();
 
+	public void performDiscovery();
+
 	public static abstract class OPCServerImpl extends OPCObjectImpl implements OPCServer {
 
 		@SuppressWarnings("unused")
@@ -125,16 +131,39 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 		@Override
 		public String getUrl() {
 			// TODO : handle cases where bindAddress has to be used instead
-			return "opc.tcp://"+getHostname()+":"+getBindPort()+"/"+getApplicationName();
+			return "opc.tcp://" + getHostname() + ":" + getBindPort() + "/" + getApplicationName();
 		}
 
 		@Override
 		public OPCNamespace getNamespace(Integer anIndex) {
 			// TODO : Reasonable?
 			for (OPCNamespace namespace : getNamespaces()) {
-				if (namespace.getIndex().equals(anIndex)) return namespace;
+				if (namespace.getIndex().equals(anIndex))
+					return namespace;
 			}
 			return null;
+		}
+
+		@Override
+		public void performDiscovery() {
+			// TODO Auto-generated method stub
+			OpcUaClient connection;
+			try {
+				connection = OpcUaClient.create(getUrl());
+				connection.connect().get();
+				OPCDiscovery.discover(this, connection, getFactory());
+				connection.disconnect().get();
+			} catch (UaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 	}

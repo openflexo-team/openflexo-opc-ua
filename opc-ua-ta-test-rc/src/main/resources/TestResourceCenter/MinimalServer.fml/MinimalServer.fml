@@ -1,0 +1,51 @@
+use org.openflexo.ta.opcua.OPCServerModelSlot as OPCUA;
+
+import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.OPCNamespace;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+
+@URI("http://openflexo.org/opc-ua-test/MinimalServer.fml")
+@Author("sylvainguerin")
+public model MinimalServer {
+	OPCServer opcServer with OPCServerModelSlot();
+
+   create(Resource<OPCServer> connexion) {
+      opcServer = parameters.connexion.resourceData;
+      for (OPCNamespace ns : opcServer.namespaces) {
+          log "ns: " + ns;
+      }
+   }
+
+   public debug() {
+      log "ns: " + opcServer.namespaces;
+      for (OPCNamespace ns : opcServer.namespaces) {
+          log " >>> " + ns.uri;
+          for (OPCNode node : ns.getAllNodes()) {
+            log "     ---- " + node.qualifiedName;
+            MonNoeudAMoi n = new MonNoeudAMoi(node);
+          }
+     }
+   }
+
+   public instantiateNodes() {
+      MatchingSet<MonNoeudAMoi> matchingSet = begin match MonNoeudAMoi from this;
+      for (OPCNamespace ns : opcServer.namespaces) {
+          log " >>> " + ns.uri;
+          for (OPCNode node : ns.getAllNodes()) {
+            log "     ---- " + node.qualifiedName;
+           /* match MonNoeudAMoi 
+               in matchingSet from this 
+               where (selected.node = node) create::init(node);*/
+          }
+      }
+     
+   }
+
+   concept MonNoeudAMoi {
+	   OPCNode node with UANodeRole(container=opcServer);
+
+      create(OPCNode node) {
+         node = parameters.node;
+      }
+   }
+}

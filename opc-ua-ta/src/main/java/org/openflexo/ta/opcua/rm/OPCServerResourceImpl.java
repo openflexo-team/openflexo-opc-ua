@@ -223,9 +223,16 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 			}
 		}
 
+		return returned;
+	}
+
+	@Override
+	public void stopDeserializing() {
+		super.stopDeserializing();
 		// TODO : Discovery & populate OPCServer with its nodes. Here? Really?
 
-		return returned;
+		// TODO a voir
+		getLoadedResourceData().performDiscovery();
 	}
 
 	/**

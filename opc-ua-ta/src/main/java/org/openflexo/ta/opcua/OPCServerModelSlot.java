@@ -69,12 +69,12 @@ import org.openflexo.ta.opcua.model.OPCServer;
 @DeclareFetchRequests({ SelectUniqueUANode.class, SelectUANode.class })
 @DeclareActorReferences({ UANodeActorReference.class })
 @ModelEntity
-@ImplementationClass(OPCServerModelSlot.XXModelSlotImpl.class)
+@ImplementationClass(OPCServerModelSlot.OPCServerModelSlotImpl.class)
 @XMLElement
 @FML("OPCServerModelSlot")
 public interface OPCServerModelSlot extends FreeModelSlot<OPCServer> {
 
-	public static abstract class XXModelSlotImpl extends FreeModelSlotImpl<OPCServer> implements OPCServerModelSlot {
+	public static abstract class OPCServerModelSlotImpl extends FreeModelSlotImpl<OPCServer> implements OPCServerModelSlot {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(OPCServerModelSlot.class.getPackage().getName());
