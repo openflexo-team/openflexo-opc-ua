@@ -6,6 +6,7 @@ import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
 
 import java.util.concurrent.ExecutionException;

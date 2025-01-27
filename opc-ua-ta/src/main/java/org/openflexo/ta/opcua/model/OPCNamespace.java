@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
 @ImplementationClass(OPCNamespace.OPCNamespaceImpl.class)

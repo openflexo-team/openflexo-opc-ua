@@ -11,6 +11,10 @@ import org.eclipse.milo.opcua.stack.core.types.structured.BrowseDescription;
 import org.eclipse.milo.opcua.stack.core.types.structured.BrowseResult;
 import org.eclipse.milo.opcua.stack.core.types.structured.ReferenceDescription;
 import org.openflexo.ta.opcua.model.*;
+import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +31,7 @@ public class OPCDiscovery {
     private final OPCServer model;
     private final OPCModelFactory factory;
     private final Map<Integer, OPCNamespace> namespaceMap;
-    private final List<OPCNode> nodeStack;
+    private final List<OPCInstanceNode> nodeStack;
 
     private OPCDiscovery(OpcUaClient aConnection, OPCServer aModel, OPCModelFactory aFactory) {
         this.connection = aConnection;
@@ -82,12 +86,12 @@ public class OPCDiscovery {
         );
     }
 
-    private OPCNode getCurrentParent() {
+    private OPCInstanceNode getCurrentParent() {
         if (nodeStack.isEmpty()) return null;
         return nodeStack.get(nodeStack.size() - 1);
     }
 
-    private void enterNode(OPCNode aNode) {
+    private void enterNode(OPCInstanceNode aNode) {
         nodeStack.add(aNode);
     }
 
@@ -105,7 +109,7 @@ public class OPCDiscovery {
                 final String name = ref.getBrowseName().getName();
                 final int nodeClass = ref.getNodeClass().getValue();
                 final OPCNamespace namespace = getNamespace(ref.getNodeId());
-                final OPCNode parent = getCurrentParent();
+                final OPCInstanceNode parent = getCurrentParent();
                 String indent = "";
                 for (int i = 0; i < nodeStack.size(); i++) indent += "  ";
                 switch (ref.getNodeClass().getValue()) {

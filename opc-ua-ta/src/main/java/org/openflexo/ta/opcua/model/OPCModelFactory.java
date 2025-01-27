@@ -9,6 +9,10 @@ import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.pamela.factory.PamelaModelFactory;
+import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
@@ -49,7 +53,7 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
+	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);
@@ -58,7 +62,7 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
+	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
 		OPCObjectNode returned = newInstance(OPCObjectNode.class);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);

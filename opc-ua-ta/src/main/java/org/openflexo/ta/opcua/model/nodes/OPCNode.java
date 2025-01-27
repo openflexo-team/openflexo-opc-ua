@@ -1,7 +1,10 @@
-package org.openflexo.ta.opcua.model;
+package org.openflexo.ta.opcua.model.nodes;
 
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
+import org.openflexo.ta.opcua.model.OPCNamespace;
+import org.openflexo.ta.opcua.model.OPCObject;
+import org.openflexo.ta.opcua.model.OPCServer;
 
 import java.util.List;
 
@@ -29,14 +32,14 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     @Setter(OPC_NAMESPACE_KEY)
     public void setNamespace(OPCNamespace aNamespace);
 
-    @PropertyIdentifier(type = OPCNode.class)
+    @PropertyIdentifier(type = OPCInstanceNode.class)
     public static final String OPC_PARENT = "parent";
 
     @Getter(value = OPC_PARENT)
-    public OPCNode getParent();
+    public OPCInstanceNode getParent();
 
     @Setter(value = OPC_PARENT)
-    public void setParent(OPCNode aParent);
+    public void setParent(OPCInstanceNode aParent);
 
     @PropertyIdentifier(type = String.class)
     public static final String OPC_NAME = "name";
@@ -62,19 +65,6 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     public void setIdentifier(String anIdentifier);
 
     public String getQualifiedName();
-
-    @PropertyIdentifier(type = OPCNode.class, cardinality = Getter.Cardinality.LIST)
-    public static final String OPC_CHILDREN = "children";
-
-    @Getter(value = OPC_CHILDREN, cardinality = Getter.Cardinality.LIST, inverse = OPCNode.OPC_PARENT)
-    public List<OPCNode> getChildren();
-
-    @Adder(value = OPC_CHILDREN)
-    @PastingPoint
-    public void addToChildren(OPCNode aNode);
-
-    @Remover(value = OPC_CHILDREN)
-    public void removeFromChildren(OPCNode aNode);
 
     public static abstract class OPCNodeImpl extends OPCObject.OPCObjectImpl implements OPCNode {
 

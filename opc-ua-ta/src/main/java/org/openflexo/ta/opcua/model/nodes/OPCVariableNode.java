@@ -1,4 +1,4 @@
-package org.openflexo.ta.opcua.model;
+package org.openflexo.ta.opcua.model.nodes;
 
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -6,7 +6,7 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 
 @ModelEntity
-public interface OPCVariableNode extends OPCNode {
+public interface OPCVariableNode extends OPCInstanceNode {
 
     // TODO : Do we need something similar to OPC Variant class to hold values of different types?
 

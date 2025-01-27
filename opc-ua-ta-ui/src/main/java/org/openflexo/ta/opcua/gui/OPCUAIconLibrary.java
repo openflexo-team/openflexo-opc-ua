@@ -46,7 +46,7 @@ import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 public class OPCUAIconLibrary {
 
