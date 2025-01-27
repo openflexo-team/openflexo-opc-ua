@@ -8,7 +8,14 @@ import org.openflexo.pamela.annotations.Setter;
 @ModelEntity
 public interface OPCVariableNode extends OPCInstanceNode {
 
-    // TODO : Do we need something similar to OPC Variant class to hold values of different types?
+    @PropertyIdentifier(type = OPCVariableType.class)
+    public static final String TYPE_KEY = "type";
+
+    @Getter(value = TYPE_KEY)
+    public OPCVariableType getType();
+
+    @Setter(value = TYPE_KEY)
+    public void setType(OPCVariableType aType);
 
     @PropertyIdentifier(type = Number.class)
     public static final String OPC_VALUE = "value";

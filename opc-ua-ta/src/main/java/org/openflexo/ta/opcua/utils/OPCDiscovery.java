@@ -1,7 +1,12 @@
 package org.openflexo.ta.opcua.utils;
 
+import com.google.errorprone.annotations.Var;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
+import org.eclipse.milo.opcua.sdk.core.nodes.Node;
+import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
+import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.BrowseDirection;
@@ -12,7 +17,6 @@ import org.eclipse.milo.opcua.stack.core.types.structured.BrowseResult;
 import org.eclipse.milo.opcua.stack.core.types.structured.ReferenceDescription;
 import org.openflexo.ta.opcua.model.*;
 import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
 import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
@@ -105,6 +109,7 @@ public class OPCDiscovery {
             BrowseResult browseResult = connection.browse(browse).get();
             List<ReferenceDescription> references = toList(browseResult.getReferences());
             for (ReferenceDescription ref : references) {
+                final Node node = connection.getAddressSpace().getNode(aNodeId);
                 final String identifier = ref.getNodeId().getIdentifier().toString();
                 final String name = ref.getBrowseName().getName();
                 final int nodeClass = ref.getNodeClass().getValue();
@@ -124,6 +129,10 @@ public class OPCDiscovery {
                     }
                     case 2: {
                         // Node is a variable
+                        if (node instanceof VariableNode) {
+                            VariableNode miloNode = (VariableNode) node;
+                            //System.out.println(miloNode.getDataType());
+                        }
                         OPCVariableNode variableNode = getFactory().makeOPCVariableNode(namespace, parent, identifier, name);
                         System.out.println(indent + "Added variable node " + variableNode.getQualifiedName());
                         enterNode(variableNode);
@@ -136,6 +145,8 @@ public class OPCDiscovery {
             }
         } catch (InterruptedException | ExecutionException e) {
 
+        } catch (UaException e) {
+            throw new RuntimeException(e);
         }
     }
 
