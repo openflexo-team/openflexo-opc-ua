@@ -22,6 +22,16 @@ import org.openflexo.ta.opcua.rm.OPCServerResource;
 public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 	@PropertyIdentifier(type = String.class)
+	public static final String URI_KEY = "uri";
+
+	@Override
+	@Getter(value = URI_KEY)
+	public String getUri();
+
+	@Setter(value = URI_KEY)
+	public void setUri(String anUri);
+
+	@PropertyIdentifier(type = String.class)
 	public static final String HOSTNAME_KEY = "hostname";
 
 	@Getter(value = HOSTNAME_KEY)
@@ -78,6 +88,10 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 	@Remover(NAMESPACES_KEY)
 	public void removeFromNamespaces(OPCNamespace aNamespace);
 
+	public OPCNamespace getNamespace(Integer anIndex);
+
+	public String getUrl();
+
 	@Override
 	public OPCServerResource getResource();
 
@@ -106,6 +120,21 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 			// TODO : illustration purpose
 			String returned = (String) performSuperGetter(BIND_ADDRESS_KEY);
 			return returned;
+		}
+
+		@Override
+		public String getUrl() {
+			// TODO : handle cases where bindAddress has to be used instead
+			return "opc.tcp://"+getHostname()+":"+getBindPort()+"/"+getApplicationName();
+		}
+
+		@Override
+		public OPCNamespace getNamespace(Integer anIndex) {
+			// TODO : Reasonable?
+			for (OPCNamespace namespace : getNamespaces()) {
+				if (namespace.getIndex().equals(anIndex)) return namespace;
+			}
+			return null;
 		}
 
 	}

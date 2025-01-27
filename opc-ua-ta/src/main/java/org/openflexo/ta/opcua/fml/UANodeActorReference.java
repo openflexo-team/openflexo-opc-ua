@@ -55,7 +55,7 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
-import org.openflexo.ta.opcua.model.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 

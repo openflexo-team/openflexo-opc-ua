@@ -9,6 +9,10 @@ import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.pamela.factory.PamelaModelFactory;
+import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
@@ -41,16 +45,29 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return newInstance(OPCServer.class);
 	}
 
-	public OPCNamespace makeOPCNamespace(OPCServer server) {
+	public OPCNamespace makeOPCNamespace(OPCServer server, String anUri, Integer anIndex) {
 		OPCNamespace returned = newInstance(OPCNamespace.class);
-		// returned.setServer(server); //TODO Check that it works
+		returned.setUri(anUri);
+		returned.setIndex(anIndex);
 		server.addToNamespaces(returned);
 		return returned;
 	}
 
-	public OPCNode makeUANode(String value) {
-		OPCNode returned = newInstance(OPCNode.class);
-		// TODO : initialize node here
+	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
+		OPCVariableNode returned = newInstance(OPCVariableNode.class);
+		returned.setParent(parent);
+		returned.setIdentifier(identifier);
+		returned.setName(name);
+		namespace.addToNamespace(returned);
+		return returned;
+	}
+
+	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
+		OPCObjectNode returned = newInstance(OPCObjectNode.class);
+		returned.setParent(parent);
+		returned.setIdentifier(identifier);
+		returned.setName(name);
+		namespace.addToNamespace(returned);
 		return returned;
 	}
 

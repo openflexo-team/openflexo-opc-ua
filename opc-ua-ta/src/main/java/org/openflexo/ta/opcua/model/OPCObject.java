@@ -7,6 +7,7 @@ import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 
 /**
@@ -20,6 +21,8 @@ import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 public interface OPCObject extends InnerResourceData<OPCServer>, TechnologyObject<OPCUATechnologyAdapter> {
 
 	public OPCModelFactory getFactory();
+
+	public String getUri();
 
 	/**
 	 * Default base implementation for {@link OPCObject}

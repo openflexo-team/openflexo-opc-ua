@@ -57,7 +57,7 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
 import org.openflexo.ta.opcua.model.OPCServer;
-import org.openflexo.ta.opcua.model.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
 @ImplementationClass(AddUANode.AddUANodeImpl.class)

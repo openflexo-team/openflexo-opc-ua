@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MinimalNamespace extends ManagedNamespaceWithLifecycle {
 
-    static private String URI = "urn:example:minimal:namespace";
+    static private String URI = "urn:example:minimal:namespace/";
 
     /** Handles subscriptions **/
     private final SubscriptionModel subscriptionModel;

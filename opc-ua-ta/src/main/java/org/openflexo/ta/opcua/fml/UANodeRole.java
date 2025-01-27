@@ -49,7 +49,7 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
-import org.openflexo.ta.opcua.model.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 /**
  * A role which allow to reference a UANode in a OPC-UA server

@@ -37,7 +37,7 @@
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				visibleRowCount="4" rowHeight="18"
 				textSelectionColor="255,255,255"
-				iteratorClassName="org.openflexo.ta.opcua.model.OPCNode"
+				iteratorClassName="org.openflexo.ta.opcua.model.nodes.OPCNode"
 				backgroundSelectionColor="26,96,206"
 				backgroundNonSelectionColor="255,255,255"
 				name="LinesTable" textNonSelectionColor="0,0,0"
