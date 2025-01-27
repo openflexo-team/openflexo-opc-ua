@@ -2,7 +2,6 @@ package org.openflexo.ta.opcua.model;
 
 import java.util.List;
 
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 
@@ -29,6 +28,25 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 	@Setter(OPC_SERVER_KEY)
 	public void setServer(OPCServer aServer);
 
+	@PropertyIdentifier(type = String.class)
+	public static final String OPC_URI = "uri";
+
+	@Override
+	@Getter(OPC_URI)
+	public String getUri();
+
+	@Setter(OPC_URI)
+	public void setUri(String anUri);
+
+	@PropertyIdentifier(type = Integer.class)
+	public static final String OPC_INDEX = "index";
+
+	@Getter(OPC_INDEX)
+	public Integer getIndex();
+
+	@Setter(OPC_INDEX)
+	public void setIndex(Integer anIndex);
+
 	@PropertyIdentifier(type = OPCNode.class, cardinality = Getter.Cardinality.LIST)
 	public static final String OPC_NODES_KEY = "namespaces";
 
@@ -52,16 +70,9 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 	@Remover(OPC_NODES_KEY)
 	public void removeFromNamespace(OPCNode aNode);
 
-	@PropertyIdentifier(type = Integer.class)
-	public static final String OPC_INDEX = "index";
-
-	@Getter(OPC_INDEX)
-	public Integer getIndex();
-
-	@Setter(OPC_INDEX)
-	public void setIndex(Integer anIndex);
-
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
+
+
 
 		@Override
 		public OPCServer getResourceData() {

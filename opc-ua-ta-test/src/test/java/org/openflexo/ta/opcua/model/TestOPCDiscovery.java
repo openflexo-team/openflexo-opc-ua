@@ -21,15 +21,15 @@ public class TestOPCDiscovery {
         namespace.startup();
 
         // Make the client (connection)
+        // This client is anonymous. To specify an application name, endpoint and security certificate see "create"
         OpcUaClient connection = OpcUaClient.create("opc.tcp://localhost:4880/minimal");
         connection.connect().get();
 
-        // Create the model root
+        // Create the factory
         OPCModelFactory factory = new OPCModelFactory(null, null);
-        OPCServer model = factory.makeOPCServer();
 
         // Discover namespaces and nodes
-        OPCDiscovery.browseAndPopulate(connection, model, factory);
+        OPCServer model = OPCDiscovery.discover(connection, factory);
 
         // Check result
         // TODO : do that

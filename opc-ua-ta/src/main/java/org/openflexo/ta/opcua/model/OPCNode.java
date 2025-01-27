@@ -1,7 +1,5 @@
 package org.openflexo.ta.opcua.model;
 
-import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 
@@ -9,7 +7,7 @@ import java.util.List;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCNode.OPCNodeImpl.class)
-@Imports({@Import(OPCVariableNode.class), @Import(OPCFolderNode.class)})
+@Imports({@Import(OPCVariableNode.class), @Import(OPCObjectNode.class)})
 public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
 
     @PropertyIdentifier(type = OPCServer.class)
@@ -81,12 +79,17 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
     public static abstract class OPCNodeImpl extends OPCObject.OPCObjectImpl implements OPCNode {
 
         @Override
+        public String getUri() {
+            OPCNode parent = getParent();
+            if (parent != null) return parent.getQualifiedName() + getName() + "/";
+            return getNamespace().getUri() + getName() + "/";
+        }
+
+        @Override
         public String getQualifiedName() {
-            // TODO : check if format is okay
-            // TODO : check if we have to use identifier instead
             OPCNode parent = getParent();
             if (parent != null) return parent.getQualifiedName() + "." + getName();
-            return getIdentifier() + " [" + getNamespace().getIndex() + "] " + getName();
+            return getNamespace().getIndex() + "." + getName();
         }
 
         @Override

@@ -2,6 +2,7 @@ package org.openflexo.ta.opcua.utils;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
+import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.BrowseDirection;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.BrowseResultMask;
@@ -36,16 +37,38 @@ public class OPCDiscovery {
         this.nodeStack = new ArrayList<>();
     }
 
-    public static void browseAndPopulate(OpcUaClient aConnection, OPCServer aModel, OPCModelFactory aFactory) {
-        OPCDiscovery discovery = new OPCDiscovery(aConnection, aModel, aFactory);
+    public static OPCServer discover(OpcUaClient aConnection, OPCModelFactory aFactory) {
+        OPCServer model = aFactory.makeOPCServer();
+        OPCDiscovery discovery = new OPCDiscovery(aConnection, model, aFactory);
+        discovery.initialize();
         discovery.browseNode(Identifiers.ObjectsFolder);
+        return model;
+    }
+
+    private void initialize() {
+        String applicationUri = connection.getConfig().getEndpoint().getServer().getApplicationUri();
+        model.setUri(applicationUri);
+        String[] namespaceUriArray = connection.getNamespaceTable().toArray();
+        for (int index = 0; index < namespaceUriArray.length; index++) {
+            OPCNamespace namespace = getFactory().makeOPCNamespace(model, namespaceUriArray[index], index);
+            namespaceMap.put(index, namespace);
+        }
     }
 
     private OPCModelFactory getFactory() {
         return factory;
     }
-    private OPCNamespace getNamespace(int anIndex) {
-        return namespaceMap.computeIfAbsent(anIndex, i -> getFactory().makeOPCNamespace(model, i));
+
+    private OPCNamespace getNamespace(ExpandedNodeId aNodeId) {
+        final int index = aNodeId.getNamespaceIndex().intValue();
+        OPCNamespace returned = namespaceMap.get(index);
+        if (returned != null) return returned;
+        String uri = aNodeId.getNamespaceUri();
+        // TODO : check if ok as a default uri.
+        if (uri == null) uri = "urn:namespace:" + index + "/";
+        returned = getFactory().makeOPCNamespace(model, uri, index);
+        namespaceMap.put(index, returned);
+        return returned;
     }
 
     private static BrowseDescription makeBrowseDescription(NodeId aNodeId) {
@@ -79,18 +102,18 @@ public class OPCDiscovery {
             List<ReferenceDescription> references = toList(browseResult.getReferences());
             for (ReferenceDescription ref : references) {
                 final String identifier = ref.getNodeId().getIdentifier().toString();
-                final String name = ref.getDisplayName().getText();
+                final String name = ref.getBrowseName().getName();
                 final int nodeClass = ref.getNodeClass().getValue();
-                final OPCNamespace namespace = getNamespace(ref.getNodeId().getNamespaceIndex().intValue());
+                final OPCNamespace namespace = getNamespace(ref.getNodeId());
                 final OPCNode parent = getCurrentParent();
                 String indent = "";
                 for (int i = 0; i < nodeStack.size(); i++) indent += "  ";
                 switch (ref.getNodeClass().getValue()) {
                     case 1: {
-                        // Node is a folder
-                        OPCFolderNode folderNode = getFactory().makeOPCFolderNode(namespace, parent, identifier, name);
-                        System.out.println(indent + "Added object node " + folderNode.getQualifiedName());
-                        enterNode(folderNode);
+                        // Node is an object
+                        OPCObjectNode objectNode = getFactory().makeOPCObjectNode(namespace, parent, identifier, name);
+                        System.out.println(indent + "Added object node " + objectNode.getQualifiedName());
+                        enterNode(objectNode);
                         ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
                         exitNode();
                         break;

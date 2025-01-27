@@ -22,6 +22,16 @@ import org.openflexo.ta.opcua.rm.OPCServerResource;
 public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 	@PropertyIdentifier(type = String.class)
+	public static final String URI_KEY = "uri";
+
+	@Override
+	@Getter(value = URI_KEY)
+	public String getUri();
+
+	@Setter(value = URI_KEY)
+	public void setUri(String anUri);
+
+	@PropertyIdentifier(type = String.class)
 	public static final String HOSTNAME_KEY = "hostname";
 
 	@Getter(value = HOSTNAME_KEY)

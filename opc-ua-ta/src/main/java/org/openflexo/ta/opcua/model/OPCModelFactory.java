@@ -41,8 +41,9 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return newInstance(OPCServer.class);
 	}
 
-	public OPCNamespace makeOPCNamespace(OPCServer server, Integer anIndex) {
+	public OPCNamespace makeOPCNamespace(OPCServer server, String anUri, Integer anIndex) {
 		OPCNamespace returned = newInstance(OPCNamespace.class);
+		returned.setUri(anUri);
 		returned.setIndex(anIndex);
 		server.addToNamespaces(returned);
 		return returned;
@@ -57,8 +58,8 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCFolderNode makeOPCFolderNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
-		OPCFolderNode returned = newInstance(OPCFolderNode.class);
+	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCNode parent, String identifier, String name) {
+		OPCObjectNode returned = newInstance(OPCObjectNode.class);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);
 		returned.setName(name);
