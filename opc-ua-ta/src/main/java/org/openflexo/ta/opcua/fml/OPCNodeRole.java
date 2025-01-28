@@ -52,18 +52,18 @@ import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 /**
- * A role which allow to reference a UANode in a OPC-UA server
+ * A role which allow to reference an {@link OPCNode} in a OPC-UA server
  * 
  * @author sylvain, luka
  *
  */
 @ModelEntity
-@ImplementationClass(UANodeRole.UANodeRoleRoleImpl.class)
+@ImplementationClass(OPCNodeRole.UANodeRoleRoleImpl.class)
 @XMLElement
-@FML("UANodeRole")
-public interface UANodeRole extends FlexoRole<OPCNode> {
+@FML("OPCNodeRole")
+public interface OPCNodeRole extends FlexoRole<OPCNode> {
 
-	public static abstract class UANodeRoleRoleImpl extends FlexoRoleImpl<OPCNode> implements UANodeRole {
+	public static abstract class UANodeRoleRoleImpl extends FlexoRoleImpl<OPCNode> implements OPCNodeRole {
 
 		@Override
 		public Type getType() {
@@ -83,7 +83,7 @@ public interface UANodeRole extends FlexoRole<OPCNode> {
 		@Override
 		public ActorReference<OPCNode> makeActorReference(OPCNode object, FlexoConceptInstance fci) {
 			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
-			UANodeActorReference returned = factory.newInstance(UANodeActorReference.class);
+			OPCNodeActorReference returned = factory.newInstance(OPCNodeActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);

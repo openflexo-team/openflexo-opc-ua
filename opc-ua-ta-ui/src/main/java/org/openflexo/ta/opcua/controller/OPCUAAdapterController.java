@@ -50,7 +50,7 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
-import org.openflexo.ta.opcua.fml.UANodeRole;
+import org.openflexo.ta.opcua.fml.OPCNodeRole;
 import org.openflexo.ta.opcua.fml.editionaction.AbstractSelectUANode;
 import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
 import org.openflexo.ta.opcua.gui.OPCUAIconLibrary;
@@ -168,7 +168,7 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	 */
 	@Override
 	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (UANodeRole.class.isAssignableFrom(patternRoleClass)) {
+		if (OPCNodeRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OPCNode.class);
 		}
 		return null;

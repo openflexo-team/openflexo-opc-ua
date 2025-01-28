@@ -55,21 +55,20 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
- * Implements {@link ActorReference} for {@link OPCNode} object
+ * Implements {@link ActorReference} for {@link OPCNamespace} object
  * 
  * @author sylvain
  * 
  */
 @ModelEntity
-@ImplementationClass(UANodeActorReference.XXLineActorReferenceImpl.class)
+@ImplementationClass(OPCNamespaceActorReference.OPCNamespaceActorReferenceImpl.class)
 @XMLElement
-@FML("UANodeActorReference")
-public interface UANodeActorReference extends ActorReference<OPCNode> {
+@FML("OPCNamespaceActorReference")
+public interface OPCNamespaceActorReference extends ActorReference<OPCNamespace> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String OBJECT_URI_KEY = "objectURI";
@@ -81,17 +80,18 @@ public interface UANodeActorReference extends ActorReference<OPCNode> {
 	@Setter(OBJECT_URI_KEY)
 	public void setObjectURI(String objectURI);
 
-	public abstract static class XXLineActorReferenceImpl extends ActorReferenceImpl<OPCNode> implements UANodeActorReference {
+	public abstract static class OPCNamespaceActorReferenceImpl extends ActorReferenceImpl<OPCNamespace>
+			implements OPCNamespaceActorReference {
 
-		private static final Logger logger = FlexoLogger.getLogger(UANodeActorReference.class.getPackage().toString());
+		private static final Logger logger = FlexoLogger.getLogger(OPCNamespaceActorReference.class.getPackage().toString());
 
-		private OPCNode object;
+		private OPCNamespace object;
 		private String objectURI;
 
-		public OPCServer getXXText() {
-			if (getXXTextResource() != null) {
+		public OPCServer getOPCServer() {
+			if (getOPCServerResource() != null) {
 				try {
-					return getXXTextResource().getResourceData();
+					return getOPCServerResource().getResourceData();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (ResourceLoadingCancelledException e) {
@@ -103,7 +103,7 @@ public interface UANodeActorReference extends ActorReference<OPCNode> {
 			return null;
 		}
 
-		public OPCServerResource getXXTextResource() {
+		public OPCServerResource getOPCServerResource() {
 			ModelSlotInstance<?, ?> msInstance = getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof OPCServerResource) {
 				return (OPCServerResource) msInstance.getResource();
@@ -112,13 +112,11 @@ public interface UANodeActorReference extends ActorReference<OPCNode> {
 		}
 
 		@Override
-		public OPCNode getModellingElement(boolean forceLoading) {
+		public OPCNamespace getModellingElement(boolean forceLoading) {
 			if (object == null && objectURI != null) {
-				// TODO : make sure it's reasonable to search all nodes here
-				for (OPCNamespace namespace : getXXText().getNamespaces()) {
-					for (OPCNode node : namespace.getAllNodes()) {
-						if (node.getName().equals(objectURI)) return node;
-					}
+				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
+					if (namespace.getUri().equals(objectURI))
+						return namespace;
 				}
 			}
 			if (object == null) {
@@ -129,18 +127,18 @@ public interface UANodeActorReference extends ActorReference<OPCNode> {
 		}
 
 		@Override
-		public void setModellingElement(OPCNode object) {
+		public void setModellingElement(OPCNamespace object) {
 			this.object = object;
 			// TODO : build a correct URI
 			if (object != null) {
-				objectURI = object.getName();
+				objectURI = object.getUri();
 			}
 		}
 
 		@Override
 		public String getObjectURI() {
 			if (object != null) {
-				return "" + object.getName();
+				return "" + object.getUri();
 			}
 			return objectURI;
 		}

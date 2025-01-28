@@ -1,4 +1,4 @@
-hostName=localhost
-bindPort=4880
-applicationName=minimal
-bindAddress=0.0.0.0
+hostname=localhost
+bindport=4880
+applicationname=minimal
+bindaddress=0.0.0.0

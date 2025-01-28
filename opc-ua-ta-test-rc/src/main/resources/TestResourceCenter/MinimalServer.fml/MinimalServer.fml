@@ -11,41 +11,45 @@ public model MinimalServer {
 
    create(Resource<OPCServer> connexion) {
       opcServer = parameters.connexion.resourceData;
+      log "c'est parti pour la synchro";
+      this.synchronize();
+   }
+
+   public synchronize() {
+	  log "calcul du MatchingSet";
+      MatchingSet<Namespace> matchingSet = begin match Namespace from this;
+      log "matchingSet=" + matchingSet;
       for (OPCNamespace ns : opcServer.namespaces) {
-          log "ns: " + ns;
+          log " >>> " + ns.uri;
+          match Namespace 
+               in matchingSet from this 
+               where (opcNamespace=ns) create::init(ns);
       }
+      end match Namespace in matchingSet delete::performDelete();
+
    }
 
    public debug() {
-      log "ns: " + opcServer.namespaces;
+      log "Found namespaces : " + opcServer.namespaces;
       for (OPCNamespace ns : opcServer.namespaces) {
-          log " >>> " + ns.uri;
+          log " OPCNamespace " + ns.uri;
           for (OPCNode node : ns.getAllNodes()) {
-            log "     ---- " + node.qualifiedName;
-            MonNoeudAMoi n = new MonNoeudAMoi(node);
-          }
-     }
-   }
-
-   public instantiateNodes() {
-      MatchingSet<MonNoeudAMoi> matchingSet = begin match MonNoeudAMoi from this;
-      for (OPCNamespace ns : opcServer.namespaces) {
-          log " >>> " + ns.uri;
-          for (OPCNode node : ns.getAllNodes()) {
-            log "     ---- " + node.qualifiedName;
-           /* match MonNoeudAMoi 
-               in matchingSet from this 
-               where (selected.node = node) create::init(node);*/
+            log "   > " + node.qualifiedName;
           }
       }
-     
    }
 
-   concept MonNoeudAMoi {
-	   OPCNode node with UANodeRole(container=opcServer);
+   concept Namespace {
+	   OPCNamespace opcNamespace with OPCNamespaceRole(container=opcServer);
 
-      create(OPCNode node) {
-         node = parameters.node;
+      create::init(OPCNamespace ns) {
+         opcNamespace = parameters.ns;
       }
+
+      delete::performDelete() {
+         opcNamespace = null;
+      }
+
    }
-}
+
+ }

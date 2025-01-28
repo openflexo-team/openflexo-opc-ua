@@ -51,8 +51,10 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.ta.opcua.fml.UANodeActorReference;
-import org.openflexo.ta.opcua.fml.UANodeRole;
+import org.openflexo.ta.opcua.fml.OPCNamespaceActorReference;
+import org.openflexo.ta.opcua.fml.OPCNamespaceRole;
+import org.openflexo.ta.opcua.fml.OPCNodeActorReference;
+import org.openflexo.ta.opcua.fml.OPCNodeRole;
 import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
 import org.openflexo.ta.opcua.fml.editionaction.SelectUANode;
 import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueUANode;
@@ -64,10 +66,10 @@ import org.openflexo.ta.opcua.model.OPCServer;
  * @author sylvain, luka
  * 
  */
-@DeclareFlexoRoles({ UANodeRole.class })
+@DeclareFlexoRoles({ OPCNamespaceRole.class, OPCNodeRole.class })
 @DeclareEditionActions({ AddUANode.class })
 @DeclareFetchRequests({ SelectUniqueUANode.class, SelectUANode.class })
-@DeclareActorReferences({ UANodeActorReference.class })
+@DeclareActorReferences({ OPCNamespaceActorReference.class, OPCNodeActorReference.class })
 @ModelEntity
 @ImplementationClass(OPCServerModelSlot.OPCServerModelSlotImpl.class)
 @XMLElement
@@ -86,7 +88,7 @@ public interface OPCServerModelSlot extends FreeModelSlot<OPCServer> {
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (UANodeRole.class.isAssignableFrom(patternRoleClass)) {
+			if (OPCNodeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "node";
 			}
 			return null;

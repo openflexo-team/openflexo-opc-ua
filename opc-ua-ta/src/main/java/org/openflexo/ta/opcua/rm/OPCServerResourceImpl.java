@@ -73,6 +73,11 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 
 	private static final Logger logger = Logger.getLogger(OPCServerResourceImpl.class.getPackage().getName());
 
+	public static final String HOSTNAME = "hostname";
+	public static final String BIND_PORT = "bindport";
+	public static final String APPLICATION_NAME = "applicationname";
+	public static final String BIND_ADDRESS = "bindaddress";
+
 	/**
 	 * Convenient method to retrieve resource data
 	 * 
@@ -99,6 +104,8 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 		if (getFlexoIOStreamDelegate() == null) {
 			throw new IOFlexoException("Cannot load document with this IO/delegate: " + getIODelegate());
 		}
+
+		System.out.println("On vient charger la resource");
 
 		notifyResourceWillLoad();
 
@@ -193,31 +200,31 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	 * @throws IOException
 	 */
 	private <I> OPCServer load(StreamIODelegate<I> ioDelegate) throws IOException {
+
 		OPCServer returned = getFactory().makeOPCServer();
+
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {
 			String nextLine = br.readLine();
 			while (nextLine != null) {
 				String[] tokens = nextLine.split("=");
-				if (tokens.length != 2)
-					continue;
-				String key = tokens[0].trim().toLowerCase();
-				String value = tokens[1].trim();
-				System.out.println("key=" + key + " value=" + value);
-				switch (key) {
-					case "hostname":
-						returned.setHostname(value);
-						break;
-					case "bindport":
-						returned.setBindPort(Integer.valueOf(value));
-						break;
-					case "applicationname":
-						returned.setApplicationName(value);
-						break;
-					case "bindaddress":
-						returned.setBindAddress(value);
-						break;
-					default:
-						continue;
+				if (tokens.length == 2) {
+					String key = tokens[0].trim().toLowerCase();
+					String value = tokens[1].trim();
+					// System.out.println("key=" + key + " value=" + value);
+					switch (key) {
+						case HOSTNAME:
+							returned.setHostname(value);
+							break;
+						case BIND_PORT:
+							returned.setBindPort(Integer.valueOf(value));
+							break;
+						case APPLICATION_NAME:
+							returned.setApplicationName(value);
+							break;
+						case BIND_ADDRESS:
+							returned.setBindAddress(value);
+							break;
+					}
 				}
 				nextLine = br.readLine();
 			}
@@ -244,9 +251,13 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	private void write(OutputStream out) throws SaveResourceException {
 		logger.info("Writing " + getIODelegate().getSerializationArtefact());
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out))) {
-			bw.write("opc.tcp://" + getOPCServer().getHostname());
-			bw.write(":" + getOPCServer().getBindPort());
-			bw.write("/" + getOPCServer().getApplicationName());
+			bw.write(HOSTNAME + "=" + getOPCServer().getHostname());
+			bw.newLine();
+			bw.write(BIND_PORT + "=" + getOPCServer().getBindPort());
+			bw.newLine();
+			bw.write(APPLICATION_NAME + "=" + getOPCServer().getApplicationName());
+			bw.newLine();
+			bw.write(BIND_ADDRESS + "=" + getOPCServer().getBindAddress());
 			bw.newLine();
 			bw.close();
 		} catch (IOException e) {

@@ -146,7 +146,7 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public void performDiscovery() {
-			// TODO Auto-generated method stub
+			logger.info("Perform discovery for " + this);
 			OpcUaClient connection;
 			try {
 				connection = OpcUaClient.create(getUrl());
