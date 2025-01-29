@@ -75,13 +75,13 @@ public class TestOPCUAInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testAbstractSelectUANodeInspector() {
-		validateFIB("Inspectors/OPCUA/EditionAction/AbstractSelectUANode.inspector");
+	public void testAbstractSelectOPCNodeInspector() {
+		validateFIB("Inspectors/OPCUA/EditionAction/AbstractSelectOPCNode.inspector");
 	}
 
 	@Test
-	public void testAddUANodeInspector() {
-		validateFIB("Inspectors/OPCUA/EditionAction/AddUANode.inspector");
+	public void testAddOPCNodeInspector() {
+		validateFIB("Inspectors/OPCUA/EditionAction/AddOPCNode.inspector");
 	}
 
 	@Test

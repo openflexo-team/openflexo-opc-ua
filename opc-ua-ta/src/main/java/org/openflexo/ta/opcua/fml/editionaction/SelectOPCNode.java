@@ -38,9 +38,10 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import java.util.List;
+
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
@@ -49,15 +50,15 @@ import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a unique {@link OPCNode} matching some conditions
+ * A {@link FetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions
  * 
  * @author sylvain
  * 
  */
 @ModelEntity
-@ImplementationClass(AbstractSelectUANode.AbstractSelectOPCNodeImpl.class)
+@ImplementationClass(AbstractSelectOPCNode.AbstractSelectOPCNodeImpl.class)
 @XMLElement
-@FML("SelectUniqueUANode")
-public interface SelectUniqueUANode extends AbstractSelectUANode<OPCNode>, UniqueFetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
+@FML("SelectOPCNode")
+public interface SelectOPCNode extends AbstractSelectOPCNode<List<OPCNode>>, FetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
 
 }

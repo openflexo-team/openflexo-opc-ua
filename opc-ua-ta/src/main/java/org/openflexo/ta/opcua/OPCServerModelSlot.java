@@ -55,9 +55,9 @@ import org.openflexo.ta.opcua.fml.OPCNamespaceActorReference;
 import org.openflexo.ta.opcua.fml.OPCNamespaceRole;
 import org.openflexo.ta.opcua.fml.OPCNodeActorReference;
 import org.openflexo.ta.opcua.fml.OPCNodeRole;
-import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
-import org.openflexo.ta.opcua.fml.editionaction.SelectUANode;
-import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueUANode;
+import org.openflexo.ta.opcua.fml.editionaction.AddOPCNode;
+import org.openflexo.ta.opcua.fml.editionaction.SelectOPCNode;
+import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueOPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
@@ -67,8 +67,8 @@ import org.openflexo.ta.opcua.model.OPCServer;
  * 
  */
 @DeclareFlexoRoles({ OPCNamespaceRole.class, OPCNodeRole.class })
-@DeclareEditionActions({ AddUANode.class })
-@DeclareFetchRequests({ SelectUniqueUANode.class, SelectUANode.class })
+@DeclareEditionActions({ AddOPCNode.class })
+@DeclareFetchRequests({ SelectUniqueOPCNode.class, SelectOPCNode.class })
 @DeclareActorReferences({ OPCNamespaceActorReference.class, OPCNodeActorReference.class })
 @ModelEntity
 @ImplementationClass(OPCServerModelSlot.OPCServerModelSlotImpl.class)

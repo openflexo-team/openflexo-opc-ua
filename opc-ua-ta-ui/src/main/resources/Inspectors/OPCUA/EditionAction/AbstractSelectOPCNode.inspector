@@ -11,10 +11,10 @@
 		</Tab>
 	</TabPanel>
 	<FIBVariable name="data"
-		type="org.openflexo.ta.opcua.fml.editionaction.AddUANode" />
+		type="org.openflexo.ta.opcua.fml.editionaction.AbstractSelectOPCNode" />
 	<LocalizedDictionary>
 		<Localized key="Advanced" lang="French" value="Avancé" />
 		<Localized key="Basic" lang="French" value="Basique" />
 	</LocalizedDictionary>
-	<Parameter name="title" value="AddXXLine action" />
+	<Parameter name="title" value="SelectXXLine action" />
 </Panel>

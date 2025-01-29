@@ -60,14 +60,14 @@ import org.openflexo.ta.opcua.model.OPCNamespace;
  * @param <AT>
  */
 @ModelEntity(isAbstract = true)
-@ImplementationClass(AbstractSelectUANode.AbstractSelectOPCNodeImpl.class)
-public interface AbstractSelectUANode<AT> extends AbstractFetchRequest<OPCServerModelSlot, OPCServer, OPCNode, AT> {
+@ImplementationClass(AbstractSelectOPCNode.AbstractSelectOPCNodeImpl.class)
+public interface AbstractSelectOPCNode<AT> extends AbstractFetchRequest<OPCServerModelSlot, OPCServer, OPCNode, AT> {
 
 	public static abstract class AbstractSelectOPCNodeImpl<AT> extends AbstractFetchRequestImpl<OPCServerModelSlot, OPCServer, OPCNode, AT>
-			implements AbstractSelectUANode<AT> {
+			implements AbstractSelectOPCNode<AT> {
 
 		@SuppressWarnings("unused")
-		private static final Logger logger = Logger.getLogger(AbstractSelectUANode.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(AbstractSelectOPCNode.class.getPackage().getName());
 
 		@Override
 		public Type getFetchedType() {

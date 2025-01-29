@@ -38,21 +38,26 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.editionaction.FetchRequest;
+import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
+import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
- * Abstract action for {@link OPCServerModelSlot}
+ * A {@link FetchRequest} allowing to retrieve a unique {@link OPCNode} matching some conditions
  * 
  * @author sylvain
  * 
- * @param <T>
- *            object type
  */
-
-@ModelEntity(isAbstract = true)
-public interface OPCUAAction<T extends Object> extends TechnologySpecificActionDefiningReceiver<OPCServerModelSlot, OPCServer, T> {
+@ModelEntity
+@ImplementationClass(AbstractSelectOPCNode.AbstractSelectOPCNodeImpl.class)
+@XMLElement
+@FML("SelectUniqueOPCNode")
+public interface SelectUniqueOPCNode extends AbstractSelectOPCNode<OPCNode>, UniqueFetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
 
 }

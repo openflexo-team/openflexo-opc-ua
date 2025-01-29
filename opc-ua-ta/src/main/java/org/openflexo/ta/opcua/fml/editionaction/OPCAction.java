@@ -38,27 +38,21 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
-import java.util.List;
-
-import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
- * A {@link FetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions
+ * Abstract action for {@link OPCServerModelSlot}
  * 
  * @author sylvain
  * 
+ * @param <T>
+ *            object type
  */
-@ModelEntity
-@ImplementationClass(AbstractSelectUANode.AbstractSelectOPCNodeImpl.class)
-@XMLElement
-@FML("SelectUANode")
-public interface SelectUANode extends AbstractSelectUANode<List<OPCNode>>, FetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
+
+@ModelEntity(isAbstract = true)
+public interface OPCAction<T extends Object> extends TechnologySpecificActionDefiningReceiver<OPCServerModelSlot, OPCServer, T> {
 
 }

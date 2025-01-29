@@ -60,10 +60,10 @@ import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
-@ImplementationClass(AddUANode.AddUANodeImpl.class)
+@ImplementationClass(AddOPCNode.AddUANodeImpl.class)
 @XMLElement
-@FML("AddUANode")
-public interface AddUANode extends OPCUAAction<OPCNode> {
+@FML("AddOPCNode")
+public interface AddOPCNode extends OPCAction<OPCNode> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String RELATIVE_PATH_KEY = "relativePath";
@@ -76,9 +76,9 @@ public interface AddUANode extends OPCUAAction<OPCNode> {
 	public void setRelativePath(DataBinding<String> relativePath);
 
 	public static abstract class AddUANodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, OPCNode>
-			implements AddUANode {
+			implements AddOPCNode {
 
-		private static final Logger logger = Logger.getLogger(AddUANode.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(AddOPCNode.class.getPackage().getName());
 
 		private DataBinding<String> relativePath;
 
@@ -146,13 +146,13 @@ public interface AddUANode extends OPCUAAction<OPCNode> {
 	}
 
 	@DefineValidationRule
-	public static class LineNumberBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddUANode> {
+	public static class LineNumberBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddOPCNode> {
 		public LineNumberBindingIsRequiredAndMustBeValid() {
-			super("'relativePath'_binding_is_required_and_must_be_valid", AddUANode.class);
+			super("'relativePath'_binding_is_required_and_must_be_valid", AddOPCNode.class);
 		}
 
 		@Override
-		public DataBinding<String> getBinding(AddUANode object) {
+		public DataBinding<String> getBinding(AddOPCNode object) {
 			return object.getRelativePath();
 		}
 

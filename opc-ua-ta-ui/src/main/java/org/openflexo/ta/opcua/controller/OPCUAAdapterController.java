@@ -51,8 +51,8 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.fml.OPCNodeRole;
-import org.openflexo.ta.opcua.fml.editionaction.AbstractSelectUANode;
-import org.openflexo.ta.opcua.fml.editionaction.AddUANode;
+import org.openflexo.ta.opcua.fml.editionaction.AbstractSelectOPCNode;
+import org.openflexo.ta.opcua.fml.editionaction.AddOPCNode;
 import org.openflexo.ta.opcua.gui.OPCUAIconLibrary;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -182,10 +182,10 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	 */
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
-		if (AddUANode.class.isAssignableFrom(editionActionClass)) {
+		if (AddOPCNode.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OPCNode.class), IconLibrary.DUPLICATE);
 		}
-		else if (AbstractSelectUANode.class.isAssignableFrom(editionActionClass)) {
+		else if (AbstractSelectOPCNode.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OPCNode.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
