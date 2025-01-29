@@ -26,7 +26,6 @@ public model MinimalServer {
                where (opcNamespace=ns) create::init(ns);
       }
       end match Namespace in matchingSet delete::performDelete();
-
    }
 
    public debug() {
@@ -47,7 +46,29 @@ public model MinimalServer {
       }
 
       delete::performDelete() {
-         opcNamespace = null;
+      }
+
+      public synchronize() {
+         MatchingSet<Node> matchingSet = begin match Node from this;
+         for (OPCNode node : opcNamespace.allNodes) {
+            log " --- " + node.qualifiedName;
+            match Node 
+               in matchingSet from this 
+               where (opcNode=node) create::init(node);
+         }
+         end match Node in matchingSet delete::performDelete();
+      }
+
+      concept Node {
+         OPCNode opcNode with OPCNodeRole(container=opcServer);
+
+         create::init(OPCNode n) {
+            opcNode = parameters.n;
+         }
+
+         delete::performDelete() {
+         }
+
       }
 
    }

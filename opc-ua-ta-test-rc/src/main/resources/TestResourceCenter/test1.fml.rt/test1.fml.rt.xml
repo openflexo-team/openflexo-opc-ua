@@ -8,6 +8,14 @@
   </FlexoConceptInstance>
   <FlexoConceptInstance id="5" flexoConceptURI="http://openflexo.org/opc-ua-test/MinimalServer.fml#Namespace" userID="SYL" flexoID="7">
     <OPCNamespaceActorReference id="6" objectURI="urn:example:minimal:namespace/" roleName="opcNamespace" userID="SYL" flexoID="6" />
+    <EmbeddedFlexoConceptInstance id="7" flexoConceptURI="http://openflexo.org/opc-ua-test/MinimalServer.fml#Namespace#Node" userID="SYL" flexoID="23">
+      <OPCNodeActorReference id="8" objectURI="Data" roleName="opcNode" userID="SYL" flexoID="25" />
+    </EmbeddedFlexoConceptInstance>
+    <EmbeddedFlexoConceptInstance id="9" flexoConceptURI="http://openflexo.org/opc-ua-test/MinimalServer.fml#Namespace#Node" userID="SYL" flexoID="24">
+      <OPCNodeActorReference id="10" objectURI="temperature" roleName="opcNode" userID="SYL" flexoID="26" />
+    </EmbeddedFlexoConceptInstance>
   </FlexoConceptInstance>
-  <FreeModelSlotInstance id="7" resourceURI="file:/Users/sylvainguerin/GIT-2.99/openflexo-opc-ua/opc-ua-ta-test-rc/src/main/resources/TestResourceCenter/MinimalServer1.opcua" modelSlotName="opcServer" roleName="opcServer" userID="SYL" flexoID="8" />
+  <FlexoConceptInstance idref="7" />
+  <FlexoConceptInstance idref="9" />
+  <FreeModelSlotInstance id="11" resourceURI="file:/Users/sylvainguerin/GIT-2.99/openflexo-opc-ua/opc-ua-ta-test-rc/src/main/resources/TestResourceCenter/MinimalServer1.opcua" modelSlotName="opcServer" roleName="opcServer" userID="SYL" flexoID="8" />
 </FMLRTVirtualModelInstance>

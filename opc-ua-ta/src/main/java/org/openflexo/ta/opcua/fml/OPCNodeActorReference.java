@@ -55,8 +55,8 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
@@ -113,11 +113,12 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 
 		@Override
 		public OPCNode getModellingElement(boolean forceLoading) {
-			if (object == null && objectURI != null) {
+			if (object == null && objectURI != null && getOPCServer() != null && getOPCServer().getNamespaces() != null) {
 				// TODO : make sure it's reasonable to search all nodes here
 				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
 					for (OPCNode node : namespace.getAllNodes()) {
-						if (node.getName().equals(objectURI)) return node;
+						if (node.getName().equals(objectURI))
+							return node;
 					}
 				}
 			}
