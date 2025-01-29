@@ -7,7 +7,7 @@
 	font="SansSerif,0,12"
 	align="left" borderBottom="0" titleFont="SansSerif,0,12" borderTop="0"
 	trackViewPortHeight="true" layout="border" name="Inspector">
-	<Parameter id="1" name="title" value="OPC node" />
+	<Parameter id="1" name="title" value="OPC variable node" />
 	<TabPanel id="2" name="Tab" constraints="border(location=center)">
 		<Tab id="3" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 			borderLeft="0" sizeAdjustment="OriginalSize" border="empty"
@@ -18,28 +18,18 @@
 			trackViewPortHeight="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			useScrollBar="true" title="Basic" layout="twocols" name="BasicTab">
-			<Label label="name" index="2"
-				constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;location=left)"
-				name="nameLabel" localize="true" />
-			<TextField index="3" data="data.name"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
-				name="nameTF" readOnly="true" localize="true" columns="10" />
-			<Label label="id" index="4"
-				constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;location=left)"
-				name="idLabel" localize="true" />
-			<TextField index="5" data="data.identifier"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
-				name="idTF" readOnly="true" localize="true" columns="10" />
-			<Label label="qualified_name" index="6"
-				constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;location=left)"
-				name="qnLabel" localize="true" />
-			<TextField index="7" data="data.qualifiedName"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
-				name="qnTF" readOnly="true" localize="true" columns="10" />
+			<Label label="type" index="8"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=8;location=left)"
+				name="typeLabel" localize="true" />
+			<DropDown index="9" data="data.type"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;location=right)"
+				name="typeDropDown" format="object.name" localize="false" showIcon="false"
+				iteratorClassName="org.openflexo.ta.opcua.model.nodes.OPCVariableType"
+				autoSelectFirstRow="false"/> <!--list="data.availableCreationSchemes" -->
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"
-		type="org.openflexo.ta.opcua.model.nodes.OPCNode" />
+		type="org.openflexo.ta.opcua.model.nodes.OPCVariableNode" />
 	<LocalizedDictionary id="14">
 		<Localized id="15" value="Avancé" lang="French" key="Advanced" />
 		<Localized id="16" value="Basique" lang="French" key="Basic" />

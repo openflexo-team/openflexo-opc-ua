@@ -65,6 +65,16 @@ public class TestOPCUAInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testOPCNamespaceInspector() {
+		validateFIB("Inspectors/OPCUA/OPCNamespace.inspector");
+	}
+
+	@Test
+	public void testOPCVariableNodeInspector() {
+		validateFIB("Inspectors/OPCUA/OPCVariableNode.inspector");
+	}
+
+	@Test
 	public void testAbstractSelectUANodeInspector() {
 		validateFIB("Inspectors/OPCUA/EditionAction/AbstractSelectUANode.inspector");
 	}

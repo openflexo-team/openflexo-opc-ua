@@ -44,6 +44,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
@@ -58,15 +59,25 @@ public class OPCUAIconLibrary {
 	public static final ImageIconResource OPC_UA_TA_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/opc-ua-ta-16x16.png"));
 	public static final ImageIconResource OPC_SERVER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OPCServer.png"));
-	public static final ImageIconResource UA_NODE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UANode.png"));
-	public static final ImageIconResource UA_FOLDER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UAFolder.png"));
+	public static final ImageIconResource OPC_NODE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OPCNode.png"));
+	public static final ImageIconResource OPC_FOLDER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OPCFolder.png"));
+
+	public static final ImageIconResource OPC_NAMESPACE_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OPCNamespace-64x64.png"));
+	public static final ImageIconResource OPC_NAMESPACE_MEDIUM_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OPCNamespace-32x32.png"));
+	public static final ImageIconResource OPC_NAMESPACE_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OPCNamespace.png"));
 
 	public static ImageIcon iconForObject(Class<? extends OPCObject> objectClass) {
 		if (OPCServer.class.isAssignableFrom(objectClass)) {
 			return OPC_SERVER_ICON;
 		}
+		else if (OPCNamespace.class.isAssignableFrom(objectClass)) {
+			return OPC_NAMESPACE_ICON;
+		}
 		else if (OPCNode.class.isAssignableFrom(objectClass)) {
-			return UA_NODE_ICON;
+			return OPC_NODE_ICON;
 		}
 		logger.warning("No icon for this class " + objectClass);
 		return null;

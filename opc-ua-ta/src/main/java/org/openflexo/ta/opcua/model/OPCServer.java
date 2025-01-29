@@ -166,6 +166,16 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 		}
 
+		@Override
+		public String getDisplayableName() {
+			return getUrl();
+		}
+
+		@Override
+		public String getDisplayableDescription() {
+			return "OPCServer: " + getUrl();
+		}
+
 	}
 
 }

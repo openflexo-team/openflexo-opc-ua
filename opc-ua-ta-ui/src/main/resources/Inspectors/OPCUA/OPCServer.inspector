@@ -26,8 +26,30 @@
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
 				name="hostNameTF" readOnly="true" localize="true" columns="10" />
 
+			<Label label="bindPort" index="2"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)"
+				name="bindPortLabel" localize="true" />
+			<TextField index="3" data="data.bindPort.toString"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
+				name="bindPortTF" readOnly="true" localize="true" columns="10" />
 
-			<Label id="7" name="NodesLabel" index="7" align="left"
+			<Label label="applicationName" index="4"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)"
+				name="applicationNameLabel" localize="true" />
+			<TextField index="5" data="data.applicationName"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
+				name="applicationNameTF" readOnly="true" localize="true" columns="10" />
+
+			<Label label="bindAddress" index="6"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)"
+				name="bindAddressLabel" localize="true" />
+			<TextField index="7" data="data.bindAddress"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
+				name="bindAddressTF" readOnly="true" localize="true" columns="10" />
+
+
+
+			<!--<Label id="7" name="NodesLabel" index="7" align="left"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				label="nodes" />
 			<Table id="8" showFooter="true" manageDynamicModel="true"
@@ -47,7 +69,7 @@
 					displayTitle="true" />
 				<LabelColumn data="iterator.name" title="value"
 					columnWidth="100" resizable="true" displayTitle="true" />
-			</Table>
+			</Table>-->
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"

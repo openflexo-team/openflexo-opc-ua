@@ -39,11 +39,9 @@
 package org.openflexo.technologyadapter.opcua.gui;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.openflexo.gina.test.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.test.UITest;
 
 /**
  * Used to test all FIBs defined in this technology adapter<br>
@@ -65,9 +63,8 @@ public class TestOPCUAFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	@Category(UITest.class)
-	public void removeThis() {
-		// Actually no test to execute
+	public void testOPCServerView() {
+		validateFIB("Fib/OPCServerView.fib");
 	}
 
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel opaque="false" layout="border" borderTitle="Panel"
+	borderTop="10" titleFont="SansSerif,0,11" darkLevel="0"
+	dataClassName="org.openflexo.ta.opcua.view.OPCServerView"
+	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	font="SansSerif,0,12" name="main">
+	<SplitPanel index="0"
+		constraints="border(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+		<RowSplit name="RowSplit" weight="0.0">
+			<Leaf name="left" weight="0.6" />
+			<Divider />
+			<Leaf name="right" weight="0.4" />
+		</RowSplit>
+		<!-- ********************* LEFT PANEL ******************************** -->
+		<Panel layout="gridbag" hGap="5" vGap="5"
+			flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0"
+			constraints="split(location=center;splitIdentifier=left)"
+			font="SansSerif,0,11" opaque="false" width="400" height="200"
+			name="DetailsPanel">
+
+
+			<FIBReferencedComponent
+				dynamicComponentFile="data.getFibForOPCObject(opcServerBrowser.selected)"
+				localize="true" manageDynamicModel="true" name="OPCObjectWidget"
+				index="15" data="opcServerBrowser.selected"
+				constraints="gridbag(anchor=center;fill=both;gridHeight=0;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+				visible="" opaque="false">
+				<ReferenceAssignment mandatory="true"
+					variable="controller.flexoController"
+					value="controller.flexoController" />
+			</FIBReferencedComponent>
+
+
+			<LocalizedDictionary />
+		</Panel>
+		<!-- ********************* RIGHT PANEL ******************************** -->
+		<Panel layout="gridbag" borderTitle="Panel" darkLevel="0"
+			constraints="split(location=east;splitIdentifier=right)"
+			opaque="false" name="NavigationPanel">
+
+			<Panel layout="gridbag" borderTitle="" borderTop="0"
+				borderBottom="0" borderLeft="0" borderRight="0" darkLevel="0"
+				index="0"
+				constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+				visible="data.allowsSearch" name="SearchPanel">
+				<TextField index="0" data="data.filteredName"
+					constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+					name="SearchTextField" localize="true"
+					manageDynamicModel="true"
+					valueChangedAction="data.search()" validateOnReturn="true"
+					columns="7" text="TextField" />
+				<Button action="data.search()" buttonIcon="data.searchIcon"
+					buttonType="Trigger" label="search" localize="true"
+					manageDynamicModel="true" name="SearchButton" index="1"
+					constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+					visible="(!(data.isSearching))" />
+				<Button action="data.dismissSearch()"
+					buttonIcon="data.cancelIcon" buttonType="Trigger"
+					label="done"
+					localize="true" name="DoneButton" index="2"
+					constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+					visible="data.isSearching" />
+			</Panel>
+
+			<List visibleRowCount="8" rowHeight="18"
+				createNewRowOnClick="false" boundToSelectionManager="true"
+				selectionMode="MultipleIntervalSelection"
+				selected="data.selectedValue" layoutOrientation="vertical"
+				index="1"
+				constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.3)"
+				visible="(data.isSearching &amp;&amp;(data.matchingValues.size &gt; 1))"
+				useScrollBar="true"
+				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+				name="PotentialMatches" format="object.displayableName"
+				icon="controller.iconForObject(object)" localize="true"
+				manageDynamicModel="true" list="data.matchingValues"
+				showIcon="true"
+				iteratorClassName="org.openflexo.ta.opcua.model.OPCObject"
+				autoSelectFirstRow="true" />
+
+			<Label label="Found xxx matches" align="right" index="2"
+				data="((&quot;Found &quot; + data.matchingValues.size) + &quot; matches&quot;)"
+				constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=5;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+				visible="data.isSearching" name="MatchesLabel" localize="false" />
+
+			<Browser root="data.opcServer"
+				iteratorClassName="org.openflexo.ta.opcua.model.OPCObject"
+				visibleRowCount="10" rowHeight="18"
+				boundToSelectionManager="true"
+				selectionMode="DiscontiguousTreeSelection"
+				selected="(org.openflexo.ta.opcua.model.OPCObject)data.selectedValue"
+				showFooter="true" rootVisible="false" showRootsHandle="true"
+				localize="true" manageDynamicModel="true"
+				name="opcServerBrowser"
+				index="3"
+				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+				width="200" height="200">
+				<BrowserElement
+					dataClassName="org.openflexo.ta.opcua.model.OPCServer"
+					isEditable="false" filtered="false" defaultVisible="true"
+					name="server">
+					<Children data="server.namespaces" name="namespaces" />
+				</BrowserElement>
+				<BrowserElement
+					dataClassName="org.openflexo.ta.opcua.model.OPCNamespace"
+					label="namespace.displayableName"
+					icon="controller.iconForObject(namespace)"
+					tooltip="namespace.displayableDescription" isEditable="false"
+					filtered="false" defaultVisible="true" name="namespace">
+					<Children data="namespace.allNodes" name="nodes" />
+				</BrowserElement>
+				<BrowserElement
+					dataClassName="org.openflexo.ta.opcua.model.nodes.OPCInstanceNode"
+					label="node.name"
+					icon="controller.iconForObject(node)"
+					tooltip="node.displayableDescription" isEditable="false"
+					filtered="false" defaultVisible="true" name="node">
+					<Children data="node.children" name="children" />
+				</BrowserElement>
+				<BrowserElement
+					dataClassName="org.openflexo.ta.opcua.model.nodes.OPCVariableNode"
+					label="node.name"
+					icon="controller.iconForObject(node)"
+					tooltip="node.displayableDescription" isEditable="false"
+					filtered="false" defaultVisible="true" name="node">
+				</BrowserElement>
+			</Browser>
+
+		</Panel>
+
+		<LocalizedDictionary />
+	</SplitPanel>
+</Panel>

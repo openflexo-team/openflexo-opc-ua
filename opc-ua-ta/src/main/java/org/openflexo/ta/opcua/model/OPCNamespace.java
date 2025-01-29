@@ -3,7 +3,17 @@ package org.openflexo.ta.opcua.model;
 import java.util.List;
 
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.pamela.annotations.*;
+import org.openflexo.pamela.annotations.Adder;
+import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.Embedded;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PastingPoint;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Remover;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
@@ -73,12 +83,21 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
 
-
-
 		@Override
 		public OPCServer getResourceData() {
 			return getServer();
 		}
+
+		@Override
+		public String getDisplayableName() {
+			return getUri() + ":" + getIndex();
+		}
+
+		@Override
+		public String getDisplayableDescription() {
+			return "OPCNamespace: " + getDisplayableName();
+		}
+
 	}
 
 }
