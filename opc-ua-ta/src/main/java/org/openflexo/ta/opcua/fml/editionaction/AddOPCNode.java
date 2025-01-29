@@ -60,7 +60,7 @@ import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
-@ImplementationClass(AddOPCNode.AddUANodeImpl.class)
+@ImplementationClass(AddOPCNode.AddOPCNodeImpl.class)
 @XMLElement
 @FML("AddOPCNode")
 public interface AddOPCNode extends OPCAction<OPCNode> {
@@ -75,7 +75,7 @@ public interface AddOPCNode extends OPCAction<OPCNode> {
 	@Setter(RELATIVE_PATH_KEY)
 	public void setRelativePath(DataBinding<String> relativePath);
 
-	public static abstract class AddUANodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, OPCNode>
+	public static abstract class AddOPCNodeImpl extends TechnologySpecificActionDefiningReceiverImpl<OPCServerModelSlot, OPCServer, OPCNode>
 			implements AddOPCNode {
 
 		private static final Logger logger = Logger.getLogger(AddOPCNode.class.getPackage().getName());

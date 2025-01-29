@@ -48,9 +48,9 @@ import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
-import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.OPCNamespace;
+import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 /**
  * Generic {@link AbstractFetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions
