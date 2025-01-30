@@ -1,5 +1,6 @@
 package org.openflexo.ta.opcua.model.nodes;
 
+import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -15,7 +16,7 @@ import org.openflexo.ta.opcua.model.OPCServer;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCNode.OPCNodeImpl.class)
 @Imports({ @Import(OPCVariableNode.class), @Import(OPCObjectNode.class) })
-public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
+public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServer> {
 
 	@PropertyIdentifier(type = OPCServer.class)
 	public static final String OPC_NAMESPACE_KEY = "namespace";
@@ -69,6 +70,15 @@ public interface OPCNode extends OPCObject, ResourceData<OPCServer> {
 	public void setIdentifier(String anIdentifier);
 
 	public String getQualifiedName();
+
+	@PropertyIdentifier(type = Node.class)
+	public static final String NODE = "node";
+
+	@Getter(value = NODE, ignoreType = true)
+	public N getNode();
+
+	@Setter(NODE)
+	public void setNode(N aNode);
 
 	public static abstract class OPCNodeImpl extends OPCObject.OPCObjectImpl implements OPCNode {
 

@@ -41,18 +41,18 @@ package org.openflexo.ta.opcua.fml.editionaction;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
  * Abstract action for {@link OPCServerModelSlot}
  * 
  * @author sylvain
  * 
+ * @param <R>
+ *            Type of receiver on this action (the precise technology object on which this action apply)
  * @param <T>
  *            object type
  */
-
 @ModelEntity(isAbstract = true)
-public interface OPCAction<T extends Object> extends TechnologySpecificActionDefiningReceiver<OPCServerModelSlot, OPCServer, T> {
+public interface OPCAction<R, T extends Object> extends TechnologySpecificActionDefiningReceiver<OPCServerModelSlot, R, T> {
 
 }

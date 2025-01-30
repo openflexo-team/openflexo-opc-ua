@@ -2,6 +2,8 @@ package org.openflexo.ta.opcua.model;
 
 import java.util.logging.Logger;
 
+import org.eclipse.milo.opcua.sdk.core.nodes.Node;
+import org.eclipse.milo.opcua.sdk.core.nodes.ObjectNode;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
@@ -10,7 +12,6 @@ import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.EditingContext;
 import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
 import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
@@ -53,8 +54,13 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
+	public OPCVariableNode makeOPCVariableNode(/*Variable*/Node node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
+			String name) {
+
+		System.out.println("On cree une OPCVariableNode avec " + node);
+
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
+		returned.setNode(node);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);
 		returned.setName(name);
@@ -62,8 +68,13 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCInstanceNode parent, String identifier, String name) {
+	public OPCObjectNode makeOPCObjectNode(ObjectNode node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
+			String name) {
+
+		System.out.println("On cree un OPCObjectNode avec " + node);
+
 		OPCObjectNode returned = newInstance(OPCObjectNode.class);
+		returned.setNode(node);
 		returned.setParent(parent);
 		returned.setIdentifier(identifier);
 		returned.setName(name);

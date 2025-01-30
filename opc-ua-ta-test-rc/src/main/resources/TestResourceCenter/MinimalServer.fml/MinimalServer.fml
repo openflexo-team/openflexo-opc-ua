@@ -69,6 +69,10 @@ public model MinimalServer {
          delete::performDelete() {
          }
 
+	      public void retrieveValue() {	
+            OPCUA::GetValue() in opcNode;
+         }
+
       }
 
    }
