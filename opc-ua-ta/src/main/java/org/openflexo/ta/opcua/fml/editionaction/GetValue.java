@@ -74,6 +74,8 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 
 			System.out.println("On cherche a obtenir la valeur de " + node);
 
+			System.out.println("Prout: " + node.getNode());
+
 			if (node.getNode() instanceof UaVariableNode) {
 
 				UaVariableNode miloNode = (UaVariableNode) node.getNode();

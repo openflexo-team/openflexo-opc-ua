@@ -47,7 +47,13 @@ import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.pamela.annotations.*;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
@@ -107,11 +113,15 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 
 		@Override
 		public OPCNode getModellingElement(boolean forceLoading) {
+
+			// TODO : retrieve Milo node from connection
+			// On se dit avec Luka que le client (ou la connexion OPCUA) doit etre dans un OPCServer
+
 			if (object == null && objectURI != null && getOPCServer() != null && getOPCServer().getNamespaces() != null) {
 				// TODO : make sure it's reasonable to search all nodes here
 				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
 					for (OPCNode node : namespace.getAllNodes()) {
-						if (node.getName().equals(objectURI))
+						if (node.getUri().equals(objectURI))
 							return node;
 					}
 				}
@@ -135,7 +145,7 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 		@Override
 		public String getObjectURI() {
 			if (object != null) {
-				return "" + object.getName();
+				return "" + object.getUri();
 			}
 			return objectURI;
 		}

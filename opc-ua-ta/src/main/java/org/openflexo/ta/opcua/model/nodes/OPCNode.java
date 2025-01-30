@@ -2,7 +2,13 @@ package org.openflexo.ta.opcua.model.nodes;
 
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.pamela.annotations.*;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.Import;
+import org.openflexo.pamela.annotations.Imports;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;

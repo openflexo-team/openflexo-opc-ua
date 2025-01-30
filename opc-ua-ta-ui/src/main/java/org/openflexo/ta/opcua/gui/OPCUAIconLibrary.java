@@ -48,6 +48,7 @@ import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
 
 public class OPCUAIconLibrary {
 
@@ -75,6 +76,9 @@ public class OPCUAIconLibrary {
 		}
 		else if (OPCNamespace.class.isAssignableFrom(objectClass)) {
 			return OPC_NAMESPACE_ICON;
+		}
+		else if (OPCObjectNode.class.isAssignableFrom(objectClass)) {
+			return OPC_FOLDER_ICON;
 		}
 		else if (OPCNode.class.isAssignableFrom(objectClass)) {
 			return OPC_NODE_ICON;

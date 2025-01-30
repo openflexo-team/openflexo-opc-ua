@@ -54,22 +54,28 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(VariableNode node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
+	public OPCVariableNode makeOPCVariableNode(VariableNode node, OPCNamespace namespace, OPCInstanceNode<?> parent, String identifier,
 			String name) {
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
 		returned.setNode(node);
-		returned.setParent(parent);
+		if (parent != null) {
+			parent.addToChildren(returned);
+		}
+		// returned.setParent(parent);
 		returned.setIdentifier(identifier);
 		returned.setName(name);
 		namespace.addToNamespace(returned);
 		return returned;
 	}
 
-	public OPCObjectNode makeOPCObjectNode(ObjectNode node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
+	public OPCObjectNode makeOPCObjectNode(ObjectNode node, OPCNamespace namespace, OPCInstanceNode<?> parent, String identifier,
 			String name) {
 		OPCObjectNode returned = newInstance(OPCObjectNode.class);
 		returned.setNode(node);
-		returned.setParent(parent);
+		if (parent != null) {
+			parent.addToChildren(returned);
+		}
+		// returned.setParent(parent);
 		returned.setIdentifier(identifier);
 		returned.setName(name);
 		namespace.addToNamespace(returned);
