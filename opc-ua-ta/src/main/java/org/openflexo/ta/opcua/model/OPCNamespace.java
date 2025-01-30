@@ -3,17 +3,7 @@ package org.openflexo.ta.opcua.model;
 import java.util.List;
 
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.pamela.annotations.Adder;
-import org.openflexo.pamela.annotations.CloningStrategy;
-import org.openflexo.pamela.annotations.Embedded;
-import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
-import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.PastingPoint;
-import org.openflexo.pamela.annotations.PropertyIdentifier;
-import org.openflexo.pamela.annotations.Remover;
-import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
@@ -40,22 +30,22 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 	public void setServer(OPCServer aServer);
 
 	@PropertyIdentifier(type = String.class)
-	public static final String OPC_URI = "uri";
+	public static final String URI_KEY = "uri";
 
 	@Override
-	@Getter(OPC_URI)
+	@Getter(URI_KEY)
 	public String getUri();
 
-	@Setter(OPC_URI)
+	@Setter(URI_KEY)
 	public void setUri(String anUri);
 
 	@PropertyIdentifier(type = Integer.class)
-	public static final String OPC_INDEX = "index";
+	public static final String INDEX_KEY = "index";
 
-	@Getter(OPC_INDEX)
+	@Getter(INDEX_KEY)
 	public Integer getIndex();
 
-	@Setter(OPC_INDEX)
+	@Setter(INDEX_KEY)
 	public void setIndex(Integer anIndex);
 
 	@PropertyIdentifier(type = OPCNode.class, cardinality = Getter.Cardinality.LIST)

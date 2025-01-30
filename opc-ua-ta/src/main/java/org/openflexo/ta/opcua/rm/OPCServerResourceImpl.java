@@ -38,27 +38,13 @@
 
 package org.openflexo.ta.opcua.rm;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.IOFlexoException;
-import org.openflexo.foundation.resource.FileIODelegate;
-import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.PamelaResourceImpl;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.resource.StreamIODelegate;
+import org.openflexo.foundation.resource.*;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.toolbox.FileUtils;

@@ -7,17 +7,7 @@ import java.util.logging.Logger;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.pamela.annotations.Adder;
-import org.openflexo.pamela.annotations.CloningStrategy;
-import org.openflexo.pamela.annotations.Embedded;
-import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
-import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.PastingPoint;
-import org.openflexo.pamela.annotations.PropertyIdentifier;
-import org.openflexo.pamela.annotations.Remover;
-import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
 

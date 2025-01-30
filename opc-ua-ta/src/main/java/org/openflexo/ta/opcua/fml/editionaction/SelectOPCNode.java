@@ -46,8 +46,8 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
-import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 /**
  * A {@link FetchRequest} allowing to retrieve a selection of some {@link OPCNode} matching some conditions

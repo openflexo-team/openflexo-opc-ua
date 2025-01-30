@@ -55,7 +55,8 @@ import org.openflexo.ta.opcua.model.OPCServer;
  * 
  */
 @ModelEntity
-public interface OPCServerResourceRepository<I> extends TechnologyAdapterResourceRepository<OPCServerResource, OPCUATechnologyAdapter, OPCServer, I> {
+public interface OPCServerResourceRepository<I>
+		extends TechnologyAdapterResourceRepository<OPCServerResource, OPCUATechnologyAdapter, OPCServer, I> {
 
 	public static <I> OPCServerResourceRepository<I> instanciateNewRepository(OPCUATechnologyAdapter technologyAdapter,
 			FlexoResourceCenter<I> resourceCenter) {

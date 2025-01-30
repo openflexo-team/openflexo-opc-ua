@@ -2,8 +2,8 @@ package org.openflexo.ta.opcua.model;
 
 import java.util.logging.Logger;
 
-import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.eclipse.milo.opcua.sdk.core.nodes.ObjectNode;
+import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
@@ -54,11 +54,8 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(/*Variable*/Node node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
+	public OPCVariableNode makeOPCVariableNode(VariableNode node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
 			String name) {
-
-		System.out.println("On cree une OPCVariableNode avec " + node);
-
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
 		returned.setNode(node);
 		returned.setParent(parent);
@@ -70,9 +67,6 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 
 	public OPCObjectNode makeOPCObjectNode(ObjectNode node, OPCNamespace namespace, OPCInstanceNode parent, String identifier,
 			String name) {
-
-		System.out.println("On cree un OPCObjectNode avec " + node);
-
 		OPCObjectNode returned = newInstance(OPCObjectNode.class);
 		returned.setNode(node);
 		returned.setParent(parent);

@@ -2,13 +2,7 @@ package org.openflexo.ta.opcua.model.nodes;
 
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
-import org.openflexo.pamela.annotations.Import;
-import org.openflexo.pamela.annotations.Imports;
-import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.PropertyIdentifier;
-import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -38,53 +32,53 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 	public void setNamespace(OPCNamespace aNamespace);
 
 	@PropertyIdentifier(type = OPCInstanceNode.class)
-	public static final String OPC_PARENT = "parent";
+	public static final String PARENT_KEY = "parent";
 
-	@Getter(value = OPC_PARENT)
-	public OPCInstanceNode getParent();
+	@Getter(value = PARENT_KEY)
+	public OPCInstanceNode<?> getParent();
 
-	@Setter(value = OPC_PARENT)
-	public void setParent(OPCInstanceNode aParent);
+	@Setter(value = PARENT_KEY)
+	public void setParent(OPCInstanceNode<?> aParent);
 
 	@PropertyIdentifier(type = String.class)
-	public static final String OPC_NAME = "name";
+	public static final String NAME_KEY = "name";
 
 	/**
 	 * Return this {@link OPCNode} name
 	 *
 	 * @return
 	 */
-	@Getter(value = OPC_NAME)
+	@Getter(value = NAME_KEY)
 	public String getName();
 
-	@Setter(value = OPC_NAME)
+	@Setter(value = NAME_KEY)
 	public void setName(String aName);
 
 	@PropertyIdentifier(type = String.class)
-	public static final String OPC_IDENTIFIER = "identifier";
+	public static final String IDENTIFIER_KEY = "identifier";
 
-	@Getter(OPC_IDENTIFIER)
+	@Getter(IDENTIFIER_KEY)
 	public String getIdentifier();
 
-	@Setter(OPC_IDENTIFIER)
+	@Setter(IDENTIFIER_KEY)
 	public void setIdentifier(String anIdentifier);
 
 	public String getQualifiedName();
 
 	@PropertyIdentifier(type = Node.class)
-	public static final String NODE = "node";
+	public static final String NODE_KEY = "node";
 
-	@Getter(value = NODE, ignoreType = true)
+	@Getter(value = NODE_KEY, ignoreType = true)
 	public N getNode();
 
-	@Setter(NODE)
+	@Setter(NODE_KEY)
 	public void setNode(N aNode);
 
-	public static abstract class OPCNodeImpl extends OPCObject.OPCObjectImpl implements OPCNode {
+	public static abstract class OPCNodeImpl<N extends Node> extends OPCObject.OPCObjectImpl implements OPCNode<N> {
 
 		@Override
 		public String getUri() {
-			OPCNode parent = getParent();
+			OPCNode<?> parent = getParent();
 			if (parent != null)
 				return parent.getQualifiedName() + getName() + "/";
 			return getNamespace().getUri() + getName() + "/";
@@ -92,7 +86,7 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 
 		@Override
 		public String getQualifiedName() {
-			OPCNode parent = getParent();
+			OPCNode<?> parent = getParent();
 			if (parent != null)
 				return parent.getQualifiedName() + "." + getName();
 			return getNamespace().getIndex() + "." + getName();

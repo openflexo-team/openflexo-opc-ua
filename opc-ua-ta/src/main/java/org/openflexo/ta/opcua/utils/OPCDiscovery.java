@@ -14,6 +14,7 @@ import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.eclipse.milo.opcua.sdk.core.nodes.ObjectNode;
 import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
+import org.eclipse.milo.opcua.stack.core.NamespaceTable;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -113,6 +114,7 @@ public class OPCDiscovery {
 		try {
 			BrowseResult browseResult = connection.browse(browse).get();
 			List<ReferenceDescription> references = toList(browseResult.getReferences());
+			final NamespaceTable namespaceTable = connection.getNamespaceTable();
 			for (ReferenceDescription ref : references) {
 				final Node node = connection.getAddressSpace().getNode(aNodeId);
 				final String identifier = ref.getNodeId().getIdentifier().toString();
@@ -121,8 +123,6 @@ public class OPCDiscovery {
 				final OPCNamespace namespace = getNamespace(ref.getNodeId());
 				final OPCInstanceNode parent = getCurrentParent();
 				String indent = "";
-
-				// ref.getN
 
 				for (int i = 0; i < nodeStack.size(); i++)
 					indent += "  ";
@@ -138,20 +138,14 @@ public class OPCDiscovery {
 					}
 					case 2: {
 						// Node is a variable
-						VariableNode miloNode = null;
-						if (node instanceof VariableNode) {
-							miloNode = (VariableNode) node;
-							System.out.println(">>>>>> " + miloNode.getDataType());
+						VariableNode miloNode;
+						try {
+							miloNode = connection.getAddressSpace().getVariableNode(ref.getNodeId().toNodeId(namespaceTable).get());
+						} catch (Exception e) {
+							System.err.println(e);
+							break;
 						}
-
-						/*	UaVariableNode vNode1 = connection.getAddressSpace().getVariableNode(aNodeId);
-							System.out.println("-----1 " + vNode1);
-						
-							NodeId vNodeId = new NodeId(namespace.getIndex(), "Data/temperature");
-							UaVariableNode vNode2 = connection.getAddressSpace().getVariableNode(vNodeId);
-							System.out.println("-----2 " + vNode2);*/
-
-						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(node, namespace, parent, identifier, name);
+						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(miloNode, namespace, parent, identifier, name);
 						System.out.println(indent + "Added variable node " + variableNode.getQualifiedName());
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);

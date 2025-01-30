@@ -42,11 +42,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
-import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.*;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;

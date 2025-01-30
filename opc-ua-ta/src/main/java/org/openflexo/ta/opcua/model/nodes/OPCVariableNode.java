@@ -1,13 +1,13 @@
 package org.openflexo.ta.opcua.model.nodes;
 
-import org.eclipse.milo.opcua.sdk.core.nodes.Node;
+import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 
 @ModelEntity
-public interface OPCVariableNode extends OPCInstanceNode</*Variable*/Node> {
+public interface OPCVariableNode extends OPCInstanceNode<VariableNode> {
 
 	@PropertyIdentifier(type = OPCVariableType.class)
 	public static final String TYPE_KEY = "type";
@@ -19,12 +19,12 @@ public interface OPCVariableNode extends OPCInstanceNode</*Variable*/Node> {
 	public void setType(OPCVariableType aType);
 
 	@PropertyIdentifier(type = Number.class)
-	public static final String OPC_VALUE = "value";
+	public static final String VALUE_KEY = "value";
 
-	@Setter(OPC_VALUE)
+	@Setter(VALUE_KEY)
 	public void setValue(Number aValue);
 
-	@Getter(value = OPC_VALUE)
+	@Getter(value = VALUE_KEY)
 	public Number getValue();
 
 	// TODO : we want to subscribe to a variable, how? Discuss ;)
