@@ -2,6 +2,7 @@ package org.openflexo.ta.opcua.model.nodes;
 
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.foundation.resource.ResourceData;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.Import;
@@ -9,6 +10,7 @@ import org.openflexo.pamela.annotations.Imports;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -45,6 +47,8 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 
 	@Setter(value = PARENT_KEY)
 	public void setParent(OPCInstanceNode<?> aParent);
+
+	public boolean isRoot();
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -111,6 +115,11 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 		@Override
 		public String getDisplayableDescription() {
 			return "OPCNode: " + getName();
+		}
+
+		@Override
+		public boolean isRoot() {
+			return false;
 		}
 
 	}

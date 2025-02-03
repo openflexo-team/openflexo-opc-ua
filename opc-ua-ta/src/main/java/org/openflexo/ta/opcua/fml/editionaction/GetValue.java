@@ -50,6 +50,7 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
 @ModelEntity
 @ImplementationClass(GetValue.GetValueImpl.class)
@@ -70,32 +71,18 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 		@Override
 		public Object execute(RunTimeEvaluationContext evaluationContext) {
 
-			OPCNode node = getReceiver(evaluationContext);
+			OPCNode<?> node = getReceiver(evaluationContext);
 
-			System.out.println("On cherche a obtenir la valeur de " + node);
-
-			System.out.println("Prout: " + node.getNode());
-
-			if (node.getNode() instanceof UaVariableNode) {
-
-				UaVariableNode miloNode = (UaVariableNode) node.getNode();
-
-				Object value;
+			if (node instanceof OPCVariableNode) {
 				try {
-					System.out.println("miloNode.readValue()=" + miloNode.readValue());
-					System.out.println("miloNode.readValue().getValue()=" + miloNode.readValue().getValue());
-					System.out.println("miloNode.readValue().getValue().getValue()=" + miloNode.readValue().getValue().getValue());
-					value = miloNode.readValue().getValue().getValue();
-					System.out.println("Read value: " + value);
-				} catch (UaException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return ((OPCVariableNode) node).getNode().getValue().getValue();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
 				}
 			}
 
-			else {
-				System.out.println("Je ne sais pas trop comment gerer " + node.getNode());
-			}
+			System.err.println("Attempting to read value from " + node.getUri() + " (" + node.getClass() + ")");
+
 			return null;
 
 		}

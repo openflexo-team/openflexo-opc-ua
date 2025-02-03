@@ -1,9 +1,11 @@
 package org.openflexo.ta.opcua.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
+import org.openflexo.ta.opcua.model.nodes.OPCInstanceNode;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
@@ -60,9 +62,7 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 	@XMLElement
 	@Embedded
 	@CloningStrategy(CloningStrategy.StrategyType.CLONE)
-	public List<OPCNode> getAllNodes();
-
-	// TODO : how to define getRootNodes?
+	public List<OPCNode<?>> getAllNodes();
 
 	@Adder(OPC_NODES_KEY)
 	@PastingPoint
@@ -70,6 +70,8 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 	@Remover(OPC_NODES_KEY)
 	public void removeFromNamespace(OPCNode aNode);
+
+	public List<OPCNode<?>> getRootNodes();
 
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
 
@@ -86,6 +88,11 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 		@Override
 		public String getDisplayableDescription() {
 			return "OPCNamespace: " + getDisplayableName();
+		}
+
+		@Override
+		public List<OPCNode<?>> getRootNodes() {
+			return getAllNodes().stream().filter(OPCNode::isRoot).collect(Collectors.toList());
 		}
 
 	}

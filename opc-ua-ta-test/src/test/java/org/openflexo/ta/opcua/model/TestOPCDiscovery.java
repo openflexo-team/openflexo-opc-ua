@@ -2,14 +2,21 @@ package org.openflexo.ta.opcua.model;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
+import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TestOPCDiscovery {
 
@@ -33,11 +40,28 @@ public class TestOPCDiscovery {
         OPCServer model = OPCDiscovery.discover(connection, factory);
 
         // Check result
-        // TODO : do that
+        assertEquals(3, model.getNamespaces().size());
+        OPCNamespace bioreactorNamespace = model.getNamespace(2);
+        List<OPCNode<?>> rootNodes = bioreactorNamespace.getRootNodes();
+        assertEquals(1, rootNodes.size());
+        OPCVariableNode temperatureNode = null;
+        Object value1;
+        try {
+            OPCObjectNode dataNode = (OPCObjectNode) rootNodes.get(0);
+            temperatureNode = (OPCVariableNode) dataNode.getChildren().get(0);
+            value1 = temperatureNode.getNode().getValue().getValue().getValue();
+            System.out.println(temperatureNode.getNode().getValue().getStatusCode());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
         // Shutdown the client and server
         connection.disconnect().get();
         server.shutdown();
+
+        // Try to access a value anyway.
+        Object value2 = temperatureNode.getNode().getValue().getValue().getValue();
+        System.out.println(temperatureNode.getNode().getValue().getStatusCode());
 
         // Output discovered model
         for (OPCNamespace ns : model.getNamespaces()) {

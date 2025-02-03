@@ -169,7 +169,7 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	@Override
 	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (OPCNodeRole.class.isAssignableFrom(patternRoleClass)) {
-			return getIconForTechnologyObject(OPCNode.class);
+			return getIconForTechnologyObject((Class<? extends OPCObject>) OPCNode.class);
 		}
 		return null;
 	}
@@ -183,10 +183,10 @@ public class OPCUAAdapterController extends TechnologyAdapterController<OPCUATec
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddOPCNode.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(OPCNode.class), IconLibrary.DUPLICATE);
+			return IconFactory.getImageIcon(getIconForTechnologyObject((Class<? extends OPCObject>) OPCNode.class), IconLibrary.DUPLICATE);
 		}
 		else if (AbstractSelectOPCNode.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(OPCNode.class), IconLibrary.IMPORT);
+			return IconFactory.getImageIcon(getIconForTechnologyObject((Class<? extends OPCObject>)OPCNode.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
