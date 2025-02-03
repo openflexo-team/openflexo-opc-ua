@@ -61,6 +61,12 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 	@Setter(value = BIND_ADDRESS_KEY)
 	public void setBindAddress(String aBindAddress);
 
+	public boolean isConnected();
+
+	public OpcUaClient getClient();
+
+	public void shutdownClient();
+
 	@PropertyIdentifier(type = OPCNamespace.class, cardinality = Getter.Cardinality.LIST)
 	public static final String NAMESPACES_KEY = "namespaces";
 
@@ -113,7 +119,7 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public String getBindAddress() {
-			// TODO : illustration purpose
+			// illustration purpose
 			String returned = (String) performSuperGetter(BIND_ADDRESS_KEY);
 			return returned;
 		}
@@ -134,26 +140,46 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 			return null;
 		}
 
+		private OpcUaClient client;
+
+		@Override
+		public boolean isConnected() {
+			return client != null;
+		}
+
+		@Override
+		public OpcUaClient getClient() {
+			if (client == null) {
+				try {
+					client = OpcUaClient.create(getUrl());
+				} catch (UaException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+			// TODO: check if connected
+			try {
+				client.connect().get();
+			} catch (InterruptedException | ExecutionException e) {
+				System.err.println(e.getMessage());
+			}
+			return client;
+		}
+
+		@Override
+		public void shutdownClient() {
+			if (!isConnected()) return;
+			try {
+				client.disconnect().get();
+			} catch (InterruptedException | ExecutionException e) {
+				System.err.println(e.getMessage());
+			}
+		}
+
 		@Override
 		public void performDiscovery() {
 			logger.info("Perform discovery for " + this);
-			OpcUaClient connection;
-			try {
-				connection = OpcUaClient.create(getUrl());
-				connection.connect().get();
-				OPCDiscovery.discover(this, connection, getFactory());
-				connection.disconnect().get();
-			} catch (UaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+			OpcUaClient connection = getClient();
+			OPCDiscovery.discover(this, connection, getFactory());
 		}
 
 		@Override

@@ -136,9 +136,8 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 		@Override
 		public void setModellingElement(OPCNode object) {
 			this.object = object;
-			// TODO : build a correct URI
 			if (object != null) {
-				objectURI = object.getName();
+				objectURI = object.getUri();
 			}
 		}
 
