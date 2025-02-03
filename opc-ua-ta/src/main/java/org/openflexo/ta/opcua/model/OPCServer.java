@@ -167,7 +167,8 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public void shutdownClient() {
-			if (!isConnected()) return;
+			if (!isConnected())
+				return;
 			try {
 				client.disconnect().get();
 			} catch (InterruptedException | ExecutionException e) {

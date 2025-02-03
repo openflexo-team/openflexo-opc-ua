@@ -41,8 +41,6 @@ package org.openflexo.ta.opcua.fml.editionaction;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
-import org.eclipse.milo.opcua.stack.core.UaException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
