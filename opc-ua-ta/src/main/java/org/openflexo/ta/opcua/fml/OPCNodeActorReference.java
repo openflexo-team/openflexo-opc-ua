@@ -111,17 +111,25 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 			// TODO : retrieve Milo node from connection
 			// On se dit avec Luka que le client (ou la connexion OPCUA) doit etre dans un OPCServer
 
+			logger.info("call to getModellingElement" +
+					"(" + forceLoading + ") with" +
+					" object=" + object +
+					" objectURI='" + objectURI + "'");
+
 			if (object == null && objectURI != null && getOPCServer() != null && getOPCServer().getNamespaces() != null) {
 				// TODO : make sure it's reasonable to search all nodes here
 				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
-					for (OPCNode node : namespace.getAllNodes()) {
-						if (node.getUri().equals(objectURI))
+					for (OPCNode<?> node : namespace.getAllNodes()) {
+						if (node.getUri().equals(objectURI)) {
+							logger.info("getModellingElement found an OPCNode with uri '" + objectURI +"'");
 							return node;
+						}
 					}
 				}
 			}
+
 			if (object == null) {
-				logger.warning("Could not retrieve object " + objectURI);
+				logger.warning("getModellingElement could not retrieve OPCNode with uri '" + objectURI + "'");
 			}
 			return object;
 

@@ -187,7 +187,7 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 	 */
 	private <I> OPCServer load(StreamIODelegate<I> ioDelegate) throws IOException {
 
-		OPCServer returned = getFactory().makeOPCServer();
+		OPCServer returned = getFactory().makeEmptyOPCServer();
 
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(ioDelegate.getInputStream()))) {
 			String nextLine = br.readLine();

@@ -16,16 +16,6 @@ import org.openflexo.ta.opcua.utils.OPCDiscovery;
 public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 	@PropertyIdentifier(type = String.class)
-	public static final String URI_KEY = "uri";
-
-	@Override
-	@Getter(value = URI_KEY)
-	public String getUri();
-
-	@Setter(value = URI_KEY)
-	public void setUri(String anUri);
-
-	@PropertyIdentifier(type = String.class)
 	public static final String HOSTNAME_KEY = "hostname";
 
 	@Getter(value = HOSTNAME_KEY)
@@ -90,7 +80,8 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 	public OPCNamespace getNamespace(Integer anIndex);
 
-	public String getUrl();
+	@Override
+	public String getUri();
 
 	@Override
 	public OPCServerResource getResource();
@@ -125,14 +116,13 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 		}
 
 		@Override
-		public String getUrl() {
+		public String getUri() {
 			// TODO : handle cases where bindAddress has to be used instead
 			return "opc.tcp://" + getHostname() + ":" + getBindPort() + "/" + getApplicationName();
 		}
 
 		@Override
 		public OPCNamespace getNamespace(Integer anIndex) {
-			// TODO : Reasonable?
 			for (OPCNamespace namespace : getNamespaces()) {
 				if (namespace.getIndex().equals(anIndex))
 					return namespace;
@@ -151,16 +141,17 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 		public OpcUaClient getClient() {
 			if (client == null) {
 				try {
-					client = OpcUaClient.create(getUrl());
+					client = OpcUaClient.create(getUri());
 				} catch (UaException e) {
-					System.err.println(e.getMessage());
+					logger.warning("Exception while creating a client: " + e.getMessage());
+					return null;
 				}
 			}
 			// TODO: check if connected
 			try {
 				client.connect().get();
 			} catch (InterruptedException | ExecutionException e) {
-				System.err.println(e.getMessage());
+				logger.warning("Exception while connecting a client: " + e.getMessage());
 			}
 			return client;
 		}
@@ -179,18 +170,17 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 		@Override
 		public void performDiscovery() {
 			logger.info("Perform discovery for " + this);
-			OpcUaClient connection = getClient();
-			OPCDiscovery.discover(this, connection, getFactory());
+			OPCDiscovery.discover(this);
 		}
 
 		@Override
 		public String getDisplayableName() {
-			return getUrl();
+			return getUri();
 		}
 
 		@Override
 		public String getDisplayableDescription() {
-			return "OPCServer: " + getUrl();
+			return "OPCServer: " + getUri();
 		}
 
 	}

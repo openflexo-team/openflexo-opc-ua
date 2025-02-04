@@ -42,8 +42,16 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return resource;
 	}
 
-	public OPCServer makeOPCServer() {
+	public OPCServer makeEmptyOPCServer() {
 		return newInstance(OPCServer.class);
+	}
+
+	public OPCServer makeOPCServerFromHostname(String hostname, int bindPort, String applicationName) {
+		OPCServer returned = newInstance(OPCServer.class);
+		returned.setHostname(hostname);
+		returned.setBindPort(bindPort);
+		returned.setApplicationName(applicationName);
+		return returned;
 	}
 
 	public OPCNamespace makeOPCNamespace(OPCServer server, String anUri, Integer anIndex) {

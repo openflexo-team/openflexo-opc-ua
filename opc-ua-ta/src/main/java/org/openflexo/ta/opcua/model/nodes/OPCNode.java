@@ -80,10 +80,7 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 
 		@Override
 		public String getUri() {
-			OPCNode<?> parent = getParent();
-			if (parent != null)
-				return parent.getQualifiedName() + getName() + "/";
-			return getNamespace().getUri() + getName() + "/";
+			return getNamespace().getServer().getUri() + "#nsu=" + getNamespace().getUri() +";s=" + getQualifiedName();
 		}
 
 		@Override
@@ -91,7 +88,7 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 			OPCNode<?> parent = getParent();
 			if (parent != null)
 				return parent.getQualifiedName() + "." + getName();
-			return getNamespace().getIndex() + "." + getName();
+			return getName();
 		}
 
 		@Override

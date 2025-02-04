@@ -1,8 +1,6 @@
 package org.openflexo.ta.opcua.model;
 
-import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
-import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
@@ -28,16 +26,12 @@ public class TestOPCDiscovery {
         server.startup();
         namespace.startup();
 
-        // Make the client (connection)
-        // This client is anonymous. To specify an application name, endpoint and security certificate see "create"
-        OpcUaClient connection = OpcUaClient.create("opc.tcp://localhost:4880/minimal");
-        connection.connect().get();
-
-        // Create the factory
+        // Create the factory and base model
         OPCModelFactory factory = new OPCModelFactory(null, null);
+        OPCServer model = factory.makeOPCServerFromHostname("localhost", 4880, "minimal");
 
-        // Discover namespaces and nodes
-        OPCServer model = OPCDiscovery.discover(connection, factory);
+        // Discover
+        OPCDiscovery.discover(model, factory);
 
         // Check result
         assertEquals(3, model.getNamespaces().size());
@@ -56,19 +50,14 @@ public class TestOPCDiscovery {
         }
 
         // Shutdown the client and server
-        connection.disconnect().get();
+        model.shutdownClient();
         server.shutdown();
 
         // Try to access a value anyway.
         Object value2 = temperatureNode.getNode().getValue().getValue().getValue();
         System.out.println(temperatureNode.getNode().getValue().getStatusCode());
 
-        // Output discovered model
-        for (OPCNamespace ns : model.getNamespaces()) {
-            for (OPCNode node : ns.getAllNodes()) {
-                System.out.println(node.getQualifiedName());
-            }
-        }
+        System.out.println(model.getUri());
     }
 
 }

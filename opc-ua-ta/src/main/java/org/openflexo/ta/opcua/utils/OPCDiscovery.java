@@ -47,24 +47,18 @@ public class OPCDiscovery {
 		this.nodeStack = new ArrayList<>();
 	}
 
-	public static OPCServer discover(OPCServer model, OpcUaClient aConnection, OPCModelFactory aFactory) {
-		OPCDiscovery discovery = new OPCDiscovery(aConnection, model, aFactory);
+	public static void discover(OPCServer model, OPCModelFactory factory) {
+		OPCDiscovery discovery = new OPCDiscovery(model.getClient(), model, factory);
 		discovery.initialize();
 		discovery.browseNode(Identifiers.ObjectsFolder);
-		return model;
 	}
 
-	public static OPCServer discover(OpcUaClient aConnection, OPCModelFactory aFactory) {
-		OPCServer model = aFactory.makeOPCServer();
-		OPCDiscovery discovery = new OPCDiscovery(aConnection, model, aFactory);
-		discovery.initialize();
-		discovery.browseNode(Identifiers.ObjectsFolder);
-		return model;
+	public static void discover(OPCServer model) {
+		discover(model, model.getFactory());
 	}
 
 	private void initialize() {
-		String applicationUri = connection.getConfig().getEndpoint().getServer().getApplicationUri();
-		model.setUri(applicationUri);
+		// String applicationUri = connection.getConfig().getEndpoint().getServer().getApplicationUri();
 		String[] namespaceUriArray = connection.getNamespaceTable().toArray();
 		for (int index = 0; index < namespaceUriArray.length; index++) {
 			OPCNamespace namespace = getFactory().makeOPCNamespace(model, namespaceUriArray[index], index);
@@ -82,9 +76,6 @@ public class OPCDiscovery {
 		if (returned != null)
 			return returned;
 		String uri = aNodeId.getNamespaceUri();
-		// TODO : check if ok as a default uri.
-		if (uri == null)
-			uri = "urn:namespace:" + index + "/";
 		returned = getFactory().makeOPCNamespace(model, uri, index);
 		namespaceMap.put(index, returned);
 		return returned;
@@ -146,7 +137,7 @@ public class OPCDiscovery {
 							break;
 						}
 						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(miloNode, namespace, parent, identifier, name);
-						System.out.println(indent + "Added variable node " + variableNode.getQualifiedName());
+						System.out.println(indent + "Added variable node " + variableNode.getUri());
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
 						exitNode();
