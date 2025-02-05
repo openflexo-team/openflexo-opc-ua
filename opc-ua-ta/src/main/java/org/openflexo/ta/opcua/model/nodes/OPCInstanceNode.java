@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.pamela.annotations.*;
-import org.openflexo.ta.opcua.model.OPCObject;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCInstanceNode.OPCInstanceNodeImpl.class)

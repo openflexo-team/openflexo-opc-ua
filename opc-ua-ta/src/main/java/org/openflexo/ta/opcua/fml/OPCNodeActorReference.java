@@ -47,13 +47,7 @@ import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
-import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.PropertyIdentifier;
-import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
@@ -117,17 +111,25 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 			// TODO : retrieve Milo node from connection
 			// On se dit avec Luka que le client (ou la connexion OPCUA) doit etre dans un OPCServer
 
+			logger.info("call to getModellingElement" +
+					"(" + forceLoading + ") with" +
+					" object=" + object +
+					" objectURI='" + objectURI + "'");
+
 			if (object == null && objectURI != null && getOPCServer() != null && getOPCServer().getNamespaces() != null) {
 				// TODO : make sure it's reasonable to search all nodes here
 				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
-					for (OPCNode node : namespace.getAllNodes()) {
-						if (node.getUri().equals(objectURI))
+					for (OPCNode<?> node : namespace.getAllNodes()) {
+						if (node.getUri().equals(objectURI)) {
+							logger.info("getModellingElement found an OPCNode with uri '" + objectURI +"'");
 							return node;
+						}
 					}
 				}
 			}
+
 			if (object == null) {
-				logger.warning("Could not retrieve object " + objectURI);
+				logger.warning("getModellingElement could not retrieve OPCNode with uri '" + objectURI + "'");
 			}
 			return object;
 
@@ -136,9 +138,8 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 		@Override
 		public void setModellingElement(OPCNode object) {
 			this.object = object;
-			// TODO : build a correct URI
 			if (object != null) {
-				objectURI = object.getName();
+				objectURI = object.getUri();
 			}
 		}
 

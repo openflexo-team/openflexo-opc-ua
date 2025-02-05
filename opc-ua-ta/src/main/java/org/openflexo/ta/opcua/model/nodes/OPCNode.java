@@ -2,15 +2,7 @@ package org.openflexo.ta.opcua.model.nodes;
 
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
-import org.openflexo.pamela.annotations.Import;
-import org.openflexo.pamela.annotations.Imports;
-import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.PropertyIdentifier;
-import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
+import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -88,10 +80,7 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 
 		@Override
 		public String getUri() {
-			OPCNode<?> parent = getParent();
-			if (parent != null)
-				return parent.getQualifiedName() + getName() + "/";
-			return getNamespace().getUri() + getName() + "/";
+			return getNamespace().getServer().getUri() + "#nsu=" + getNamespace().getUri() +";s=" + getQualifiedName();
 		}
 
 		@Override
@@ -99,7 +88,7 @@ public interface OPCNode<N extends Node> extends OPCObject, ResourceData<OPCServ
 			OPCNode<?> parent = getParent();
 			if (parent != null)
 				return parent.getQualifiedName() + "." + getName();
-			return getNamespace().getIndex() + "." + getName();
+			return getName();
 		}
 
 		@Override

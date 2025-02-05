@@ -69,7 +69,7 @@ public class OPCServerResourceFactory
 
 	@Override
 	public OPCServer makeEmptyResourceData(OPCServerResource resource) {
-		return resource.getFactory().makeOPCServer();
+		return resource.getFactory().makeEmptyOPCServer();
 	}
 
 	@Override
