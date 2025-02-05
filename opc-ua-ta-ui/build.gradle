@@ -3,6 +3,8 @@ dependencies {
 
   // openflexo dep
   implementation flexoUi()
+  implementation fmlTechnologyAdapterUi()
+  implementation fmlRtTechnologyAdapterUi()
 
   runtimeOnly fmlTechnologyAdapterUi()
 
