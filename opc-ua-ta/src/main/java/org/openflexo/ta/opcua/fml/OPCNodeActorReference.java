@@ -44,10 +44,16 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.pamela.annotations.*;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
@@ -98,7 +104,7 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 		}
 
 		public OPCServerResource getOPCServerResource() {
-			ModelSlotInstance<?, ?> msInstance = getModelSlotInstance();
+			FreeModelSlotInstance<?, ?> msInstance = (FreeModelSlotInstance<?, ?>) getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof OPCServerResource) {
 				return (OPCServerResource) msInstance.getResource();
 			}
@@ -111,17 +117,15 @@ public interface OPCNodeActorReference extends ActorReference<OPCNode> {
 			// TODO : retrieve Milo node from connection
 			// On se dit avec Luka que le client (ou la connexion OPCUA) doit etre dans un OPCServer
 
-			logger.info("call to getModellingElement" +
-					"(" + forceLoading + ") with" +
-					" object=" + object +
-					" objectURI='" + objectURI + "'");
+			logger.info(
+					"call to getModellingElement" + "(" + forceLoading + ") with" + " object=" + object + " objectURI='" + objectURI + "'");
 
 			if (object == null && objectURI != null && getOPCServer() != null && getOPCServer().getNamespaces() != null) {
 				// TODO : make sure it's reasonable to search all nodes here
 				for (OPCNamespace namespace : getOPCServer().getNamespaces()) {
 					for (OPCNode<?> node : namespace.getAllNodes()) {
 						if (node.getUri().equals(objectURI)) {
-							logger.info("getModellingElement found an OPCNode with uri '" + objectURI +"'");
+							logger.info("getModellingElement found an OPCNode with uri '" + objectURI + "'");
 							return node;
 						}
 					}

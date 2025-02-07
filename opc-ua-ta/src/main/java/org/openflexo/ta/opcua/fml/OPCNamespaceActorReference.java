@@ -44,10 +44,16 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.pamela.annotations.*;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
@@ -98,7 +104,7 @@ public interface OPCNamespaceActorReference extends ActorReference<OPCNamespace>
 		}
 
 		public OPCServerResource getOPCServerResource() {
-			ModelSlotInstance<?, ?> msInstance = getModelSlotInstance();
+			FreeModelSlotInstance<?, ?> msInstance = (FreeModelSlotInstance<?, ?>) getModelSlotInstance();
 			if (msInstance != null && msInstance.getResource() instanceof OPCServerResource) {
 				return (OPCServerResource) msInstance.getResource();
 			}
