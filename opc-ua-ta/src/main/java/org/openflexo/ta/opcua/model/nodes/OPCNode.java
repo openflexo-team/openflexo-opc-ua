@@ -54,14 +54,7 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 	@Setter(NODE_ID_KEY)
 	public void setNodeId(NodeId nodeId);
 
-	@PropertyIdentifier(type = UaNode.class)
-	public static final String NODE_KEY = "node";
-
-	@Getter(value = NODE_KEY, ignoreType = true)
 	public N getNode();
-
-	@Setter(NODE_KEY)
-	public void setNode(N aNode);
 
 	public String getName();
 

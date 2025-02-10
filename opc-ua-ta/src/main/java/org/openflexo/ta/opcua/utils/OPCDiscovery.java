@@ -3,18 +3,15 @@ package org.openflexo.ta.opcua.utils;
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 import static org.eclipse.milo.opcua.stack.core.util.ConversionUtil.toList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
-import org.eclipse.milo.opcua.sdk.client.nodes.UaObjectNode;
-import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
-import org.eclipse.milo.opcua.sdk.core.nodes.Node;
-import org.eclipse.milo.opcua.sdk.core.nodes.ObjectNode;
-import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.NamespaceTable;
-import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.BrowseDirection;
@@ -119,30 +116,17 @@ public class OPCDiscovery {
 				switch (ref.getNodeClass().getValue()) {
 					case 1: {
 						// Node is an object
-						UaObjectNode miloNode;
-						try {
-							miloNode = connection.getAddressSpace().getObjectNode(ref.getNodeId().toNodeId(namespaceTable).orElse(null));
-						} catch (Exception e) {
-							System.err.println(e.getMessage());
-							break;
-						}
-						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(miloNode, nodeId, namespace, parent);
+						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(nodeId, namespace, parent);
 						System.out.println(indent + "Added object node " + objectNode.getQualifiedName());
 						enterNode(objectNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
 						exitNode();
 						break;
 					}
+
 					case 2: {
 						// Node is a variable
-						UaVariableNode miloNode;
-						try {
-							miloNode = connection.getAddressSpace().getVariableNode(ref.getNodeId().toNodeId(namespaceTable).orElse(null));
-						} catch (Exception e) {
-							System.err.println(e);
-							break;
-						}
-						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(miloNode, nodeId, namespace, parent);
+						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(nodeId, namespace, parent);
 						System.out.println(indent + "Added variable node " + variableNode.getUri());
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
