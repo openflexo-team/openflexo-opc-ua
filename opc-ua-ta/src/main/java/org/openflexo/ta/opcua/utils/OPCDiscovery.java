@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaObjectNode;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.sdk.core.nodes.Node;
 import org.eclipse.milo.opcua.sdk.core.nodes.ObjectNode;
 import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
@@ -120,7 +122,14 @@ public class OPCDiscovery {
 				switch (ref.getNodeClass().getValue()) {
 					case 1: {
 						// Node is an object
-						OPCObjectNode objectNode = getFactory().makeOPCObjectNode((ObjectNode) node, namespace, parent, identifier, name);
+						UaObjectNode miloNode;
+						try {
+							miloNode = connection.getAddressSpace().getObjectNode(ref.getNodeId().toNodeId(namespaceTable).get());
+						} catch (Exception e) {
+							System.err.println(e.getMessage());
+							break;
+						}
+						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(miloNode, namespace, parent, identifier, name);
 						System.out.println(indent + "Added object node " + objectNode.getQualifiedName());
 						enterNode(objectNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
@@ -129,7 +138,7 @@ public class OPCDiscovery {
 					}
 					case 2: {
 						// Node is a variable
-						VariableNode miloNode;
+						UaVariableNode miloNode;
 						try {
 							miloNode = connection.getAddressSpace().getVariableNode(ref.getNodeId().toNodeId(namespaceTable).get());
 						} catch (Exception e) {

@@ -1,13 +1,13 @@
 package org.openflexo.ta.opcua.model.nodes;
 
-import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
+import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 
 @ModelEntity
-public interface OPCVariableNode extends OPCInstanceNode<VariableNode> {
+public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 
 	@PropertyIdentifier(type = OPCVariableType.class)
 	public static final String TYPE_KEY = "type";
