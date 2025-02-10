@@ -3,10 +3,7 @@ package org.openflexo.ta.opcua.utils;
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 import static org.eclipse.milo.opcua.stack.core.util.ConversionUtil.toList;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
@@ -94,7 +91,7 @@ public class OPCDiscovery {
 		return nodeStack.get(nodeStack.size() - 1);
 	}
 
-	private void enterNode(OPCInstanceNode aNode) {
+	private void enterNode(OPCInstanceNode<?> aNode) {
 		nodeStack.add(aNode);
 	}
 
@@ -102,19 +99,19 @@ public class OPCDiscovery {
 		nodeStack.remove(nodeStack.size() - 1);
 	}
 
-	private void browseNode(NodeId aNodeId) {
-		BrowseDescription browse = makeBrowseDescription(aNodeId);
+	private void browseNode(NodeId parentNodeId) {
+		BrowseDescription browse = makeBrowseDescription(parentNodeId);
 		try {
 			BrowseResult browseResult = connection.browse(browse).get();
 			List<ReferenceDescription> references = toList(browseResult.getReferences());
 			final NamespaceTable namespaceTable = connection.getNamespaceTable();
 			for (ReferenceDescription ref : references) {
-				final Node node = connection.getAddressSpace().getNode(aNodeId);
+				final NodeId nodeId = ref.getNodeId().toNodeId(namespaceTable).orElse(null);
 				final String identifier = ref.getNodeId().getIdentifier().toString();
 				final String name = ref.getBrowseName().getName();
 				final int nodeClass = ref.getNodeClass().getValue();
 				final OPCNamespace namespace = getNamespace(ref.getNodeId());
-				final OPCInstanceNode parent = getCurrentParent();
+				final OPCInstanceNode<?> parent = getCurrentParent();
 				String indent = "";
 
 				for (int i = 0; i < nodeStack.size(); i++)
@@ -124,12 +121,12 @@ public class OPCDiscovery {
 						// Node is an object
 						UaObjectNode miloNode;
 						try {
-							miloNode = connection.getAddressSpace().getObjectNode(ref.getNodeId().toNodeId(namespaceTable).get());
+							miloNode = connection.getAddressSpace().getObjectNode(ref.getNodeId().toNodeId(namespaceTable).orElse(null));
 						} catch (Exception e) {
 							System.err.println(e.getMessage());
 							break;
 						}
-						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(miloNode, namespace, parent, identifier, name);
+						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(miloNode, nodeId, namespace, parent);
 						System.out.println(indent + "Added object node " + objectNode.getQualifiedName());
 						enterNode(objectNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
@@ -140,12 +137,12 @@ public class OPCDiscovery {
 						// Node is a variable
 						UaVariableNode miloNode;
 						try {
-							miloNode = connection.getAddressSpace().getVariableNode(ref.getNodeId().toNodeId(namespaceTable).get());
+							miloNode = connection.getAddressSpace().getVariableNode(ref.getNodeId().toNodeId(namespaceTable).orElse(null));
 						} catch (Exception e) {
 							System.err.println(e);
 							break;
 						}
-						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(miloNode, namespace, parent, identifier, name);
+						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(miloNode, nodeId, namespace, parent);
 						System.out.println(indent + "Added variable node " + variableNode.getUri());
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
@@ -157,9 +154,7 @@ public class OPCDiscovery {
 				}
 			}
 		} catch (InterruptedException | ExecutionException e) {
-
-		} catch (UaException e) {
-			throw new RuntimeException(e);
+			System.err.println(e.getMessage());
 		}
 	}
 

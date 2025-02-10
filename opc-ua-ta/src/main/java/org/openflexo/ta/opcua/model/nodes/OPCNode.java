@@ -1,6 +1,7 @@
 package org.openflexo.ta.opcua.model.nodes;
 
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.OPCNamespace;
@@ -42,30 +43,16 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 
 	public boolean isRoot();
 
-	@PropertyIdentifier(type = String.class)
-	public static final String NAME_KEY = "name";
-
-	/**
-	 * Return this {@link OPCNode} name
-	 *
-	 * @return
-	 */
-	@Getter(value = NAME_KEY)
-	public String getName();
-
-	@Setter(value = NAME_KEY)
-	public void setName(String aName);
-
-	@PropertyIdentifier(type = String.class)
-	public static final String IDENTIFIER_KEY = "identifier";
-
-	@Getter(IDENTIFIER_KEY)
-	public String getIdentifier();
-
-	@Setter(IDENTIFIER_KEY)
-	public void setIdentifier(String anIdentifier);
-
 	public String getQualifiedName();
+
+	@PropertyIdentifier(type = NodeId.class)
+	public static final String NODE_ID_KEY = "nodeId";
+
+	@Getter(value = NODE_ID_KEY, ignoreType = true)
+	public NodeId getNodeId();
+
+	@Setter(NODE_ID_KEY)
+	public void setNodeId(NodeId nodeId);
 
 	@PropertyIdentifier(type = UaNode.class)
 	public static final String NODE_KEY = "node";
@@ -75,6 +62,10 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 
 	@Setter(NODE_KEY)
 	public void setNode(N aNode);
+
+	public String getName();
+
+	public String getIdentifier();
 
 	public static abstract class OPCNodeImpl<N extends UaNode> extends OPCObject.OPCObjectImpl implements OPCNode<N> {
 
@@ -109,6 +100,16 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 		@Override
 		public boolean isRoot() {
 			return false;
+		}
+
+		@Override
+		public String getName() {
+			return getNode().getBrowseName().getName();
+		}
+
+		@Override
+		public String getIdentifier() {
+			return getNodeId().getIdentifier().toString();
 		}
 
 	}
