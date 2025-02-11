@@ -1,4 +1,4 @@
-package org.openflexo.ta.opcua.model;
+package org.openflexo.ta.opcua.model.types;
 
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;

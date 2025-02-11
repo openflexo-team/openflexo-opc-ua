@@ -3,28 +3,40 @@ package org.openflexo.ta.opcua.model.nodes;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.openflexo.pamela.annotations.*;
+import org.openflexo.ta.opcua.model.types.OPCDataType;
 
 @ModelEntity
 @ImplementationClass(value = OPCVariableNode.OPCVariableNodeImpl.class)
 public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 
-	@PropertyIdentifier(type = OPCVariableType.class)
-	public static final String TYPE_KEY = "type";
+	public OPCDataType getValueType();
 
-	@Getter(value = TYPE_KEY)
-	public OPCVariableType getType();
+	/**
+	 * Returns an int that tells the dimensionality of the data.
+	 *
+	 * <ul>
+	 *   <li>-2 means a complex structure</li>
+	 *   <li>-1 means a scalar</li>
+	 *   <li>0 means any dimension (scalar or array)</li>
+	 *   <li>1 means a 1D array</li>
+	 *   <li>2 means a 2D array</li>
+	 *   <li>...</li>
+	 * </ul>
+	 */
+	public int getValueDimensionality();
 
-	@Setter(value = TYPE_KEY)
-	public void setType(OPCVariableType aType);
-
-	@PropertyIdentifier(type = Number.class)
-	public static final String VALUE_KEY = "value";
-
-	@Setter(VALUE_KEY)
-	public void setValue(Number aValue);
-
-	@Getter(value = VALUE_KEY)
-	public Number getValue();
+	/**
+	 * Returns a String computed from getValueType() and getValueDimensionality(). Some examples:
+	 *
+	 * <ul>
+	 *     <li>'Uint32' for a scalar</li>
+	 *     <li>'Uint32[]' for a 1D array</li>
+	 *     <li>'Uint32[][] for a 2D array</li>
+	 *     <li>'Uint32?' if dimensionality is unknown</li>
+	 *     <li>'Complex' for anything complex</li>
+	 * </ul>
+	 */
+	public String getValueTypeString();
 
 	// TODO : we want to subscribe to a variable, how? Discuss ;)
 
@@ -42,6 +54,31 @@ public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 				System.err.println(e.getMessage());
 			}
 			return null;
+		}
+
+		@Override
+		public OPCDataType getValueType() {
+			return OPCDataType.fromNodeId(getNode().getDataType());
+		}
+
+		@Override
+		public int getValueDimensionality() {
+			return getNode().getValueRank();
+		}
+
+		@Override
+		public String getValueTypeString() {
+			final int valueDimensionality = getValueDimensionality();
+			switch (valueDimensionality) {
+				case -2: return "complex";
+				case -1: return getValueType().getName();
+				case 0: return getValueType().getName() + "?";
+				default: {
+					StringBuilder builder = new StringBuilder(getValueType().getName());
+					for (int i = 0; i < valueDimensionality; i++) builder.append("[]");
+					return builder.toString();
+				}
+			}
 		}
 
 	}

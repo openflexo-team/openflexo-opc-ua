@@ -127,7 +127,13 @@ public class OPCDiscovery {
 					case 2: {
 						// Node is a variable
 						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(namespace, parent, identifier);
-						System.out.println(indent + "Added variable node " + variableNode.getUri());
+						String valueTypeString = "";
+						try {
+							valueTypeString = variableNode.getValueTypeString();
+						} catch (Exception e) {
+							System.err.println("A weird type has been detected!");
+						}
+						System.out.println(indent + "Added variable node " + variableNode.getUri() + " of type " + valueTypeString);
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
 						exitNode();

@@ -4,7 +4,7 @@ import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
-import org.openflexo.ta.opcua.model.OPCIdentifierType;
+import org.openflexo.ta.opcua.model.types.OPCIdentifierType;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -43,6 +43,24 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 	public void setParent(OPCInstanceNode<?> aParent);
 
 	public boolean isRoot();
+
+	@PropertyIdentifier(type = String.class)
+	public static final String IDENTIFIER_STRING_KEY = "identifierString";
+
+	@Getter(IDENTIFIER_STRING_KEY)
+	public String getIdentifierString();
+
+	@Setter(IDENTIFIER_STRING_KEY)
+	public void setIdentifierString(String string);
+
+	@PropertyIdentifier(type = OPCIdentifierType.class)
+	public static final String IDENTIFIER_TYPE_KEY = "identifierType";
+
+	@Getter(IDENTIFIER_TYPE_KEY)
+	public OPCIdentifierType getIdentifierType();
+
+	@Setter(IDENTIFIER_TYPE_KEY)
+	public void setIdentifierType(OPCIdentifierType type);
 
 	public Object getIdentifier();
 
@@ -83,17 +101,14 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 			return false;
 		}
 
-		private String identifierString;
-		private OPCIdentifierType identifierType;
-
 		public Object getIdentifier() {
-			return identifierType.parseString(identifierString);
+			return getIdentifierType().parseString(getIdentifierString());
 		}
 
 		public void setIdentifier(Object identifier) {
-			identifierString = identifier.toString();
-			identifierType = OPCIdentifierType.fromInstance(identifier);
-			nodeId = identifierType.makeNodeId(getNamespace().getIndex(), identifierString);
+			setIdentifierString(identifier.toString());
+			setIdentifierType(OPCIdentifierType.fromInstance(identifier));
+			nodeId = getIdentifierType().makeNodeId(getNamespace().getIndex(), getIdentifierString());
 		}
 
 		private NodeId nodeId;
