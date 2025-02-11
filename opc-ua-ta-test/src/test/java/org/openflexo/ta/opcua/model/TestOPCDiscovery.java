@@ -51,7 +51,9 @@ public class TestOPCDiscovery {
 
         // Shutdown the client and server
         model.shutdownClient();
+        if (model.isConnected()) fail("Client should be disconnected by now");
         server.shutdown();
+
 
         // Try to access a value anyway.
         Object value2 = temperatureNode.getNode().getValue().getValue().getValue();

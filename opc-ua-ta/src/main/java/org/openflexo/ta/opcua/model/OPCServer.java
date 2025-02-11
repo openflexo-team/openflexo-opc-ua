@@ -1,6 +1,7 @@
 package org.openflexo.ta.opcua.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -134,22 +135,34 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public boolean isConnected() {
-			return client != null;
+			if (client == null) return false;
+			try {
+				return client.getSession().thenApply(Objects::nonNull).get();
+			} catch (ExecutionException | InterruptedException e) {
+				return false;
+			}
 		}
 
 		@Override
 		public OpcUaClient getClient() {
+			final String uri = getUri();
 			if (client == null) {
 				try {
+					logger.info("Creating an OpcUaClient to connect to " + uri);
 					client = OpcUaClient.create(getUri());
 				} catch (UaException e) {
-					logger.warning("Exception while creating a client: " + e.getMessage());
+					logger.warning("Exception while creating the client: " + e.getMessage());
 					return null;
 				}
 			}
-			// TODO: check if connected
+			if (isConnected()) return client;
 			try {
 				client.connect().get();
+				if (isConnected()) {
+					logger.info("Connected to " + uri);
+				} else {
+					logger.warning("Something went wrong while connecting to " + uri);
+				}
 			} catch (InterruptedException | ExecutionException e) {
 				logger.warning("Exception while connecting a client: " + e.getMessage());
 			}
