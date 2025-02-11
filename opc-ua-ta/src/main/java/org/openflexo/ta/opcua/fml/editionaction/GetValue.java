@@ -73,13 +73,13 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 
 			if (node instanceof OPCVariableNode) {
 				try {
-					return ((OPCVariableNode) node).getNode().getValue().getValue();
+					return ((OPCVariableNode) node).getNode().readValue().getValue().getValue();
 				} catch (Exception e) {
-					System.err.println(e.getMessage());
+					logger.warning(e.getMessage());
 				}
 			}
 
-			System.err.println("Attempting to read value from " + node.getUri() + " (" + node.getClass() + ")");
+			logger.warning("Attempting to read value from " + node.getUri() + " (" + node.getClass() + ")");
 
 			return null;
 

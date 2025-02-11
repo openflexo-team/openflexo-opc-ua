@@ -1,6 +1,7 @@
 package org.openflexo.ta.opcua.model;
 
 import org.eclipse.milo.opcua.stack.core.UaException;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
@@ -39,27 +40,28 @@ public class TestOPCDiscovery {
         List<OPCNode<?>> rootNodes = bioreactorNamespace.getRootNodes();
         assertEquals(1, rootNodes.size());
         OPCVariableNode temperatureNode = null;
-        Object value1;
         try {
             OPCObjectNode dataNode = (OPCObjectNode) rootNodes.get(0);
             temperatureNode = (OPCVariableNode) dataNode.getChildren().get(0);
-            value1 = temperatureNode.getNode().getValue().getValue().getValue();
-            System.out.println(temperatureNode.getNode().getValue().getStatusCode());
+            temperatureNode.getNode().readValue();
         } catch (Exception e) {
             fail(e.getMessage());
+            model.shutdownClient();
+            server.shutdown();
+            return;
         }
 
-        // Shutdown the client and server
+        // Shutdown the client
         model.shutdownClient();
-        if (model.isConnected()) fail("Client should be disconnected by now");
+
+        // Test if one can still read a value
+        try {
+            temperatureNode.getNode().readValue();
+            fail("Reading a value while client should be disconnected");
+        } catch (Exception ignored) {}
+
+        // Shutdown the server
         server.shutdown();
-
-
-        // Try to access a value anyway.
-        Object value2 = temperatureNode.getNode().getValue().getValue().getValue();
-        System.out.println(temperatureNode.getNode().getValue().getStatusCode());
-
-        System.out.println(model.getUri());
     }
 
 }
