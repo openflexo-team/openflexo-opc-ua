@@ -10,6 +10,9 @@
 
 package org.eclipse.milo.examples.client;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
@@ -17,9 +20,6 @@ import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class BrowseNodeExample implements ClientExample {
 

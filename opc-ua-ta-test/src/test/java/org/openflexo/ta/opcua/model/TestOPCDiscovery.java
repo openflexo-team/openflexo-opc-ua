@@ -1,7 +1,12 @@
 package org.openflexo.ta.opcua.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import org.eclipse.milo.opcua.stack.core.UaException;
-import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
@@ -10,12 +15,6 @@ import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
 import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class TestOPCDiscovery {
 

@@ -104,7 +104,7 @@ public class OPCDiscovery {
 			final NamespaceTable namespaceTable = connection.getNamespaceTable();
 			for (ReferenceDescription ref : references) {
 				final NodeId nodeId = ref.getNodeId().toNodeId(namespaceTable).orElse(null);
-				final String identifier = ref.getNodeId().getIdentifier().toString();
+				final Object identifier = ref.getNodeId().getIdentifier();
 				final String name = ref.getBrowseName().getName();
 				final int nodeClass = ref.getNodeClass().getValue();
 				final OPCNamespace namespace = getNamespace(ref.getNodeId());
@@ -116,7 +116,7 @@ public class OPCDiscovery {
 				switch (ref.getNodeClass().getValue()) {
 					case 1: {
 						// Node is an object
-						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(nodeId, namespace, parent);
+						OPCObjectNode objectNode = getFactory().makeOPCObjectNode(namespace, parent, identifier);
 						System.out.println(indent + "Added object node " + objectNode.getQualifiedName());
 						enterNode(objectNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);
@@ -126,7 +126,7 @@ public class OPCDiscovery {
 
 					case 2: {
 						// Node is a variable
-						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(nodeId, namespace, parent);
+						OPCVariableNode variableNode = getFactory().makeOPCVariableNode(namespace, parent, identifier);
 						System.out.println(indent + "Added variable node " + variableNode.getUri());
 						enterNode(variableNode);
 						ref.getNodeId().toNodeId(connection.getNamespaceTable()).ifPresent(this::browseNode);

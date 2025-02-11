@@ -10,6 +10,10 @@
 
 package org.eclipse.milo.examples.client;
 
+import static org.eclipse.milo.opcua.stack.core.util.ConversionUtil.l;
+
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -18,10 +22,6 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.structured.CallMethodRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.CompletableFuture;
-
-import static org.eclipse.milo.opcua.stack.core.util.ConversionUtil.l;
 
 public class MethodExample implements ClientExample {
 

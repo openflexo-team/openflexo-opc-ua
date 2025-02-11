@@ -1,5 +1,7 @@
 package org.imta.opc.examples.minimal;
 
+import java.util.List;
+
 import org.eclipse.milo.opcua.sdk.core.Reference;
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
 import org.eclipse.milo.opcua.sdk.server.api.DataItem;
@@ -12,8 +14,6 @@ import org.eclipse.milo.opcua.sdk.server.nodes.filters.AttributeFilters;
 import org.eclipse.milo.opcua.sdk.server.util.SubscriptionModel;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
-
-import java.util.List;
 
 public class MinimalNamespace extends ManagedNamespaceWithLifecycle {
 

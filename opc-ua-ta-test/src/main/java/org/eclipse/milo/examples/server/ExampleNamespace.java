@@ -10,6 +10,13 @@
 
 package org.eclipse.milo.examples.server;
 
+import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.*;
+
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 import org.eclipse.milo.examples.server.methods.GenerateEventMethod;
 import org.eclipse.milo.examples.server.methods.SqrtMethod;
 import org.eclipse.milo.examples.server.types.CustomEnumType;
@@ -42,13 +49,6 @@ import org.eclipse.milo.opcua.stack.core.types.enumerated.StructureType;
 import org.eclipse.milo.opcua.stack.core.types.structured.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.*;
 
 public class ExampleNamespace extends ManagedNamespaceWithLifecycle {
 

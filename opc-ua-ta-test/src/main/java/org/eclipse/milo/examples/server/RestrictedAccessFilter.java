@@ -10,15 +10,15 @@
 
 package org.eclipse.milo.examples.server;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+
 import org.eclipse.milo.opcua.sdk.core.AccessLevel;
 import org.eclipse.milo.opcua.sdk.server.Session;
 import org.eclipse.milo.opcua.sdk.server.nodes.filters.AttributeFilter;
 import org.eclipse.milo.opcua.sdk.server.nodes.filters.AttributeFilterContext.GetAttributeContext;
 import org.eclipse.milo.opcua.stack.core.AttributeId;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
 
 public class RestrictedAccessFilter implements AttributeFilter {
 

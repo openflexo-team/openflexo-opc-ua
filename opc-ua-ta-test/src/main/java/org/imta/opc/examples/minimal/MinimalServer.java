@@ -1,11 +1,11 @@
 package org.imta.opc.examples.minimal;
 
+import java.util.Collections;
+
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
 import org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
-
-import java.util.Collections;
 
 /**
  * Minimal example of a server, hopefully generic enough to not be OPC Specific

@@ -10,8 +10,8 @@
 
 package org.eclipse.milo.examples.server.types;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
+import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
+
 import org.eclipse.milo.examples.server.ExampleNamespace;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.SerializationContext;
@@ -22,7 +22,8 @@ import org.eclipse.milo.opcua.stack.core.serialization.codecs.GenericDataTypeCod
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 
-import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 public class CustomStructType implements UaStructure {
 

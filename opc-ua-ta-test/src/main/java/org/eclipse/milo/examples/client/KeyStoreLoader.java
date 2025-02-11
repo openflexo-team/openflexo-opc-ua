@@ -10,12 +10,6 @@
 
 package org.eclipse.milo.examples.client;
 
-import org.eclipse.milo.opcua.sdk.server.util.HostnameUtil;
-import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateBuilder;
-import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -24,6 +18,12 @@ import java.security.*;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.regex.Pattern;
+
+import org.eclipse.milo.opcua.sdk.server.util.HostnameUtil;
+import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateBuilder;
+import org.eclipse.milo.opcua.stack.core.util.SelfSignedCertificateGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class KeyStoreLoader {
 

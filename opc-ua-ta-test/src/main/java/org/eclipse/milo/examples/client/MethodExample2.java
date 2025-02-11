@@ -10,6 +10,9 @@
 
 package org.eclipse.milo.examples.client;
 
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.milo.opcua.sdk.client.DataTypeTreeBuilder;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.methods.UaMethod;
@@ -21,9 +24,6 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.structured.Argument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 public class MethodExample2 implements ClientExample {
 

@@ -1,12 +1,12 @@
 package org.imta.opc.examples.generic.server.opc;
 
+import java.util.List;
+
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
 import org.eclipse.milo.opcua.sdk.server.api.DataItem;
 import org.eclipse.milo.opcua.sdk.server.api.ManagedNamespaceWithLifecycle;
 import org.eclipse.milo.opcua.sdk.server.api.MonitoredItem;
 import org.eclipse.milo.opcua.sdk.server.util.SubscriptionModel;
-
-import java.util.List;
 
 /**
  * A simple namespace that should be enough to manage folder, variable nodes and subscriptions.

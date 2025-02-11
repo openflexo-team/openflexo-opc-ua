@@ -2,7 +2,6 @@ package org.openflexo.ta.opcua.model;
 
 import java.util.logging.Logger;
 
-import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
@@ -61,23 +60,23 @@ public class OPCModelFactory extends PamelaModelFactory implements PamelaResourc
 		return returned;
 	}
 
-	public OPCVariableNode makeOPCVariableNode(NodeId nodeId, OPCNamespace namespace, OPCInstanceNode<?> parent) {
+	public OPCVariableNode makeOPCVariableNode(OPCNamespace namespace, OPCInstanceNode<?> parent, Object identifier) {
 		OPCVariableNode returned = newInstance(OPCVariableNode.class);
-		returned.setNodeId(nodeId);
+		namespace.addToNamespace(returned);
 		if (parent != null) {
 			parent.addToChildren(returned);
 		}
-		namespace.addToNamespace(returned);
+		returned.setIdentifier(identifier);
 		return returned;
 	}
 
-	public OPCObjectNode makeOPCObjectNode(NodeId nodeId, OPCNamespace namespace, OPCInstanceNode<?> parent) {
+	public OPCObjectNode makeOPCObjectNode(OPCNamespace namespace, OPCInstanceNode<?> parent, Object identifier) {
 		OPCObjectNode returned = newInstance(OPCObjectNode.class);
-		returned.setNodeId(nodeId);
+		namespace.addToNamespace(returned);
 		if (parent != null) {
 			parent.addToChildren(returned);
 		}
-		namespace.addToNamespace(returned);
+		returned.setIdentifier(identifier);
 		return returned;
 	}
 

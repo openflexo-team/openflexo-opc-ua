@@ -10,6 +10,9 @@
 
 package org.eclipse.milo.examples.client;
 
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.model.nodes.objects.ServerTypeNode;
 import org.eclipse.milo.opcua.sdk.client.model.nodes.variables.ServerStatusTypeNode;
@@ -20,9 +23,6 @@ import org.eclipse.milo.opcua.stack.core.types.structured.BuildInfo;
 import org.eclipse.milo.opcua.stack.core.types.structured.ServerStatusDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 public class ReadNodeExample implements ClientExample {
 

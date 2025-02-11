@@ -4,6 +4,7 @@ import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
+import org.openflexo.ta.opcua.model.OPCIdentifierType;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
@@ -43,36 +44,23 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 
 	public boolean isRoot();
 
-	public String getQualifiedName();
+	public Object getIdentifier();
 
-	@PropertyIdentifier(type = NodeId.class)
-	public static final String NODE_ID_KEY = "nodeId";
+	public void setIdentifier(Object identifier);
 
-	@Getter(value = NODE_ID_KEY, ignoreType = true)
 	public NodeId getNodeId();
-
-	@Setter(NODE_ID_KEY)
-	public void setNodeId(NodeId nodeId);
 
 	public N getNode();
 
 	public String getName();
 
-	public String getIdentifier();
+	public String getQualifiedName();
 
 	public static abstract class OPCNodeImpl<N extends UaNode> extends OPCObject.OPCObjectImpl implements OPCNode<N> {
 
 		@Override
 		public String getUri() {
 			return getNamespace().getServer().getUri() + "#nsu=" + getNamespace().getUri() +";s=" + getQualifiedName();
-		}
-
-		@Override
-		public String getQualifiedName() {
-			OPCNode<?> parent = getParent();
-			if (parent != null)
-				return parent.getQualifiedName() + "." + getName();
-			return getName();
 		}
 
 		@Override
@@ -95,14 +83,36 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 			return false;
 		}
 
+		private String identifierString;
+		private OPCIdentifierType identifierType;
+
+		public Object getIdentifier() {
+			return identifierType.parseString(identifierString);
+		}
+
+		public void setIdentifier(Object identifier) {
+			identifierString = identifier.toString();
+			identifierType = OPCIdentifierType.fromInstance(identifier);
+			nodeId = identifierType.makeNodeId(getNamespace().getIndex(), identifierString);
+		}
+
+		private NodeId nodeId;
+
+		public NodeId getNodeId() {
+			return nodeId;
+		}
+
 		@Override
 		public String getName() {
 			return getNode().getBrowseName().getName();
 		}
 
 		@Override
-		public String getIdentifier() {
-			return getNodeId().getIdentifier().toString();
+		public String getQualifiedName() {
+			OPCNode<?> parent = getParent();
+			if (parent != null)
+				return parent.getQualifiedName() + "." + getName();
+			return getName();
 		}
 
 	}

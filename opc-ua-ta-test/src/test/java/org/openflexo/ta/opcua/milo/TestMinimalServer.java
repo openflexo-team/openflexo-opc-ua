@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.eclipse.milo.opcua.sdk.server.namespaces.OpcUaNamespace;
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
-import org.junit.*;
+import org.junit.Test;
 
 public class TestMinimalServer {
 

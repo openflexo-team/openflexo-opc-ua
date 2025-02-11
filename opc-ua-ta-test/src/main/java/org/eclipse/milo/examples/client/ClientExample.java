@@ -10,14 +10,14 @@
 
 package org.eclipse.milo.examples.client;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.identity.AnonymousProvider;
 import org.eclipse.milo.opcua.sdk.client.api.identity.IdentityProvider;
 import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
 
 
 public interface ClientExample {

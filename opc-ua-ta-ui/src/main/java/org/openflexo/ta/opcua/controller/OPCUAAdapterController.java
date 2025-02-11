@@ -40,7 +40,7 @@ package org.openflexo.ta.opcua.controller;
 
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;

@@ -1,13 +1,13 @@
 package org.imta.opc.examples.generic.server.opc;
 
+import java.util.Collections;
+
 import org.eclipse.milo.opcua.sdk.server.OpcUaServer;
 import org.eclipse.milo.opcua.sdk.server.api.config.OpcUaServerConfig;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.server.EndpointConfiguration;
 import org.imta.opc.examples.generic.server.ServerDefinition;
 import org.imta.opc.examples.generic.server.ServerRunner;
-
-import java.util.Collections;
 
 /**
  * Helper to set and start an OPC UA server given a ServerDefinition.

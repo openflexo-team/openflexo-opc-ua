@@ -40,7 +40,7 @@ package org.openflexo.ta.opcua.gui;
 
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
