@@ -70,18 +70,19 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 		public Object execute(RunTimeEvaluationContext evaluationContext) {
 
 			OPCNode<?> node = getReceiver(evaluationContext);
+			Object returned = null;
 
 			if (node instanceof OPCVariableNode) {
 				try {
-					return ((OPCVariableNode) node).getNode().readValue().getValue().getValue();
+					returned = ((OPCVariableNode) node).getNode().readValue().getValue().getValue();
 				} catch (Exception e) {
 					logger.warning(e.getMessage());
 				}
 			}
 
-			logger.warning("Attempting to read value from " + node.getUri() + " (" + node.getClass() + ")");
+			logger.info("Attempting to read value from " + node.getUri() + " (" + node.getClass() + "): " + returned);
 
-			return null;
+			return returned;
 
 		}
 

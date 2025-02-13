@@ -78,7 +78,7 @@ public interface OPCNode<N extends UaNode> extends OPCObject, ResourceData<OPCSe
 
 		@Override
 		public String getUri() {
-			return getNamespace().getServer().getUri() + "#nsu=" + getNamespace().getUri() +";s=" + getQualifiedName();
+			return getNamespace().getServer().getUri() + "#nsu=" + getNamespace().getUri() +";s=" + getIdentifier();
 		}
 
 		@Override

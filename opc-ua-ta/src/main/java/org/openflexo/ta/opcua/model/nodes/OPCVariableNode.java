@@ -33,8 +33,10 @@ public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 	 *     <li>'Uint32[]' for a 1D array</li>
 	 *     <li>'Uint32[][] for a 2D array</li>
 	 *     <li>'Uint32?' if dimensionality is unknown</li>
-	 *     <li>'Complex' for anything complex</li>
+	 *     <li>'Uint32[complex]' for anything complex</li>
 	 * </ul>
+	 *
+	 * Note that unsupported types are displayed as (for example) 'Id862' with 862 being the unhandled identifier.
 	 */
 	public String getValueTypeString();
 
@@ -68,13 +70,14 @@ public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 
 		@Override
 		public String getValueTypeString() {
+			final String name = getValueType() == OPCDataType.Unsupported ? "Id" + getNode().getDataType().getIdentifier() : getValueType().getName();
 			final int valueDimensionality = getValueDimensionality();
 			switch (valueDimensionality) {
-				case -2: return "complex";
-				case -1: return getValueType().getName();
-				case 0: return getValueType().getName() + "?";
+				case -2: return name + "[complex]";
+				case -1: return name;
+				case 0: return name + "?";
 				default: {
-					StringBuilder builder = new StringBuilder(getValueType().getName());
+					StringBuilder builder = new StringBuilder(name);
 					for (int i = 0; i < valueDimensionality; i++) builder.append("[]");
 					return builder.toString();
 				}
