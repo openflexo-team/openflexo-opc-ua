@@ -50,9 +50,10 @@ import org.openflexo.ta.opcua.rm.OPCServerResourceRepository;
 
 /**
  * A {@link TechnologyAdapter} dedicated to manage OPC-UA technology
- * 
- * @author sylvain
- * 
+ *
+ * <p>For an overview of OPC UA integration in OpenFlexo, see {@link org.openflexo.ta.opcua}.</p>
+ *
+ * @author Sylvain
  */
 @DeclareModelSlots({ OPCServerModelSlot.class })
 // You might declare your own types here

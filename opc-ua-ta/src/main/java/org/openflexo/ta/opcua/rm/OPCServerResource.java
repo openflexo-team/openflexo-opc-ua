@@ -48,7 +48,9 @@ import org.openflexo.ta.opcua.model.OPCServer;
 
 /**
  * A resource referencing a {@link OPCServer}
- * 
+ *
+ * <p>For details on how OPC UA resources are structured, start here  {@link org.openflexo.ta.opcua}.</p>
+ *
  * @author sylvain
  *
  */

@@ -56,12 +56,51 @@ import org.openflexo.ta.opcua.fml.editionaction.GetValue;
 import org.openflexo.ta.opcua.fml.editionaction.SelectOPCNode;
 import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueOPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.model.OPCNamespace;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 
 /**
- * A ModelSlot allowing access to a OPC-UA Server
- * 
- * @author sylvain, luka
- * 
+ * Represents a model slot for integrating an OPC UA server within OpenFlexo.
+ *
+ * <p>The {@code OPCServerModelSlot} acts as a bridge between OpenFlexo and an OPC UA server,
+ * enabling models to interact with real-time data using the
+ * <a href="https://github.com/eclipse/milo">Eclipse Milo</a> library.</p>
+ *
+ * <p>For an overview of the OPC UA integration in OpenFlexo, see {@link org.openflexo.ta.opcua}.</p>
+ *
+ * <h2>Purpose</h2>
+ * <p>In OpenFlexo, a <i>ModelSlot</i> defines how an external data source is accessed within a Virtual Model.
+ * The {@code OPCServerModelSlot} provides access to data through an OPC UA server.</p>
+ *
+ * <h2>OPC UA Integration</h2>
+ * <p>Through this ModelSlot, OpenFlexo can:</p>
+ * <ul>
+ *   <li>Connect to OPC UA servers via {@link OpcUaClient}.</li>
+ *   <li>Browse and retrieve server metadata dynamically.</li>
+ *   <li>Access real-time values of OPC UA nodes.</li>
+ * </ul>
+ *
+ * <h2>Interaction with the OPC UA Model</h2>
+ * <p>The OPC UA server structure is represented as follows:</p>
+ * <ul>
+ *   <li>{@link OPCServer} - The connected OPC UA server.</li>
+ *   <li>{@link OPCNamespace} - A namespace containing OPC UA nodes.</li>
+ *   <li>{@link OPCNode} - A node representing variables, objects, or folders.</li>
+ * </ul>
+ *
+ * <h2>FML (Flexo Modeling Language) Integration</h2>
+ * <p>The {@code OPCServerModelSlot} enables Flexo Modeling Language (FML) scripts to interact with OPC UA data.
+ * It supports:</p>
+ * <ul>
+ *   <li>Roles: {@link OPCNamespaceRole}, {@link OPCNodeRole}.</li>
+ *   <li>Actions: {@link GetValue} (read values from variable nodes).</li>
+ *   <li>Fetch requests: {@link SelectOPCNode} (search for nodes).</li>
+ * </ul>
+ *
+ * <p>For details on how OpenFlexo structures OPC UA data, see {@link org.openflexo.ta.opcua}.</p>
+ *
+ * @author Sylvain, Luka
  */
 @DeclareFlexoRoles({ OPCNamespaceRole.class, OPCNodeRole.class })
 @DeclareEditionActions({ AddOPCNode.class, GetValue.class })

@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import org.eclipse.milo.opcua.stack.core.UaException;
+import org.openflexo.pamela.factory.PamelaModelFactory;
+
 import org.imta.opc.examples.minimal.MinimalNamespace;
 import org.imta.opc.examples.minimal.MinimalServer;
 import org.junit.Test;
@@ -14,12 +14,14 @@ import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.nodes.OPCObjectNode;
 import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
+import org.openflexo.ta.opcua.rm.OPCServerResource;
+import org.openflexo.ta.opcua.rm.OPCServerResourceImpl;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
 
 public class TestOPCDiscovery {
 
     @Test
-    public void test() throws UaException, ExecutionException, InterruptedException, ModelDefinitionException {
+    public void test() throws ModelDefinitionException {
         // Start the server
         MinimalServer server = new MinimalServer();
         MinimalNamespace namespace = new MinimalNamespace(server);
