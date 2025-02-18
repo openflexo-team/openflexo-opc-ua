@@ -9,6 +9,38 @@ import org.openflexo.ta.opcua.model.OPCNamespace;
 import org.openflexo.ta.opcua.model.OPCObject;
 import org.openflexo.ta.opcua.model.OPCServer;
 
+/**
+ * Represents a node in the OPC UA address space within OpenFlexo.
+ *
+ * <p>For more details on OPC UA integration in OpenFlexo, see
+ * {@link org.openflexo.ta.opcua}.</p>
+ *
+ * <p>The {@code OPCNode} class defines an OPC UA node by storing its
+ * namespace, identifier, and parent node (if applicable). It does not
+ * store other attributes directly but instead retrieves them dynamically
+ * from the associated {@link UaNode}.</p>
+ *
+ * <h2>Key Characteristics</h2>
+ * <ul>
+ *   <li>Belongs to an {@link OPCNamespace}, which provides a unique context for its identifier.</li>
+ *   <li>Maintains a reference to its parent node if it has one.</li>
+ *   <li>Stores only minimal persistent information, fetching additional attributes
+ *       (such as display name, node class, and references) dynamically from the associated
+ *       {@code UaNode} at runtime.</li>
+ * </ul>
+ *
+ * <h2>OPC UA Node Model</h2>
+ * <p>In OPC UA, the address space consists of nodes interconnected by references, forming
+ * a structured network of information. Each node has an identifier within a namespace,
+ * defining its uniqueness in the server.</p>
+ *
+ * <p>For a detailed explanation of the Node Model, see the
+ * <a href="https://reference.opcfoundation.org/Core/Part3/v105/docs/5">OPC UA Part 3: Address Space Model</a>.</p>
+ *
+ * @see OPCNamespace
+ * @see OPCServer
+ * @author Luka
+ */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(value = OPCNode.OPCNodeImpl.class)
 @Imports({ @Import(OPCVariableNode.class), @Import(OPCObjectNode.class) })
