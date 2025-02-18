@@ -1,0 +1,14 @@
+// Perform some initialization, display resources and the context
+service ResourceCenterService status;
+resources;
+context;
+
+// Load the OPC UA server resource
+log "Loading OPC UA server resource...";
+opcServerResource = load -r ["http://openflexo.org/opc-ua-test/TestResourceCenter/MinimalServer1.opcua"];
+log "opcServerResource=" + opcServerResource;
+assert opcServerResource != null;
+
+// Check if the OPC UA server has at least one namespace
+assert opcServerResource.namespaces.size > 0;
+log "OPC UA server has " + opcServerResource.namespaces.size + " namespaces.";
