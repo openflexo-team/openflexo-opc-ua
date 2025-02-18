@@ -7,6 +7,8 @@ dependencies {
   // testing dep
   testImplementation flexoFoundation()
   testImplementation flexoFoundationTest()
+  testImplementation fmlCli()
+  testImplementation fmlCliTest()
 
   // Test resource center
   testRuntimeOnly project(':opc-ua-ta-test-rc')
