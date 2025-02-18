@@ -23,38 +23,38 @@ import org.slf4j.LoggerFactory;
 
 public class BrowseNodeExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        BrowseNodeExample example = new BrowseNodeExample();
+	public static void main(String[] args) throws Exception {
+		BrowseNodeExample example = new BrowseNodeExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // start browsing at root folder
-        browseNode("", client, Identifiers.RootFolder);
+		// start browsing at root folder
+		browseNode("", client, Identifiers.RootFolder);
 
-        future.complete(client);
-    }
+		future.complete(client);
+	}
 
-    private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
-        try {
-            List<? extends UaNode> nodes = client.getAddressSpace().browseNodes(browseRoot);
+	private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
+		try {
+			List<? extends UaNode> nodes = client.getAddressSpace().browseNodes(browseRoot);
 
-            for (UaNode node : nodes) {
-                logger.info("{} Node={}", indent, node.getBrowseName().getName());
+			for (UaNode node : nodes) {
+				logger.info("{} Node={}", indent, node.getBrowseName().getName());
 
-                // recursively browse to children
-                browseNode(indent + "  ", client, node.getNodeId());
-            }
-        } catch (UaException e) {
-            logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
-        }
-    }
+				// recursively browse to children
+				browseNode(indent + "  ", client, node.getNodeId());
+			}
+		} catch (UaException e) {
+			logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
+		}
+	}
 
 }

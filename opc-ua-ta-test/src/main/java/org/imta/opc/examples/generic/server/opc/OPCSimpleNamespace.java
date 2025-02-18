@@ -13,56 +13,57 @@ import org.eclipse.milo.opcua.sdk.server.util.SubscriptionModel;
  */
 public class OPCSimpleNamespace extends ManagedNamespaceWithLifecycle {
 
-    private final SubscriptionModel subscriptionModel;
-    private Thread lifeline;
-    public OPCSimpleNamespace(OpcUaServer server, String uri) {
-        super(server, uri);
-        this.subscriptionModel = new SubscriptionModel(server, this);
-        getLifecycleManager().addLifecycle(subscriptionModel);
-        getLifecycleManager().addStartupTask(this::startupTask);
-        getLifecycleManager().addShutdownTask(this::shutdownTask);
-    }
+	private final SubscriptionModel subscriptionModel;
+	private Thread lifeline;
 
-    private void startupTask() {
-        lifeline = new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(2_000);
-                } catch (InterruptedException ignored) {
+	public OPCSimpleNamespace(OpcUaServer server, String uri) {
+		super(server, uri);
+		this.subscriptionModel = new SubscriptionModel(server, this);
+		getLifecycleManager().addLifecycle(subscriptionModel);
+		getLifecycleManager().addStartupTask(this::startupTask);
+		getLifecycleManager().addShutdownTask(this::shutdownTask);
+	}
 
-                }
-            }
-        });
-        lifeline.start();
-    }
+	private void startupTask() {
+		lifeline = new Thread(() -> {
+			while (true) {
+				try {
+					Thread.sleep(2_000);
+				} catch (InterruptedException ignored) {
 
-    private void shutdownTask() {
-        lifeline.interrupt();
-        try {
-            lifeline.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+				}
+			}
+		});
+		lifeline.start();
+	}
 
-    @Override
-    public void onDataItemsCreated(List<DataItem> list) {
-        subscriptionModel.onDataItemsCreated(list);
-    }
+	private void shutdownTask() {
+		lifeline.interrupt();
+		try {
+			lifeline.join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Override
-    public void onDataItemsModified(List<DataItem> list) {
-        subscriptionModel.onDataItemsModified(list);
-    }
+	@Override
+	public void onDataItemsCreated(List<DataItem> list) {
+		subscriptionModel.onDataItemsCreated(list);
+	}
 
-    @Override
-    public void onDataItemsDeleted(List<DataItem> list) {
-        subscriptionModel.onDataItemsDeleted(list);
-    }
+	@Override
+	public void onDataItemsModified(List<DataItem> list) {
+		subscriptionModel.onDataItemsModified(list);
+	}
 
-    @Override
-    public void onMonitoringModeChanged(List<MonitoredItem> list) {
-        subscriptionModel.onMonitoringModeChanged(list);
-    }
+	@Override
+	public void onDataItemsDeleted(List<DataItem> list) {
+		subscriptionModel.onDataItemsDeleted(list);
+	}
+
+	@Override
+	public void onMonitoringModeChanged(List<MonitoredItem> list) {
+		subscriptionModel.onMonitoringModeChanged(list);
+	}
 
 }

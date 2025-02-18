@@ -7,11 +7,12 @@ package org.imta.opc.examples.generic.server;
  */
 public interface ServerRunner {
 
-    void initialize(ServerDefinition definition);
-    void populate();
+	void initialize(ServerDefinition definition);
 
-    void run();
+	void populate();
 
-    String getServerUrl();
+	void run();
+
+	String getServerUrl();
 
 }

@@ -27,87 +27,81 @@ import com.google.common.collect.Lists;
 
 public class BrowseAsyncExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        BrowseAsyncExample example = new BrowseAsyncExample();
+	public static void main(String[] args) throws Exception {
+		BrowseAsyncExample example = new BrowseAsyncExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // start browsing at root folder
-        UaNode rootNode = client.getAddressSpace().getNode(Identifiers.RootFolder);
+		// start browsing at root folder
+		UaNode rootNode = client.getAddressSpace().getNode(Identifiers.RootFolder);
 
-        Tree<UaNode> tree = new Tree<>(rootNode);
+		Tree<UaNode> tree = new Tree<>(rootNode);
 
-        long startTime = System.nanoTime();
-        browseRecursive(client, tree).get();
-        long endTime = System.nanoTime();
+		long startTime = System.nanoTime();
+		browseRecursive(client, tree).get();
+		long endTime = System.nanoTime();
 
-        traverse(tree, 0, (depth, n) -> logger.info(indent(depth) + n.getBrowseName().getName()));
+		traverse(tree, 0, (depth, n) -> logger.info(indent(depth) + n.getBrowseName().getName()));
 
-        logger.info(
-            "Browse took {}ms",
-            TimeUnit.MILLISECONDS.convert(endTime - startTime, TimeUnit.NANOSECONDS));
+		logger.info("Browse took {}ms", TimeUnit.MILLISECONDS.convert(endTime - startTime, TimeUnit.NANOSECONDS));
 
-        future.complete(client);
-    }
+		future.complete(client);
+	}
 
-    private CompletableFuture<Void> browseRecursive(OpcUaClient client, Tree<UaNode> tree) {
-        return client.getAddressSpace().browseNodesAsync(tree.node).thenCompose(nodes -> {
-            // Add each child node to the tree
-            nodes.forEach(tree::addChild);
+	private CompletableFuture<Void> browseRecursive(OpcUaClient client, Tree<UaNode> tree) {
+		return client.getAddressSpace().browseNodesAsync(tree.node).thenCompose(nodes -> {
+			// Add each child node to the tree
+			nodes.forEach(tree::addChild);
 
-            // For each child node browse for its children
-            Stream<CompletableFuture<Void>> futures =
-                tree.children.stream().map(child -> browseRecursive(client, child));
+			// For each child node browse for its children
+			Stream<CompletableFuture<Void>> futures = tree.children.stream().map(child -> browseRecursive(client, child));
 
-            // Return a CompletableFuture that completes when the child browses complete
-            return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
-        });
-    }
+			// Return a CompletableFuture that completes when the child browses complete
+			return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+		});
+	}
 
-    private static String indent(int depth) {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            s.append("  ");
-        }
-        return s.toString();
-    }
+	private static String indent(int depth) {
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < depth; i++) {
+			s.append("  ");
+		}
+		return s.toString();
+	}
 
-    private static <T> void traverse(Tree<T> tree, int depth, BiConsumer<Integer, T> consumer) {
-        consumer.accept(depth, tree.node);
+	private static <T> void traverse(Tree<T> tree, int depth, BiConsumer<Integer, T> consumer) {
+		consumer.accept(depth, tree.node);
 
-        tree.children.forEach(child -> traverse(child, depth + 1, consumer));
-    }
+		tree.children.forEach(child -> traverse(child, depth + 1, consumer));
+	}
 
-    private static class Tree<T> {
+	private static class Tree<T> {
 
-        final List<Tree<T>> children = Lists.newCopyOnWriteArrayList();
+		final List<Tree<T>> children = Lists.newCopyOnWriteArrayList();
 
-        final T node;
+		final T node;
 
-        Tree(T node) {
-            this.node = node;
-        }
+		Tree(T node) {
+			this.node = node;
+		}
 
-        void addChild(T child) {
-            children.add(new Tree<>(child));
-        }
+		void addChild(T child) {
+			children.add(new Tree<>(child));
+		}
 
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this)
-                .add("node", node)
-                .add("children", children)
-                .toString();
-        }
+		@Override
+		public String toString() {
+			return MoreObjects.toStringHelper(this).add("node", node).add("children", children).toString();
+		}
 
-    }
+	}
 
 }

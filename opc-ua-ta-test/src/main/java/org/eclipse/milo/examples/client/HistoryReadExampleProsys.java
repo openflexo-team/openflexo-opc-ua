@@ -24,67 +24,50 @@ import org.eclipse.milo.opcua.stack.core.types.structured.*;
 
 public class HistoryReadExampleProsys implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        HistoryReadExampleProsys example = new HistoryReadExampleProsys();
+	public static void main(String[] args) throws Exception {
+		HistoryReadExampleProsys example = new HistoryReadExampleProsys();
 
-        new ClientExampleRunner(example, false).run();
-    }
+		new ClientExampleRunner(example, false).run();
+	}
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		client.connect().get();
 
-        HistoryReadDetails historyReadDetails = new ReadRawModifiedDetails(
-            false,
-            DateTime.MIN_VALUE,
-            DateTime.now(),
-            uint(0),
-            true
-        );
+		HistoryReadDetails historyReadDetails = new ReadRawModifiedDetails(false, DateTime.MIN_VALUE, DateTime.now(), uint(0), true);
 
-        HistoryReadValueId historyReadValueId = new HistoryReadValueId(
-            new NodeId(3, "Counter"),
-            null,
-            QualifiedName.NULL_VALUE,
-            ByteString.NULL_VALUE
-        );
+		HistoryReadValueId historyReadValueId = new HistoryReadValueId(new NodeId(3, "Counter"), null, QualifiedName.NULL_VALUE,
+				ByteString.NULL_VALUE);
 
-        List<HistoryReadValueId> nodesToRead = new ArrayList<>();
-        nodesToRead.add(historyReadValueId);
+		List<HistoryReadValueId> nodesToRead = new ArrayList<>();
+		nodesToRead.add(historyReadValueId);
 
-        HistoryReadResponse historyReadResponse = client.historyRead(
-            historyReadDetails,
-            TimestampsToReturn.Both,
-            false,
-            nodesToRead
-        ).get();
+		HistoryReadResponse historyReadResponse = client.historyRead(historyReadDetails, TimestampsToReturn.Both, false, nodesToRead).get();
 
+		HistoryReadResult[] historyReadResults = historyReadResponse.getResults();
 
-        HistoryReadResult[] historyReadResults = historyReadResponse.getResults();
+		if (historyReadResults != null) {
+			HistoryReadResult historyReadResult = historyReadResults[0];
+			StatusCode statusCode = historyReadResult.getStatusCode();
 
-        if (historyReadResults != null) {
-            HistoryReadResult historyReadResult = historyReadResults[0];
-            StatusCode statusCode = historyReadResult.getStatusCode();
+			if (statusCode.isGood()) {
+				HistoryData historyData = (HistoryData) historyReadResult.getHistoryData().decode(client.getStaticSerializationContext());
 
-            if (statusCode.isGood()) {
-                HistoryData historyData = (HistoryData) historyReadResult.getHistoryData().decode(
-                    client.getStaticSerializationContext()
-                );
+				List<DataValue> dataValues = l(historyData.getDataValues());
 
-                List<DataValue> dataValues = l(historyData.getDataValues());
+				dataValues.forEach(v -> System.out.println("value=" + v));
+			}
+			else {
+				System.out.println("History read failed: " + statusCode);
+			}
+		}
 
-                dataValues.forEach(v -> System.out.println("value=" + v));
-            } else {
-                System.out.println("History read failed: " + statusCode);
-            }
-        }
+		future.complete(client);
+	}
 
-        future.complete(client);
-    }
-
-    @Override
-    public String getEndpointUrl() {
-        return "opc.tcp://localhost:53530/OPCUA/SimulationServer";
-    }
+	@Override
+	public String getEndpointUrl() {
+		return "opc.tcp://localhost:53530/OPCUA/SimulationServer";
+	}
 
 }

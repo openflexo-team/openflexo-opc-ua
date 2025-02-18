@@ -27,43 +27,41 @@ import com.google.common.collect.ImmutableList;
 
 public class ReadExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        ReadExample example = new ReadExample();
+	public static void main(String[] args) throws Exception {
+		ReadExample example = new ReadExample();
 
-        new ClientExampleRunner(example, true).run();
-    }
+		new ClientExampleRunner(example, true).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // synchronous read request via VariableNode
-        UaVariableNode node = client.getAddressSpace().getVariableNode(Identifiers.Server_ServerStatus_StartTime);
-        DataValue value = node.readValue();
+		// synchronous read request via VariableNode
+		UaVariableNode node = client.getAddressSpace().getVariableNode(Identifiers.Server_ServerStatus_StartTime);
+		DataValue value = node.readValue();
 
-        logger.info("StartTime={}", value.getValue().getValue());
+		logger.info("StartTime={}", value.getValue().getValue());
 
-        // asynchronous read request
-        readServerStateAndTime(client).thenAccept(values -> {
-            DataValue v0 = values.get(0);
-            DataValue v1 = values.get(1);
+		// asynchronous read request
+		readServerStateAndTime(client).thenAccept(values -> {
+			DataValue v0 = values.get(0);
+			DataValue v1 = values.get(1);
 
-            logger.info("State={}", ServerState.from((Integer) v0.getValue().getValue()));
-            logger.info("CurrentTime={}", v1.getValue().getValue());
+			logger.info("State={}", ServerState.from((Integer) v0.getValue().getValue()));
+			logger.info("CurrentTime={}", v1.getValue().getValue());
 
-            future.complete(client);
-        });
-    }
+			future.complete(client);
+		});
+	}
 
-    private CompletableFuture<List<DataValue>> readServerStateAndTime(OpcUaClient client) {
-        List<NodeId> nodeIds = ImmutableList.of(
-            Identifiers.Server_ServerStatus_State,
-            Identifiers.Server_ServerStatus_CurrentTime);
+	private CompletableFuture<List<DataValue>> readServerStateAndTime(OpcUaClient client) {
+		List<NodeId> nodeIds = ImmutableList.of(Identifiers.Server_ServerStatus_State, Identifiers.Server_ServerStatus_CurrentTime);
 
-        return client.readValues(0.0, TimestampsToReturn.Both, nodeIds);
-    }
+		return client.readValues(0.0, TimestampsToReturn.Both, nodeIds);
+	}
 
 }

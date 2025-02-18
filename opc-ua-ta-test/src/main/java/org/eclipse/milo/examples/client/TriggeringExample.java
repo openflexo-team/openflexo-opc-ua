@@ -38,98 +38,66 @@ import org.slf4j.LoggerFactory;
 
 public class TriggeringExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        TriggeringExample example = new TriggeringExample();
+	public static void main(String[] args) throws Exception {
+		TriggeringExample example = new TriggeringExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final AtomicLong clientHandles = new AtomicLong(1L);
+	private final AtomicLong clientHandles = new AtomicLong(1L);
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // create a subscription @ 1000ms
-        UaSubscription subscription = client.getSubscriptionManager()
-            .createSubscription(1000.0)
-            .get();
+		// create a subscription @ 1000ms
+		UaSubscription subscription = client.getSubscriptionManager().createSubscription(1000.0).get();
 
-        // subscribe to a static value that reports
-        ReadValueId readValueId1 = new ReadValueId(
-            new NodeId(2, "HelloWorld/ScalarTypes/Float"),
-            AttributeId.Value.uid(),
-            null,
-            QualifiedName.NULL_VALUE
-        );
+		// subscribe to a static value that reports
+		ReadValueId readValueId1 = new ReadValueId(new NodeId(2, "HelloWorld/ScalarTypes/Float"), AttributeId.Value.uid(), null,
+				QualifiedName.NULL_VALUE);
 
-        UaMonitoredItem reportingItem = createMonitoredItem(subscription, readValueId1, MonitoringMode.Reporting);
+		UaMonitoredItem reportingItem = createMonitoredItem(subscription, readValueId1, MonitoringMode.Reporting);
 
-        // subscribe to a dynamic value that only samples
-        ReadValueId readValueId2 = new ReadValueId(
-            Identifiers.Server_ServerStatus_CurrentTime,
-            AttributeId.Value.uid(),
-            null,
-            QualifiedName.NULL_VALUE
-        );
+		// subscribe to a dynamic value that only samples
+		ReadValueId readValueId2 = new ReadValueId(Identifiers.Server_ServerStatus_CurrentTime, AttributeId.Value.uid(), null,
+				QualifiedName.NULL_VALUE);
 
-        UaMonitoredItem samplingItem = createMonitoredItem(subscription, readValueId2, MonitoringMode.Sampling);
+		UaMonitoredItem samplingItem = createMonitoredItem(subscription, readValueId2, MonitoringMode.Sampling);
 
-        subscription.addTriggeringLinks(reportingItem, newArrayList(samplingItem)).get();
+		subscription.addTriggeringLinks(reportingItem, newArrayList(samplingItem)).get();
 
-        // trigger reporting of both by writing to the static item and changing its value
-        client.writeValue(
-            new NodeId(2, "HelloWorld/ScalarTypes/Float"),
-            new DataValue(new Variant(1.0f))
-        ).get();
+		// trigger reporting of both by writing to the static item and changing its value
+		client.writeValue(new NodeId(2, "HelloWorld/ScalarTypes/Float"), new DataValue(new Variant(1.0f))).get();
 
-        // let the example run for 5 seconds then terminate
-        Thread.sleep(5000);
-        future.complete(client);
-    }
+		// let the example run for 5 seconds then terminate
+		Thread.sleep(5000);
+		future.complete(client);
+	}
 
-    private UaMonitoredItem createMonitoredItem(
-        UaSubscription subscription,
-        ReadValueId readValueId,
-        MonitoringMode monitoringMode
-    ) throws ExecutionException, InterruptedException {
+	private UaMonitoredItem createMonitoredItem(UaSubscription subscription, ReadValueId readValueId, MonitoringMode monitoringMode)
+			throws ExecutionException, InterruptedException {
 
-        // important: client handle must be unique per item
-        UInteger clientHandle = uint(clientHandles.getAndIncrement());
+		// important: client handle must be unique per item
+		UInteger clientHandle = uint(clientHandles.getAndIncrement());
 
-        MonitoringParameters parameters = new MonitoringParameters(
-            clientHandle,
-            1000.0,
-            null,
-            uint(10),
-            true
-        );
+		MonitoringParameters parameters = new MonitoringParameters(clientHandle, 1000.0, null, uint(10), true);
 
-        MonitoredItemCreateRequest request = new MonitoredItemCreateRequest(
-            readValueId,
-            monitoringMode,
-            parameters
-        );
+		MonitoredItemCreateRequest request = new MonitoredItemCreateRequest(readValueId, monitoringMode, parameters);
 
-        UaSubscription.ItemCreationCallback onItemCreated =
-            (item, id) -> item.setValueConsumer(this::onSubscriptionValue);
+		UaSubscription.ItemCreationCallback onItemCreated = (item, id) -> item.setValueConsumer(this::onSubscriptionValue);
 
-        List<UaMonitoredItem> items = subscription.createMonitoredItems(
-            TimestampsToReturn.Both,
-            newArrayList(request),
-            onItemCreated
-        ).get();
+		List<UaMonitoredItem> items = subscription.createMonitoredItems(TimestampsToReturn.Both, newArrayList(request), onItemCreated)
+				.get();
 
-        return items.get(0);
-    }
+		return items.get(0);
+	}
 
-    private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
-        logger.info(
-            "subscription value received: item={}, value={}",
-            item.getReadValueId().getNodeId(), value.getValue());
-    }
+	private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
+		logger.info("subscription value received: item={}, value={}", item.getReadValueId().getNodeId(), value.getValue());
+	}
 
 }

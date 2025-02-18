@@ -25,57 +25,54 @@ import org.slf4j.LoggerFactory;
 
 public class MethodExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        MethodExample example = new MethodExample();
+	public static void main(String[] args) throws Exception {
+		MethodExample example = new MethodExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // call the sqrt(x) function
-        sqrt(client, 16.0).exceptionally(ex -> {
-            logger.error("error invoking sqrt()", ex);
-            return -1.0;
-        }).thenAccept(v -> {
-            logger.info("sqrt(16)={}", v);
+		// call the sqrt(x) function
+		sqrt(client, 16.0).exceptionally(ex -> {
+			logger.error("error invoking sqrt()", ex);
+			return -1.0;
+		}).thenAccept(v -> {
+			logger.info("sqrt(16)={}", v);
 
-            future.complete(client);
-        });
-    }
+			future.complete(client);
+		});
+	}
 
-    private CompletableFuture<Double> sqrt(OpcUaClient client, Double input) {
-        NodeId objectId = NodeId.parse("ns=2;s=HelloWorld");
-        NodeId methodId = NodeId.parse("ns=2;s=HelloWorld/sqrt(x)");
+	private CompletableFuture<Double> sqrt(OpcUaClient client, Double input) {
+		NodeId objectId = NodeId.parse("ns=2;s=HelloWorld");
+		NodeId methodId = NodeId.parse("ns=2;s=HelloWorld/sqrt(x)");
 
-        CallMethodRequest request = new CallMethodRequest(
-            objectId,
-            methodId,
-            new Variant[]{new Variant(input)}
-        );
+		CallMethodRequest request = new CallMethodRequest(objectId, methodId, new Variant[] { new Variant(input) });
 
-        return client.call(request).thenCompose(result -> {
-            StatusCode statusCode = result.getStatusCode();
+		return client.call(request).thenCompose(result -> {
+			StatusCode statusCode = result.getStatusCode();
 
-            if (statusCode.isGood()) {
-                Double value = (Double) l(result.getOutputArguments()).get(0).getValue();
-                return CompletableFuture.completedFuture(value);
-            } else {
-                StatusCode[] inputArgumentResults = result.getInputArgumentResults();
-                for (int i = 0; i < inputArgumentResults.length; i++) {
-                    logger.error("inputArgumentResults[{}]={}", i, inputArgumentResults[i]);
-                }
-                
-                CompletableFuture<Double> f = new CompletableFuture<>();
-                f.completeExceptionally(new UaException(statusCode));
-                return f;
-            }
-        });
-    }
+			if (statusCode.isGood()) {
+				Double value = (Double) l(result.getOutputArguments()).get(0).getValue();
+				return CompletableFuture.completedFuture(value);
+			}
+			else {
+				StatusCode[] inputArgumentResults = result.getInputArgumentResults();
+				for (int i = 0; i < inputArgumentResults.length; i++) {
+					logger.error("inputArgumentResults[{}]={}", i, inputArgumentResults[i]);
+				}
+
+				CompletableFuture<Double> f = new CompletableFuture<>();
+				f.completeExceptionally(new UaException(statusCode));
+				return f;
+			}
+		});
+	}
 
 }

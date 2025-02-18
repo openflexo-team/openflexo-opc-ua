@@ -9,24 +9,24 @@ import org.junit.Test;
 
 public class TestMinimalServer {
 
-    // TODO : discuss JaCoCo, code coverage utility that has issues handling large methods.
+	// TODO : discuss JaCoCo, code coverage utility that has issues handling large methods.
 
-    private MinimalServer server;
+	private MinimalServer server;
 
-    @Test
-    public void test() {
-        // Start the server
-        server = new MinimalServer();
-        MinimalNamespace namespace = new MinimalNamespace(server);
-        server.startup();
-        namespace.startup();
+	@Test
+	public void test() {
+		// Start the server
+		server = new MinimalServer();
+		MinimalNamespace namespace = new MinimalNamespace(server);
+		server.startup();
+		namespace.startup();
 
-        // Test something
-        OpcUaNamespace serverNamespace = server.getOpcUaNamespace();
-        assertEquals(0, serverNamespace.getNamespaceIndex().intValue());
+		// Test something
+		OpcUaNamespace serverNamespace = server.getOpcUaNamespace();
+		assertEquals(0, serverNamespace.getNamespaceIndex().intValue());
 
-        // Shutdown the server
-        server.shutdown();
-    }
+		// Shutdown the server
+		server.shutdown();
+	}
 
 }
