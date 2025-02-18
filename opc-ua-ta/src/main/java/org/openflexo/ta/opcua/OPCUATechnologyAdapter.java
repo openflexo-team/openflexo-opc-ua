@@ -47,14 +47,22 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.ta.opcua.fml.binding.OPCUABindingFactory;
 import org.openflexo.ta.opcua.rm.OPCServerResourceFactory;
 import org.openflexo.ta.opcua.rm.OPCServerResourceRepository;
+import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
- * A {@link TechnologyAdapter} dedicated to manage OPC-UA technology
+ * The OPC UA Technology Adapter for OpenFlexo.
+ *
+ * <p>The {@code OPCUATechnologyAdapter} provides the necessary components to connect
+ * OpenFlexo to OPC UA servers, managing resources, bindings, and interactions.</p>
  *
  * <p>For an overview of OPC UA integration in OpenFlexo, see {@link org.openflexo.ta.opcua}.</p>
  *
+ * @see OPCServerModelSlot
+ * @see OPCServerResource
+ * @see OPCUABindingFactory
  * @author Sylvain
  */
+
 @DeclareModelSlots({ OPCServerModelSlot.class })
 // You might declare your own types here
 // @DeclareTechnologySpecificTypes({ YourCustomType.class })

@@ -45,11 +45,17 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.OPCServerModelSlot;
+import org.openflexo.ta.opcua.model.OPCNamespace;
 
 /**
  * A resource referencing a {@link OPCServer}
  *
  * <p>For details on how OPC UA resources are structured, start here  {@link org.openflexo.ta.opcua}.</p>
+ *
+ * @see OPCServer
+ * @see OPCServerModelSlot
+ * @see OPCNamespace
  *
  * @author sylvain
  *
