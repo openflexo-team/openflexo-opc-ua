@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
 /**
  * Represents a namespace within an OPC UA server's address space in OpenFlexo.
@@ -98,6 +99,8 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 	public List<OPCNode<?>> getRootNodes();
 
+	public List<OPCVariableNode> getAllVariableNodes();
+
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
 
 		@Override
@@ -117,7 +120,17 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public List<OPCNode<?>> getRootNodes() {
-			return getAllNodes().stream().filter(OPCNode::isRoot).collect(Collectors.toList());
+			return getAllNodes().stream()
+					.filter(OPCNode::isRoot)
+					.collect(Collectors.toList());
+		}
+
+		@Override
+		public List<OPCVariableNode> getAllVariableNodes() {
+			return getAllNodes().stream()
+					.filter(n -> n instanceof OPCVariableNode)
+					.map(n -> (OPCVariableNode) n)
+					.collect(Collectors.toList());
 		}
 
 	}

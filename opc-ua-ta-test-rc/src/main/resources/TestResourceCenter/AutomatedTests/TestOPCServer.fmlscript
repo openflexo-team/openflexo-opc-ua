@@ -9,6 +9,20 @@ opcServerResource = load -r ["http://openflexo.org/opc-ua-test/TestResourceCente
 log "opcServerResource=" + opcServerResource;
 assert opcServerResource != null;
 
-// Check if the OPC UA server has at least one namespace
-assert opcServerResource.namespaces.size > 0;
+// Check various things without a virtual model
+assert opcServerResource.namespaces.size == 3;
 log "OPC UA server has " + opcServerResource.namespaces.size + " namespaces.";
+vendorNamespace = opcServerResource.namespaces.get(2);
+assert vendorNamespace != null;
+log "We are looking at namespace " + vendorNamespace;
+assert vendorNamespace.getRootNodes().size == 1;
+dataFolder = vendorNamespace.getRootNodes().get(0);
+assert dataFolder != null;
+log "We are looking at root folder node " + dataFolder;
+temperatureNode = vendorNamespace.getAllVariableNodes().get(0); // TODO : Find how to use dataFdoler as an actual folder and cast to variable node
+assert temperatureNode != null;
+log "We are looking at variable node " + temperatureNode;
+valueType = temperatureNode.getValueTypeString;
+assert valueType != null;
+log "temperature is of type " + valueType;
+

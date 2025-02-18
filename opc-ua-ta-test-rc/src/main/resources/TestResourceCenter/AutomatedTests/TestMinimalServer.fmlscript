@@ -3,10 +3,12 @@ service ResourceCenterService status;
 resources;
 context;
 
-// Load Otawa virtual model
+// Load virtual model
 virtualModel = load -r ["http://openflexo.org/opc-ua-test/MinimalServer.fml"];
 context;
 assert virtualModel != null;
 log "Pretty-print of "+virtualModel;
 log virtualModel.fMLPrettyPrint;
-//validate virtualModel;
+
+// Validate virtualModel
+// virtualModel.synchronize;
