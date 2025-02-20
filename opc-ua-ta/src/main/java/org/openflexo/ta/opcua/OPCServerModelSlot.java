@@ -42,7 +42,11 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.*;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -56,6 +60,7 @@ import org.openflexo.ta.opcua.fml.editionaction.GetValue;
 import org.openflexo.ta.opcua.fml.editionaction.SelectOPCNode;
 import org.openflexo.ta.opcua.fml.editionaction.SelectUniqueOPCNode;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.rm.OPCServerResource;
 
 /**
  * A ModelSlot allowing access to a OPC-UA Server
@@ -71,9 +76,10 @@ import org.openflexo.ta.opcua.model.OPCServer;
 @ImplementationClass(OPCServerModelSlot.OPCServerModelSlotImpl.class)
 @XMLElement
 @FML("OPCServerModelSlot")
-public interface OPCServerModelSlot extends FreeModelSlot<OPCServer> {
+public interface OPCServerModelSlot extends FreeModelSlot<OPCServer, OPCServerResource> {
 
-	public static abstract class OPCServerModelSlotImpl extends FreeModelSlotImpl<OPCServer> implements OPCServerModelSlot {
+	public static abstract class OPCServerModelSlotImpl extends FreeModelSlotImpl<OPCServer, OPCServerResource>
+			implements OPCServerModelSlot {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(OPCServerModelSlot.class.getPackage().getName());
