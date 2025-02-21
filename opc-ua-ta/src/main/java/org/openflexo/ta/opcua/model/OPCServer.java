@@ -11,6 +11,49 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.rm.OPCServerResource;
 import org.openflexo.ta.opcua.utils.OPCDiscovery;
+import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.OPCServerModelSlot;
+
+/**
+ * Represents a connection to an OPC UA server within OpenFlexo.
+ *
+ * <p>For more details on OPC UA integration in OpenFlexo, see
+ * {@link org.openflexo.ta.opcua}.</p>
+ *
+ * <p>The {@code OPCServer} class manages the connection to an OPC UA server,
+ * enabling access to its namespaces and nodes. It utilizes the Eclipse Milo
+ * library for communication and handles the discovery of the server's address
+ * space.</p>
+ *
+ * <h2>Server Identification</h2>
+ * <p>An OPC UA server is uniquely identified by its URI, constructed from:</p>
+ *  <ul>
+ *   <li><b>Hostname:</b> The network address of the server.</li>
+ *   <li><b>Bind Port:</b> The port used for the OPC UA connection.</li>
+ *   <li><b>Application Name:</b> The registered name of the server.</li>
+ * </ul>
+ *
+ * <p>For details on OPC UA server discovery and registration, refer to the
+ * <a href="https://reference.opcfoundation.org/Core/Part12/v105/">OPC UA Discovery Specification</a>.</p>
+ *
+ * <h2>Key Responsibilities</h2>
+ * <ul>
+ *   <li>Managing the {@link OpcUaClient} connection to the server.</li>
+ *   <li>Discovering and organizing {@link OPCNamespace} and {@link OPCNode}
+ *       instances representing the server's address space.</li>
+ *   <li>Providing methods to read and write data to the server's nodes.</li>
+ * </ul>
+ *
+ * <p>For related resources and model slots, refer to
+ * {@link OPCServerResource} and
+ * {@link OPCServerModelSlot}.</p>
+ *
+ * @see OPCNamespace
+ * @see OPCNode
+ * @see OpcUaClient
+ *
+ * @author Luka, Sylvain
+ */
 
 @ModelEntity
 @ImplementationClass(value = OPCServer.OPCServerImpl.class)

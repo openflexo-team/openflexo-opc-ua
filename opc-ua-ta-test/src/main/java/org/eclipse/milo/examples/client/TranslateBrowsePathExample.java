@@ -25,50 +25,33 @@ import org.slf4j.LoggerFactory;
 
 public class TranslateBrowsePathExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        TranslateBrowsePathExample example = new TranslateBrowsePathExample();
+	public static void main(String[] args) throws Exception {
+		TranslateBrowsePathExample example = new TranslateBrowsePathExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        TranslateBrowsePathsToNodeIdsResponse response = client.translateBrowsePaths(newArrayList(new BrowsePath(
-            Identifiers.ObjectsFolder,
-            new RelativePath(new RelativePathElement[]{
-                new RelativePathElement(
-                    Identifiers.HierarchicalReferences,
-                    false,
-                    true,
-                    new QualifiedName(2, "HelloWorld")
-                ),
-                new RelativePathElement(
-                    Identifiers.HierarchicalReferences,
-                    false,
-                    true,
-                    new QualifiedName(2, "ScalarTypes")
-                ),
-                new RelativePathElement(
-                    Identifiers.HierarchicalReferences,
-                    false,
-                    true,
-                    new QualifiedName(2, "UInt64")
-                )
-            })
-        ))).get();
+		TranslateBrowsePathsToNodeIdsResponse response = client
+				.translateBrowsePaths(newArrayList(new BrowsePath(Identifiers.ObjectsFolder, new RelativePath(new RelativePathElement[] {
+						new RelativePathElement(Identifiers.HierarchicalReferences, false, true, new QualifiedName(2, "HelloWorld")),
+						new RelativePathElement(Identifiers.HierarchicalReferences, false, true, new QualifiedName(2, "ScalarTypes")),
+						new RelativePathElement(Identifiers.HierarchicalReferences, false, true, new QualifiedName(2, "UInt64")) }))))
+				.get();
 
-        BrowsePathResult result = l(response.getResults()).get(0);
-        StatusCode statusCode = result.getStatusCode();
-        logger.info("Status={}", statusCode);
+		BrowsePathResult result = l(response.getResults()).get(0);
+		StatusCode statusCode = result.getStatusCode();
+		logger.info("Status={}", statusCode);
 
-        l(result.getTargets()).forEach(target -> logger.info("TargetId={}", target.getTargetId()));
+		l(result.getTargets()).forEach(target -> logger.info("TargetId={}", target.getTargetId()));
 
-        future.complete(client);
-    }
+		future.complete(client);
+	}
 
 }

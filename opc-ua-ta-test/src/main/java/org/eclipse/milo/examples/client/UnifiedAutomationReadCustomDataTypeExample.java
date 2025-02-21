@@ -29,45 +29,40 @@ import org.slf4j.LoggerFactory;
  */
 public class UnifiedAutomationReadCustomDataTypeExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        UnifiedAutomationReadCustomDataTypeExample example =
-            new UnifiedAutomationReadCustomDataTypeExample();
+	public static void main(String[] args) throws Exception {
+		UnifiedAutomationReadCustomDataTypeExample example = new UnifiedAutomationReadCustomDataTypeExample();
 
-        new ClientExampleRunner(example, false).run();
-    }
+		new ClientExampleRunner(example, false).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // Decoding a struct with custom DataType requires a DataTypeManager
-        // that has the codec registered with it.
-        // Add a SessionInitializer that will read any DataTypeDictionary
-        // nodes present in the server every time the session is activated
-        // and dynamically generate codecs for custom structures.
-        client.addSessionInitializer(new DataTypeDictionarySessionInitializer(new GenericBsdParser()));
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// Decoding a struct with custom DataType requires a DataTypeManager
+		// that has the codec registered with it.
+		// Add a SessionInitializer that will read any DataTypeDictionary
+		// nodes present in the server every time the session is activated
+		// and dynamically generate codecs for custom structures.
+		client.addSessionInitializer(new DataTypeDictionarySessionInitializer(new GenericBsdParser()));
 
-        client.connect().get();
+		client.connect().get();
 
-        DataValue dataValue = client.readValue(
-            0.0,
-            TimestampsToReturn.Neither,
-            NodeId.parse("ns=2;s=Demo.Static.Scalar.WorkOrder")
-        ).get();
+		DataValue dataValue = client.readValue(0.0, TimestampsToReturn.Neither, NodeId.parse("ns=2;s=Demo.Static.Scalar.WorkOrder")).get();
 
-        ExtensionObject xo = (ExtensionObject) dataValue.getValue().getValue();
+		ExtensionObject xo = (ExtensionObject) dataValue.getValue().getValue();
 
-        Object value = xo.decode(client.getDynamicSerializationContext());
+		Object value = xo.decode(client.getDynamicSerializationContext());
 
-        logger.info("value: {}", value);
+		logger.info("value: {}", value);
 
-        future.complete(client);
-    }
+		future.complete(client);
+	}
 
-    @Override
-    public String getEndpointUrl() {
-        // Change this if UaCPPServer is running somewhere other than localhost.
-        return "opc.tcp://localhost:48010";
-    }
+	@Override
+	public String getEndpointUrl() {
+		// Change this if UaCPPServer is running somewhere other than localhost.
+		return "opc.tcp://localhost:48010";
+	}
 
 }

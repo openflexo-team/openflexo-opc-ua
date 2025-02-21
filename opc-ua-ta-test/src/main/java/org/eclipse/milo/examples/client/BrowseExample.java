@@ -31,51 +31,43 @@ import org.slf4j.LoggerFactory;
 
 public class BrowseExample implements ClientExample {
 
-    public static void main(String[] args) throws Exception {
-        BrowseExample example = new BrowseExample();
+	public static void main(String[] args) throws Exception {
+		BrowseExample example = new BrowseExample();
 
-        new ClientExampleRunner(example).run();
-    }
+		new ClientExampleRunner(example).run();
+	}
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
-        // synchronous connect
-        client.connect().get();
+	@Override
+	public void run(OpcUaClient client, CompletableFuture<OpcUaClient> future) throws Exception {
+		// synchronous connect
+		client.connect().get();
 
-        // start browsing at root folder
-        browseNode("", client, Identifiers.RootFolder);
+		// start browsing at root folder
+		browseNode("", client, Identifiers.RootFolder);
 
-        future.complete(client);
-    }
+		future.complete(client);
+	}
 
-    private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
-        BrowseDescription browse = new BrowseDescription(
-            browseRoot,
-            BrowseDirection.Forward,
-            Identifiers.References,
-            true,
-            uint(NodeClass.Object.getValue() | NodeClass.Variable.getValue()),
-            uint(BrowseResultMask.All.getValue())
-        );
+	private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
+		BrowseDescription browse = new BrowseDescription(browseRoot, BrowseDirection.Forward, Identifiers.References, true,
+				uint(NodeClass.Object.getValue() | NodeClass.Variable.getValue()), uint(BrowseResultMask.All.getValue()));
 
-        try {
-            BrowseResult browseResult = client.browse(browse).get();
+		try {
+			BrowseResult browseResult = client.browse(browse).get();
 
-            List<ReferenceDescription> references = toList(browseResult.getReferences());
+			List<ReferenceDescription> references = toList(browseResult.getReferences());
 
-            for (ReferenceDescription rd : references) {
-                logger.info("{} Node={}", indent, rd.getBrowseName().getName());
+			for (ReferenceDescription rd : references) {
+				logger.info("{} Node={}", indent, rd.getBrowseName().getName());
 
-                // recursively browse to children
-                rd.getNodeId().toNodeId(client.getNamespaceTable())
-                    .ifPresent(nodeId -> browseNode(indent + "  ", client, nodeId));
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
-        }
-    }
+				// recursively browse to children
+				rd.getNodeId().toNodeId(client.getNamespaceTable()).ifPresent(nodeId -> browseNode(indent + "  ", client, nodeId));
+			}
+		} catch (InterruptedException | ExecutionException e) {
+			logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
+		}
+	}
 
 }
-

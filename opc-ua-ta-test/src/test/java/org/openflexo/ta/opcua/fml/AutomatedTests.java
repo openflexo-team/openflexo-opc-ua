@@ -43,6 +43,10 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.imta.opc.examples.minimal.MinimalNamespace;
+import org.imta.opc.examples.minimal.MinimalServer;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -79,6 +83,7 @@ public class AutomatedTests extends FMLScriptParserTestCase {
 	private FlexoEditor editor;
 	private FMLScript script;
 	private CommandInterpreter commandInterpreter;
+	static private MinimalServer server;
 
 	// private static FlexoResourceCenterService rcService;
 	// private static FlexoResourceCenter<?> testResourcesRC;
@@ -87,6 +92,19 @@ public class AutomatedTests extends FMLScriptParserTestCase {
 		System.out.println("********* Launch FML-script " + fmlResource + " name=" + name);
 		this.fmlResource = fmlResource;
 		initServiceManager();
+	}
+
+	@BeforeClass
+	static public void startServer() {
+		server = new MinimalServer();
+		MinimalNamespace namespace = new MinimalNamespace(server);
+		server.startup();
+		namespace.startup();
+	}
+
+	@AfterClass
+	static public void shutdownServer() {
+		server.shutdown();
 	}
 
 	@Test

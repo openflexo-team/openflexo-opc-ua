@@ -18,52 +18,48 @@ import org.imta.opc.examples.generic.server.ServerRunner;
  */
 public class OPCServerRunner implements ServerRunner {
 
-    private ServerDefinition definition;
-    private OpcUaServer server;
-    private OPCSimpleNamespace namespace;
-    @Override
-    public void initialize(ServerDefinition definition) {
-        this.definition = definition;
-        EndpointConfiguration endpoint = EndpointConfiguration.newBuilder()
-                .setBindPort(definition.port)
-                .setHostname(definition.hostname)
-                .setPath(definition.path)
-                .setBindAddress(definition.address)
-                .build();
-        OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
-                .setApplicationName(LocalizedText.english("OPC Server \"" + definition.name + "\""))
-                .setApplicationUri(definition.uri)
-                .setEndpoints(Collections.singleton(endpoint))
-                .build();
-        server = new OpcUaServer(serverConfig);
-        namespace = new OPCSimpleNamespace(server, definition.uri);
-    }
+	private ServerDefinition definition;
+	private OpcUaServer server;
+	private OPCSimpleNamespace namespace;
 
-    @Override
-    public void populate() {}
+	@Override
+	public void initialize(ServerDefinition definition) {
+		this.definition = definition;
+		EndpointConfiguration endpoint = EndpointConfiguration.newBuilder().setBindPort(definition.port).setHostname(definition.hostname)
+				.setPath(definition.path).setBindAddress(definition.address).build();
+		OpcUaServerConfig serverConfig = OpcUaServerConfig.builder()
+				.setApplicationName(LocalizedText.english("OPC Server \"" + definition.name + "\"")).setApplicationUri(definition.uri)
+				.setEndpoints(Collections.singleton(endpoint)).build();
+		server = new OpcUaServer(serverConfig);
+		namespace = new OPCSimpleNamespace(server, definition.uri);
+	}
 
-    public OPCSimpleNamespace getNamespace() {
-        return namespace;
-    }
+	@Override
+	public void populate() {
+	}
 
-    @Override
-    public void run() {
-        server.startup();
-        namespace.startup();
-        //TODO: figure out why both are needed and if only one could work (it doesn't as is)
-    }
+	public OPCSimpleNamespace getNamespace() {
+		return namespace;
+	}
 
-    @Override
-    public String getServerUrl() {
-        return "opc.tcp://" + definition.hostname + ":" + definition.port + definition.path;
-    }
+	@Override
+	public void run() {
+		server.startup();
+		namespace.startup();
+		// TODO: figure out why both are needed and if only one could work (it doesn't as is)
+	}
 
-    static public void main(String[] args) {
-        ServerDefinition definition = new ServerDefinition("empty");
-        ServerRunner runner = new OPCServerRunner();
-        runner.initialize(definition);
-        runner.populate();
-        runner.run();
-    }
+	@Override
+	public String getServerUrl() {
+		return "opc.tcp://" + definition.hostname + ":" + definition.port + definition.path;
+	}
+
+	static public void main(String[] args) {
+		ServerDefinition definition = new ServerDefinition("empty");
+		ServerRunner runner = new OPCServerRunner();
+		runner.initialize(definition);
+		runner.populate();
+		runner.run();
+	}
 
 }

@@ -21,67 +21,60 @@ import org.slf4j.LoggerFactory;
 
 public class MinimalBrowserClient {
 
-    private final String serverUrl;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private OpcUaClient client;
+	private final String serverUrl;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private OpcUaClient client;
 
-    public MinimalBrowserClient(String serverUrl) {
-        this.serverUrl = serverUrl;
-    }
+	public MinimalBrowserClient(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
-    static public void main(String [] args) throws UaException, ExecutionException, InterruptedException {
-        MinimalBrowserClient browserClient = new MinimalBrowserClient("opc.tcp://localhost:4880/minimal");
-        browserClient.start();
-        browserClient.browse();
-        browserClient.stop();
-    }
+	static public void main(String[] args) throws UaException, ExecutionException, InterruptedException {
+		MinimalBrowserClient browserClient = new MinimalBrowserClient("opc.tcp://localhost:4880/minimal");
+		browserClient.start();
+		browserClient.browse();
+		browserClient.stop();
+	}
 
-    public Logger getLogger() {
-        return logger;
-    }
+	public Logger getLogger() {
+		return logger;
+	}
 
-    public OpcUaClient getClient() {
-        return client;
-    }
+	public OpcUaClient getClient() {
+		return client;
+	}
 
-    public void start() throws UaException, ExecutionException, InterruptedException {
-        client = OpcUaClient.create(serverUrl);
-        client.connect().get();
-    }
+	public void start() throws UaException, ExecutionException, InterruptedException {
+		client = OpcUaClient.create(serverUrl);
+		client.connect().get();
+	}
 
-    public void browse() {
-        browseNode("", client, Identifiers.ObjectsFolder);
-    }
+	public void browse() {
+		browseNode("", client, Identifiers.ObjectsFolder);
+	}
 
-    public void stop() throws ExecutionException, InterruptedException {
-        client.disconnect().get();
-    }
+	public void stop() throws ExecutionException, InterruptedException {
+		client.disconnect().get();
+	}
 
-    private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
-        BrowseDescription browse = new BrowseDescription(
-                browseRoot,
-                BrowseDirection.Forward,
-                Identifiers.References,
-                true,
-                uint(NodeClass.Object.getValue() | NodeClass.Variable.getValue()),
-                uint(BrowseResultMask.All.getValue())
-        );
+	private void browseNode(String indent, OpcUaClient client, NodeId browseRoot) {
+		BrowseDescription browse = new BrowseDescription(browseRoot, BrowseDirection.Forward, Identifiers.References, true,
+				uint(NodeClass.Object.getValue() | NodeClass.Variable.getValue()), uint(BrowseResultMask.All.getValue()));
 
-        try {
-            BrowseResult browseResult = client.browse(browse).get();
+		try {
+			BrowseResult browseResult = client.browse(browse).get();
 
-            List<ReferenceDescription> references = toList(browseResult.getReferences());
+			List<ReferenceDescription> references = toList(browseResult.getReferences());
 
-            for (ReferenceDescription rd : references) {
-                System.out.println(indent + " Node=" + rd.getBrowseName());
+			for (ReferenceDescription rd : references) {
+				System.out.println(indent + " Node=" + rd.getBrowseName());
 
-                // recursively browse to children
-                rd.getNodeId().toNodeId(client.getNamespaceTable())
-                        .ifPresent(nodeId -> browseNode(indent + "  ", client, nodeId));
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
-        }
-    }
+				// recursively browse to children
+				rd.getNodeId().toNodeId(client.getNamespaceTable()).ifPresent(nodeId -> browseNode(indent + "  ", client, nodeId));
+			}
+		} catch (InterruptedException | ExecutionException e) {
+			logger.error("Browsing nodeId={} failed: {}", browseRoot, e.getMessage(), e);
+		}
+	}
 
 }

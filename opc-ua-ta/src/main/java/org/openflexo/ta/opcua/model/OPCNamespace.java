@@ -6,7 +6,34 @@ import java.util.stream.Collectors;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
+import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
+/**
+ * Represents a namespace within an OPC UA server's address space in OpenFlexo.
+ *
+ * <p>For an overview of OPC UA integration in OpenFlexo, see {@link org.openflexo.ta.opcua}.</p>
+ *
+ * <p>The {@code OPCNamespace} class encapsulates a specific namespace identified
+ * by a unique URI and index, organizing a collection of {@link OPCNode} instances
+ * that belong to this namespace.</p>
+ *
+ * <h2>Key Responsibilities</h2>
+ * <ul>
+ *   <li>Maintaining the namespace URI and index, ensuring unique identification
+ *       of nodes within the OPC UA server.</li>
+ *   <li>Organizing and managing {@link OPCNode} instances associated with this
+ *       namespace.</li>
+ *   <li>Facilitating browsing and interaction with nodes in the namespace.</li>
+ * </ul>
+ *
+ * <p>For more details on OPC UA namespaces and their role in creating unique
+ * identifiers across different naming authorities, refer to the
+ * <a href="https://reference.opcfoundation.org/DI/v102/docs/11.2">OPC UA Devices
+ * Specification</a>.</p>
+ *
+ * @see OPCNode
+ * @see OPCServer
+ */
 @ModelEntity
 @ImplementationClass(OPCNamespace.OPCNamespaceImpl.class)
 public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
@@ -72,6 +99,8 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 	public List<OPCNode<?>> getRootNodes();
 
+	public List<OPCVariableNode> getAllVariableNodes();
+
 	public static abstract class OPCNamespaceImpl extends OPCObjectImpl implements OPCNamespace {
 
 		@Override
@@ -91,7 +120,17 @@ public interface OPCNamespace extends OPCObject, ResourceData<OPCServer> {
 
 		@Override
 		public List<OPCNode<?>> getRootNodes() {
-			return getAllNodes().stream().filter(OPCNode::isRoot).collect(Collectors.toList());
+			return getAllNodes().stream()
+					.filter(OPCNode::isRoot)
+					.collect(Collectors.toList());
+		}
+
+		@Override
+		public List<OPCVariableNode> getAllVariableNodes() {
+			return getAllNodes().stream()
+					.filter(n -> n instanceof OPCVariableNode)
+					.map(n -> (OPCVariableNode) n)
+					.collect(Collectors.toList());
 		}
 
 	}
