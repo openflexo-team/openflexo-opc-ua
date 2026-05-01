@@ -82,7 +82,7 @@ public interface OPCNodeRole extends FlexoRole<OPCNode> {
 
 		@Override
 		public ActorReference<OPCNode> makeActorReference(OPCNode object, FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory factory = fci.getFactory();
 			OPCNodeActorReference returned = factory.newInstance(OPCNodeActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);

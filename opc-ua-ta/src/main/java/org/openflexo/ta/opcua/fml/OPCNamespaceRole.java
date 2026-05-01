@@ -82,7 +82,7 @@ public interface OPCNamespaceRole extends FlexoRole<OPCNamespace> {
 
 		@Override
 		public ActorReference<OPCNamespace> makeActorReference(OPCNamespace object, FlexoConceptInstance fci) {
-			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
+			AbstractVirtualModelInstanceModelFactory factory = fci.getFactory();
 			OPCNamespaceActorReference returned = factory.newInstance(OPCNamespaceActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
