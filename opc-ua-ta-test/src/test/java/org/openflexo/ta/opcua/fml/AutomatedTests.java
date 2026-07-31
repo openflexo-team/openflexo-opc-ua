@@ -42,6 +42,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Collection;
 
 import org.imta.opc.examples.minimal.MinimalNamespace;
@@ -81,6 +82,14 @@ public class AutomatedTests extends FMLScriptParserTestCase {
 		return Resources.getMatchingResource(ResourceLocator.locateResource("TestResourceCenter/AutomatedTests"), ".fmlscript");
 	}
 
+	/**
+	 * Port used by the {@link MinimalServer} exercised by the FML scripts.
+	 *
+	 * This one is imposed by the <code>MinimalServer1.opcua</code> resource of the test resource center, so this test class owns port 4880:
+	 * any other test class starting a {@link MinimalServer} must use another port (see {@link MinimalServer#MinimalServer(int)}).
+	 */
+	private static final int BIND_PORT = MinimalServer.DEFAULT_BIND_PORT;
+
 	private final Resource fmlResource;
 	private FlexoEditor editor;
 	private FMLScript script;
@@ -98,7 +107,14 @@ public class AutomatedTests extends FMLScriptParserTestCase {
 
 	@BeforeClass
 	static public void startServer() {
-		server = new MinimalServer();
+		// Milo only logs a BindException when the port is already taken: probe it first, so that a port conflict is reported here instead
+		// of surfacing later as an unrelated failure while discovering an unreachable server
+		try (ServerSocket probe = new ServerSocket(BIND_PORT)) {
+			// Nothing to do, we just checked the port is free
+		} catch (IOException e) {
+			fail("Port " + BIND_PORT + " is already in use, cannot start the OPC UA test server: " + e.getMessage());
+		}
+		server = new MinimalServer(BIND_PORT);
 		MinimalNamespace namespace = new MinimalNamespace(server);
 		server.startup();
 		namespace.startup();

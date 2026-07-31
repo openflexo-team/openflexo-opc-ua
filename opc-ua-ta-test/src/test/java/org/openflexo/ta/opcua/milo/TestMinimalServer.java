@@ -11,12 +11,18 @@ public class TestMinimalServer {
 
 	// TODO : discuss JaCoCo, code coverage utility that has issues handling large methods.
 
+	/**
+	 * Port dedicated to this test class: the test task runs several forked JVMs in parallel, so each test class starting a
+	 * {@link MinimalServer} must use a distinct port (see {@link MinimalServer#MinimalServer(int)}).
+	 */
+	private static final int BIND_PORT = 4882;
+
 	private MinimalServer server;
 
 	@Test
 	public void test() {
 		// Start the server
-		server = new MinimalServer();
+		server = new MinimalServer(BIND_PORT);
 		MinimalNamespace namespace = new MinimalNamespace(server);
 		server.startup();
 		namespace.startup();

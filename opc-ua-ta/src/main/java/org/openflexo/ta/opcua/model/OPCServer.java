@@ -186,29 +186,35 @@ public interface OPCServer extends OPCObject, ResourceData<OPCServer> {
 			}
 		}
 
+		/**
+		 * Return the {@link OpcUaClient} connected to this server, or null when the server cannot be reached.
+		 *
+		 * Beware: a client which could not be connected is never returned, as it would silently expose an empty address space.
+		 */
 		@Override
 		public OpcUaClient getClient() {
 			final String uri = getUri();
 			if (client == null) {
 				try {
 					logger.info("Creating an OpcUaClient to connect to " + uri);
-					client = OpcUaClient.create(getUri());
+					client = OpcUaClient.create(uri);
 				} catch (UaException e) {
-					logger.warning("Exception while creating the client: " + e.getMessage());
+					logger.warning("Cannot create a client for " + uri + " : " + e.getMessage());
 					return null;
 				}
 			}
 			if (isConnected()) return client;
 			try {
 				client.connect().get();
-				if (isConnected()) {
-					logger.info("Connected to " + uri);
-				} else {
-					logger.warning("Something went wrong while connecting to " + uri);
-				}
 			} catch (InterruptedException | ExecutionException e) {
-				logger.warning("Exception while connecting a client: " + e.getMessage());
+				logger.warning("Cannot connect a client to " + uri + " : " + e.getMessage());
+				return null;
 			}
+			if (!isConnected()) {
+				logger.warning("Something went wrong while connecting to " + uri);
+				return null;
+			}
+			logger.info("Connected to " + uri);
 			return client;
 		}
 

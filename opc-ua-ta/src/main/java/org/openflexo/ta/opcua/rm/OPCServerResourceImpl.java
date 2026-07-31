@@ -47,6 +47,7 @@ import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.resource.*;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
 import org.openflexo.ta.opcua.model.OPCServer;
+import org.openflexo.ta.opcua.utils.OPCConnectionException;
 import org.openflexo.toolbox.FileUtils;
 
 /**
@@ -225,7 +226,13 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 		// TODO : Discovery & populate OPCServer with its nodes. Here? Really?
 
 		// TODO a voir
-		getLoadedResourceData().performDiscovery();
+		try {
+			getLoadedResourceData().performDiscovery();
+		} catch (OPCConnectionException e) {
+			// An unreachable server is a normal situation for this kind of resource: the resource is still loaded, but with an empty
+			// address space. Report it explicitly, as anything navigating that address space will find nothing.
+			logger.log(Level.SEVERE, e.getMessage() + " : " + this + " is loaded with an empty address space");
+		}
 	}
 
 	/**
