@@ -27,7 +27,7 @@
 			<Label label="id" index="4"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;location=left)"
 				name="idLabel" localize="true" />
-			<TextField index="5" data="data.identifier"
+			<TextField index="5" data="data.identifierString"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
 				name="idTF" readOnly="true" localize="true" columns="10" />
 			<Label label="qualified_name" index="6"

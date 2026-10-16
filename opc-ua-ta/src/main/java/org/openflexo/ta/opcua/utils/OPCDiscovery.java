@@ -43,8 +43,19 @@ public class OPCDiscovery {
 		this.nodeStack = new ArrayList<>();
 	}
 
+	/**
+	 * Browse supplied {@link OPCServer} and populate it with its namespaces and nodes.
+	 *
+	 * @throws OPCConnectionException
+	 *             when the server cannot be reached
+	 */
 	public static void discover(OPCServer model, OPCModelFactory factory) {
-		OPCDiscovery discovery = new OPCDiscovery(model.getClient(), model, factory);
+		final OpcUaClient connection = model.getClient();
+		if (connection == null) {
+			// No client could be connected: fail with the URI of the server instead of a NullPointerException while browsing
+			throw new OPCConnectionException(model.getUri());
+		}
+		OPCDiscovery discovery = new OPCDiscovery(connection, model, factory);
 		discovery.initialize();
 		discovery.browseNode(Identifiers.ObjectsFolder);
 	}

@@ -21,11 +21,9 @@
 			<Label label="type" index="8"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=8;location=left)"
 				name="typeLabel" localize="true" />
-			<DropDown index="9" data="data.type"
+			<TextField index="9" data="data.valueTypeString"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;location=right)"
-				name="typeDropDown" format="object.name" localize="false" showIcon="false"
-				iteratorClassName="org.openflexo.ta.opcua.model.nodes.OPCVariableType"
-				autoSelectFirstRow="false"/> <!--list="data.availableCreationSchemes" -->
+				name="typeTF" readOnly="true" localize="false" columns="10" />
 		</Tab>
 	</TabPanel>
 	<FIBVariable id="13" name="data"

@@ -16,17 +16,23 @@ import org.openflexo.ta.opcua.utils.OPCDiscovery;
 
 public class TestOPCDiscovery {
 
+	/**
+	 * Port dedicated to this test class: the test task runs several forked JVMs in parallel, so each test class starting a
+	 * {@link MinimalServer} must use a distinct port (see {@link MinimalServer#MinimalServer(int)}).
+	 */
+	private static final int BIND_PORT = 4881;
+
 	@Test
 	public void test() throws ModelDefinitionException {
 		// Start the server
-		MinimalServer server = new MinimalServer();
+		MinimalServer server = new MinimalServer(BIND_PORT);
 		MinimalNamespace namespace = new MinimalNamespace(server);
 		server.startup();
 		namespace.startup();
 
 		// Create the factory and base model
 		OPCModelFactory factory = new OPCModelFactory(null, null);
-		OPCServer model = factory.makeOPCServerFromHostname("localhost", 4880, "minimal");
+		OPCServer model = factory.makeOPCServerFromHostname("localhost", BIND_PORT, "minimal");
 
 		// Discover
 		OPCDiscovery.discover(model, factory);

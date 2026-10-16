@@ -1,9 +1,11 @@
 package org.openflexo.ta.opcua.model.nodes;
 
+import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaVariableNode;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.openflexo.pamela.annotations.*;
 import org.openflexo.ta.opcua.model.types.OPCDataType;
+import org.openflexo.ta.opcua.utils.OPCConnectionException;
 
 @ModelEntity
 @ImplementationClass(value = OPCVariableNode.OPCVariableNodeImpl.class)
@@ -49,8 +51,11 @@ public interface OPCVariableNode extends OPCInstanceNode<UaVariableNode> {
 		@Override
 		public UaVariableNode getNode() {
 			if (variableNode != null) return variableNode;
+			final OpcUaClient client = getResourceData().getClient();
+			if (client == null)
+				throw new OPCConnectionException(getResourceData().getUri());
 			try {
-				variableNode = getResourceData().getClient().getAddressSpace().getVariableNode(getNodeId());
+				variableNode = client.getAddressSpace().getVariableNode(getNodeId());
 				return variableNode;
 			} catch (UaException e) {
 				System.err.println(e.getMessage());
