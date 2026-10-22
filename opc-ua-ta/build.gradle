@@ -3,12 +3,12 @@ dependencies {
   implementation flexoFoundation()
 
   // external dep
-  api 'org.eclipse.milo:sdk-client:0.6.15'
-  api 'org.eclipse.milo:sdk-server:0.6.15'
-  api 'org.eclipse.milo:dictionary-manager:0.6.15'
-  api 'org.eclipse.milo:dictionary-reader:0.6.15'
+  api 'org.eclipse.milo:sdk-client:0.6.16'
+  api 'org.eclipse.milo:sdk-server:0.6.16'
+  api 'org.eclipse.milo:dictionary-manager:0.6.16'
+  api 'org.eclipse.milo:dictionary-reader:0.6.16'
   api jclOverSlf4j()
   api slf4jJdk14()
-  api 'org.jetbrains:annotations:22.0.0'
+  api 'org.jetbrains:annotations:26.1.0'
 
 }
