@@ -5,6 +5,7 @@ dependencies {
   implementation group: 'junit', name: 'junit', version: '4.13.2'
 
   // testing dep
+  implementation guava() // used directly; no longer provided by connie-core
   testImplementation flexoFoundation()
   testImplementation flexoFoundationTest()
   testImplementation fmlCli()
