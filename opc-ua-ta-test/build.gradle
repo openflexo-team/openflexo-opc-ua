@@ -2,7 +2,7 @@ dependencies {
   implementation project(":opc-ua-ta")
 
   // openflexo dep
-  implementation group: 'junit', name: 'junit', version: '4.13.2'
+  implementation 'junit:junit:4.13.2'
 
   // testing dep
   implementation guava() // used directly; no longer provided by connie-core
