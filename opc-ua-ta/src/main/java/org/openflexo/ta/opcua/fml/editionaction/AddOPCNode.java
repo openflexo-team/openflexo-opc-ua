@@ -54,7 +54,6 @@ import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
 @ModelEntity
 @ImplementationClass(AddOPCNode.AddOPCNodeImpl.class)
-@XMLElement
 @FML("AddOPCNode")
 public interface AddOPCNode extends OPCAction<OPCServer, OPCNode> {
 
@@ -62,7 +61,6 @@ public interface AddOPCNode extends OPCAction<OPCServer, OPCNode> {
 	public static final String RELATIVE_PATH_KEY = "relativePath";
 
 	@Getter(value = RELATIVE_PATH_KEY)
-	@XMLAttribute
 	public DataBinding<String> getRelativePath();
 
 	@Setter(RELATIVE_PATH_KEY)

@@ -47,7 +47,6 @@ import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 
@@ -59,7 +58,6 @@ import org.openflexo.ta.opcua.model.nodes.OPCNode;
  */
 @ModelEntity
 @ImplementationClass(OPCNodeRole.UANodeRoleRoleImpl.class)
-@XMLElement
 @FML("OPCNodeRole")
 public interface OPCNodeRole extends FlexoRole<OPCNode> {
 

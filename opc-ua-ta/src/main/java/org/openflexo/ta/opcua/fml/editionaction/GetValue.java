@@ -45,14 +45,12 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
 import org.openflexo.ta.opcua.model.nodes.OPCVariableNode;
 
 @ModelEntity
 @ImplementationClass(GetValue.GetValueImpl.class)
-@XMLElement
 @FML("GetValue")
 public interface GetValue extends OPCAction<OPCNode, Object> {
 

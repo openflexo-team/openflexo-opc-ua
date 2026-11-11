@@ -47,7 +47,6 @@ import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCUATechnologyAdapter;
 import org.openflexo.ta.opcua.model.OPCNamespace;
 
@@ -59,7 +58,6 @@ import org.openflexo.ta.opcua.model.OPCNamespace;
  */
 @ModelEntity
 @ImplementationClass(OPCNamespaceRole.NamespaceRoleImpl.class)
-@XMLElement
 @FML("OPCNamespaceRole")
 public interface OPCNamespaceRole extends FlexoRole<OPCNamespace> {
 

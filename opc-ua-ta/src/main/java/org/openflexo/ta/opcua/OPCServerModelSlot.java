@@ -51,7 +51,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.fml.OPCNamespaceActorReference;
 import org.openflexo.ta.opcua.fml.OPCNamespaceRole;
 import org.openflexo.ta.opcua.fml.OPCNodeActorReference;
@@ -125,7 +124,6 @@ import org.openflexo.ta.opcua.rm.OPCServerResource;
 @DeclareActorReferences({ OPCNamespaceActorReference.class, OPCNodeActorReference.class })
 @ModelEntity
 @ImplementationClass(OPCServerModelSlot.OPCServerModelSlotImpl.class)
-@XMLElement
 @FML("OPCServerModelSlot")
 public interface OPCServerModelSlot extends FreeModelSlot<OPCServer, OPCServerResource> {
 

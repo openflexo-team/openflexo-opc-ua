@@ -44,7 +44,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.ta.opcua.OPCServerModelSlot;
 import org.openflexo.ta.opcua.model.OPCServer;
 import org.openflexo.ta.opcua.model.nodes.OPCNode;
@@ -57,7 +56,6 @@ import org.openflexo.ta.opcua.model.nodes.OPCNode;
  */
 @ModelEntity
 @ImplementationClass(AbstractSelectOPCNode.AbstractSelectOPCNodeImpl.class)
-@XMLElement
 @FML("SelectOPCNode")
 public interface SelectOPCNode extends AbstractSelectOPCNode<List<OPCNode>>, FetchRequest<OPCServerModelSlot, OPCServer, OPCNode> {
 
