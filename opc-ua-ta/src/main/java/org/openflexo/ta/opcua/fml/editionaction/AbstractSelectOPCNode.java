@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public interface AbstractSelectOPCNode<AT> extends AbstractFetchRequest<OPCServe
 		}
 
 		@Override
-		public List<OPCNode> performExecute(RunTimeEvaluationContext evaluationContext) {
+		public List<OPCNode> performExecute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			List<OPCNode> selectedLines = new ArrayList<>();
 			OPCServer resourceData = getReceiver(evaluationContext);

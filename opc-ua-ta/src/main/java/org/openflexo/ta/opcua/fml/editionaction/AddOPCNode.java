@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -79,7 +80,7 @@ public interface AddOPCNode extends OPCAction<OPCServer, OPCNode> {
 		}
 
 		@Override
-		public OPCNode execute(RunTimeEvaluationContext evaluationContext) {
+		public OPCNode execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			OPCNode line = null;
 

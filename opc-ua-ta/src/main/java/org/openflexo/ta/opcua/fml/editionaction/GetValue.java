@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -65,7 +66,7 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 		}
 
 		@Override
-		public Object execute(RunTimeEvaluationContext evaluationContext) {
+		public Object execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			OPCNode<?> node = getReceiver(evaluationContext);
 			Object returned = null;
