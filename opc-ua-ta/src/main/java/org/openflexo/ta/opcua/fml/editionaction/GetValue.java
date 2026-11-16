@@ -38,6 +38,9 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLTechnologyError;
+import org.openflexo.foundation.fml.rt.error.FMLTypeError;
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
@@ -69,19 +72,20 @@ public interface GetValue extends OPCAction<OPCNode, Object> {
 		public Object execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			OPCNode<?> node = getReceiver(evaluationContext);
-			Object returned = null;
-
-			if (node instanceof OPCVariableNode) {
-				try {
-					returned = ((OPCVariableNode) node).getNode().readValue().getValue().getValue();
-				} catch (Exception e) {
-					logger.warning(e.getMessage());
-				}
+			if (node == null) {
+				throw new FMLNullReferenceError("No OPC UA node to read the value of");
 			}
-
-			logger.info("Attempting to read value from " + node.getUri() + " (" + node.getClass() + "): " + returned);
-
-			return returned;
+			if (!(node instanceof OPCVariableNode)) {
+				throw new FMLTypeError("The OPC UA node " + node.getUri() + " is not a variable: it has no value");
+			}
+			try {
+				return ((OPCVariableNode) node).getNode().readValue().getValue().getValue();
+			} catch (RuntimeException e) {
+				throw e;
+			} catch (Exception e) {
+				// The OPC UA server refuses or cannot answer the read
+				throw new FMLTechnologyError("Cannot read the value of the OPC UA node " + node.getUri() + ": " + e.getMessage(), e);
+			}
 
 		}
 

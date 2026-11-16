@@ -38,6 +38,7 @@
 
 package org.openflexo.ta.opcua.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -80,6 +81,10 @@ public interface AbstractSelectOPCNode<AT> extends AbstractFetchRequest<OPCServe
 
 			List<OPCNode> selectedLines = new ArrayList<>();
 			OPCServer resourceData = getReceiver(evaluationContext);
+			if (resourceData == null) {
+				// A null source (CORE-F-11)
+				throw new FMLNullReferenceError(getStringRepresentation() + ": nothing to select from");
+			}
 
 			if (resourceData != null) {
 				List<OPCNamespace> namespaces = resourceData.getNamespaces();
