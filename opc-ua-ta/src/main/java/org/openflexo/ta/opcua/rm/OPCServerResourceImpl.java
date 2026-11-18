@@ -42,7 +42,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.resource.*;
 import org.openflexo.ta.opcua.model.OPCModelFactory;
@@ -80,7 +80,7 @@ public abstract class OPCServerResourceImpl extends PamelaResourceImpl<OPCServer
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		}
 		return null;
